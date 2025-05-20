@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Clever_Vpn.Pages.HomePage.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clever_Vpn.Pages.HomePage"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:c="using:Clever_Vpn.components"
+    xmlns:c1="using:Clever_Vpn.Pages.HomePage.components"
+    mc:Ignorable="d">
+
+    <Grid     
+        RequestedTheme="Light"
+        >
+        <c:Layout>
+            <c:Layout.TopBar>
+                <c:TopBar x:Name="TopBar" >
+                    <c:TopBar.RightContent>
+                        <AppBarButton Icon="Setting"  
+                                      Width="48" Height="48"
+                                      Click="SettingsButton_Click" />
+                    </c:TopBar.RightContent>
+                </c:TopBar>
+            </c:Layout.TopBar>
+            <Grid RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="4*" />
+                    </Grid.RowDefinitions>
+                    <c1:HomeCard  Grid.Row="0" />
+                    <c1:BottomCard Grid.Row="1" />
+            </Grid>
+        </c:Layout>
+
+
+    </Grid>
+</Page>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="Clever_Vpn.Pages.ActivatePage.components.ActivateCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clever_Vpn.Pages.ActivatePage.components"
+    xmlns:vm="using:Clever_Vpn.ViewModel"
+    xmlns:utils="using:Clever_Vpn.utils"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
+        <TextBox x:Name="ActivationCodeBox"
+                 Header="Enter your key:"
+                 PlaceholderText="Example: 1111-1111-1111-1111"
+                 InputScope="AlphanumericFullWidth"
+                 MaxLength="19"
+                 Margin="0,10,0,20"
+                 />
+
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <Button     Grid.Column="0"  HorizontalAlignment="Left"  Background="Transparent"
+        BorderBrush="Transparent" Foreground="CornflowerBlue"  FontSize="10" Margin="-10,0,0,0">
+                    Agree to associate device data to your account
+                <Button.Flyout>
+                    <Flyout>
+                        <TextBlock Width="300" Text="{x:Bind policyText}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" Margin="0,0,0,0" /> 
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <CheckBox x:Name="PolicyCheckBox" Grid.Column="1" MinWidth="0" HorizontalAlignment="Right"
+                  Checked="OnAccepted"
+                  Unchecked="OnUnAccepted"
+                  />  
+        </Grid>
+        
+    
+       <Button x:Name="ActivateButton"
+               Command="{x:Bind Vm.ActivateCommand}"
+               Visibility="{x:Bind utils:Converters.NotEqualToDisplay(Vm.ActivateState, vm:ActivationState.Activating), Mode=OneWay}"
+               Style="{StaticResource AccentButtonStyle}"
+               Content="Activate"
+               HorizontalAlignment="Stretch"
+               Margin="0,50,0,0"
+               IsEnabled="{x:Bind utils:Converters.ConvertNullBoolToBool(PolicyCheckBox.IsChecked), Mode=OneWay}"
+                />
+        
+        <ProgressRing IsActive="True"
+                      Margin="0,50,0,0"
+                      Width="32" Height="32"
+                      Visibility="{x:Bind utils:Converters.EqualToDisplay(Vm.ActivateState, vm:ActivationState.Activating), Mode=OneWay}" />
+    </StackPanel>
+</UserControl>

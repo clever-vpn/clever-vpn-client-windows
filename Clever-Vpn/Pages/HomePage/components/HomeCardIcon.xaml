@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="Clever_Vpn.Pages.HomePage.components.HomeCardIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clever_Vpn.Pages.HomePage.components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:c="using:Clever_Vpn.components"
+    xmlns:cconfig="using:Clever_Vpn.config"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="MyOnOffIconStyle" TargetType="UserControl">
+            <Setter Property="Height" Value="{x:Bind cconfig:AppConfig.OnOffIconSize}" />
+            <Setter Property="Width" Value="{x:Bind cconfig:AppConfig.OnOffIconSize}" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Padding="0,0,18,0">
+        <c:OnIcon  Foreground="ForestGreen" Style="{StaticResource MyOnOffIconStyle}" Visibility="{x:Bind ShowOnIcon(Vm.VpnState), Mode=OneWay}"/>
+        <c:OffIcon Foreground="Black"  Style="{StaticResource MyOnOffIconStyle}" Visibility="{x:Bind ShowOffIcon(Vm.VpnState), Mode=OneWay}" />
+    </Grid>
+</UserControl>

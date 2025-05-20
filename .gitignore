@@ -1,0 +1,82 @@
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+Generated Files/
+
+# Windows App SDK
+*.Package.appxmanifest
+*.Build.appxrecipe
+*.build.appxrecipe
+*.pri
+*.wapproj.user
+*.wapproj.userosscache
+
+# MSBuild
+*.log
+*.tlog
+*.lastbuildstate
+*.cache
+
+# Installer / Packaging
+*.msi
+*.msix
+*.msixupload
+*.msixbundle
+*.appx
+*.appxbundle
+*.cer
+*.pfx
+
+# Other temporary files
+*.dbmdl
+*.jfm
+*.lbi
+*.sdf
+*.cachefile
+*.gpState
+*.ipch/
+*.ncb
+*.opensdf
+*.pdb
+*.pgc
+*.pgd
+*.tmp
+*.unsuccessfulbuild
+*.VC.db
+*.VC.VC.opendb
+*.xproj.user
+
+# Node / npm (if used for tooling)
+node_modules/
+
+# Rider / JetBrains IDEs
+.idea/
+
+# Backup / metadata files
+*.orig
+*.bak
+*.swp
+*.swn
+
+# NuGet packages
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Windows-specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Mac-specific
+.DS_Store
