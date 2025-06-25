@@ -1,5 +1,6 @@
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -30,19 +31,19 @@ public sealed partial class SelectedIcon : UserControl
         InitializeComponent();
     }
 
-    public utils.ProtocolType ProtocolType
+    public ProtocolType ProtocolType
     {
-        get => (utils.ProtocolType)GetValue(ProtocolTypeProperty);
+        get => (ProtocolType)GetValue(ProtocolTypeProperty);
         set => SetValue(ProtocolTypeProperty, value);
     }
     public static readonly DependencyProperty ProtocolTypeProperty =
         DependencyProperty.Register(
             nameof(ProtocolType),
-            typeof(utils.ProtocolType),
+            typeof(ProtocolType),
             typeof(SelectedIcon),
-            new PropertyMetadata(utils.ProtocolType.AUTO));
+            new PropertyMetadata(ProtocolType.AUTO));
 
-   Visibility ProtocolTypeSelector(utils.ProtocolType e, utils.ProtocolType t) {
+   Visibility ProtocolTypeSelector(ProtocolType e, ProtocolType t) {
         if (e == t)
         {
             return Visibility.Visible;

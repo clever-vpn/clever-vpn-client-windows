@@ -9,6 +9,7 @@
     xmlns:c="using:Clever_Vpn.components"
     xmlns:c1="using:Clever_Vpn.Pages.SettingsPage.componets"
     xmlns:utils="using:Clever_Vpn.utils"
+    xmlns:vpn="using:Clever_Vpn_Windows_Kit.Data"
     mc:Ignorable="d">
 
     <Grid     
@@ -41,7 +42,7 @@
                             ItemClick="OnProtocolItemClick"
                             SelectionMode="None">
                             <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="utils:ProtocolType">
+                                <DataTemplate x:DataType="vpn:ProtocolType">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -50,7 +51,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{x:Bind }" Style="{ThemeResource BodyStrongTextBlockStyle}" />
                                         <TextBlock Grid.Column="1" Margin="10,0,0,0" Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{x:Bind local:SettingsPage.TipOfProtocolType((utils:ProtocolType))}" />
+                                                Text="{x:Bind local:SettingsPage.TipOfProtocolType((vpn:ProtocolType))}" />
                                         <!-- Check icon if selected -->
                                         <c1:SelectedIcon ProtocolType="{x:Bind}"  Grid.Column="2"/>
                                     </Grid>

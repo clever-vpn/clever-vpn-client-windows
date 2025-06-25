@@ -1,4 +1,5 @@
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -37,15 +38,15 @@ public sealed partial class HomeCard : UserControl
         }
     }
 
-    public bool UpdateToggleState(VpnState s)
+    public bool UpdateToggleState(CleverVpnState s)
     {
         var ret = OnOffSwitch.IsOn;
         switch (s)
         {
-            case VpnState.Down:
+            case CleverVpnState.Down:
                 ret = false;
                 break;
-            case VpnState.Up:
+            case CleverVpnState.Up:
                 ret = true;
                 break;
             default:
@@ -54,11 +55,11 @@ public sealed partial class HomeCard : UserControl
         return ret;
     }
 
-    public bool UpdateToggleEnable(VpnState s)
+    public bool UpdateToggleEnable(CleverVpnState s)
     {
         return s switch
         {
-            VpnState.Down or VpnState.Up => true,
+            CleverVpnState.Down or CleverVpnState.Up => true,
             _ => false,
         };
     }

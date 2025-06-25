@@ -1,5 +1,6 @@
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -37,7 +38,6 @@ public sealed partial class TrafficCard : UserControl
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-       Vm._trafficCount = 0;
         dqTimer.Start();
         dqTimer.Tick += DqTimer_Tick;
         DqTimer_Tick(null, null);
@@ -56,8 +56,8 @@ public sealed partial class TrafficCard : UserControl
             return await Vm.GetTraffic();
         });
 
-        RxTextBlock.Text = Utils.PrettyBytes(traffic.rx);
-        TxTextBlock.Text = Utils.PrettyBytes(traffic.tx);
+        RxTextBlock.Text = Utils.PrettyBytes(traffic.Rx);
+        TxTextBlock.Text = Utils.PrettyBytes(traffic.Tx);
 
     }
 

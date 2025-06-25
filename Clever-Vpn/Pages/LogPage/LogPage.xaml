@@ -34,12 +34,14 @@
             </c:Layout.TopBar>
             <ListView ItemsSource="{x:Bind Vm.LogItems}" Loaded="OnListViewLoaded">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="utils:LogItem">
+                    <!-- <DataTemplate x:DataType="utils:LogItem"> -->
+                    <DataTemplate x:DataType="x:String">
                         <RichTextBlock Padding="8" TextWrapping="Wrap">
                             <Paragraph>
-                                <Run Text="{x:Bind local:LogPage.FormatDateTime(Stamp), Mode=OneWay}" FontSize="12" Foreground="Gray"/>
+       <!--                         <Run Text="{x:Bind local:LogPage.FormatDateTime(Stamp), Mode=OneWay}" FontSize="12" Foreground="Gray"/>
                                 <Run Text=" "/>
-                                <Run Text="{x:Bind Message, Mode=OneWay}" FontSize="12"/>
+                                <Run Text="{x:Bind Message, Mode=OneWay}" FontSize="12"/> -->
+                                <Run Text="{x:Bind Mode=OneWay}" FontSize="12" />  
                             </Paragraph>
                         </RichTextBlock>
                     </DataTemplate>

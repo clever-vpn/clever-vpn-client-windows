@@ -1,5 +1,6 @@
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -55,37 +56,38 @@ namespace Clever_Vpn.Pages.SettingsPage
             var listView = (ListView)sender;
             if (listView != null)
             {
-                listView.ItemsSource = Enum.GetValues(typeof(utils.ProtocolType)).Cast<utils.ProtocolType>();
+                listView.ItemsSource = Enum.GetValues(typeof(ProtocolType)).Cast<ProtocolType>();
             }
 
         }
 
         async void OnProtocolItemClick(object sender, ItemClickEventArgs e)
         {
-            var type = (utils.ProtocolType)e.ClickedItem;
+            var type = (ProtocolType)e.ClickedItem;
             await Vm.UpdateProtocolType(type);
             //OnProtocolSettingLoaded(sender, e);
         }
 
-        public static string TipOfProtocolType(utils.ProtocolType type)
+        public static string TipOfProtocolType(ProtocolType type)
         {
             return type switch
             {
-                utils.ProtocolType.AUTO => "auto Select Protocol (default)",
-                utils.ProtocolType.UDP => "for low packet loss",
-                utils.ProtocolType.KUDP => "for high packet loss",
-                utils.ProtocolType.TCP => "for UDP not available",
+                ProtocolType.AUTO => "auto Select Protocol (default)",
+                ProtocolType.UDP => "for low packet loss",
+                ProtocolType.KUDP => "for high packet loss",
+                ProtocolType.TCP => "for UDP not available",
                 _ => string.Empty,
             };
         }
 
-        public static Visibility ProtocolTypeSelector(utils.ProtocolType type)
+        public static Visibility ProtocolTypeSelector(ProtocolType type)
         {
             VpnViewModel vm  = ((App)Application.Current).ViewModel;
             return  (vm.UserInfo?.ProtocolType == type) ? Visibility.Visible : Visibility.Collapsed;
         }
         string FormatKey(string key)
         {
+            key = key.Replace("-", "");
             var l = key.Length;
             return string.Join("-", Enumerable.Range(0, 4)
                 .Select(i => {

@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Clever_Vpn.ViewModel;
 using Microsoft.UI.Dispatching;
+using Clever_Vpn_Windows_Kit.Data;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -50,14 +51,14 @@ public sealed partial class HomeCardDivider : UserControl
         StateTextBlock.Text = StateUIText();
     }
 
-    private string GetStateText(VpnState s)
+    private string GetStateText(CleverVpnState s)
     {
        switch (s)
         {
-            case VpnState.Up:
+            case CleverVpnState.Up:
                 dqTimer.Start();
                 break;
-            case VpnState.Down:
+            case CleverVpnState.Down:
                 dqTimer.Stop();
                 break;
             default:
@@ -71,7 +72,7 @@ public sealed partial class HomeCardDivider : UserControl
 
     private string StateUIText()
     {
-        if (Vm.VpnState == VpnState.Up || Vm.VpnState == VpnState.Reconnecting)
+        if (Vm.VpnState == CleverVpnState.Up || Vm.VpnState == CleverVpnState.Reconnecting)
         {
             var diff = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Vm.StartTime;
             TimeSpan timeSpan = TimeSpan.FromSeconds(diff);

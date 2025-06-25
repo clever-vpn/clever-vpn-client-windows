@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utils="using:Clever_Vpn.utils"
+    xmlns:vpn="using:Clever_Vpn_Windows_Kit.Data"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
@@ -33,7 +34,7 @@
                     ItemClick="OnItemClick"
                     SelectionMode="None">
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="utils:Location">
+                        <DataTemplate x:DataType="vpn:Location">
                             <Grid Padding="10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />

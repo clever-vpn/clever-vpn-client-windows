@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:triggers="using:CommunityToolkit.WinUI"
     xmlns:vm="using:Clever_Vpn.ViewModel"
+    xmlns:vpn="using:Clever_Vpn_Windows_Kit.Data"
     mc:Ignorable="d"
     Loaded="UserControl_Loaded"
     Unloaded="UserControl_Unloaded">
@@ -20,7 +21,7 @@
                     <VisualState.StateTriggers>
                         <triggers:IsEqualStateTrigger                             
                             Value="{x:Bind  Vm.VpnState, Mode=OneWay}"
-                            To="{x:Bind vm:VpnState.Up }" />
+                            To="{x:Bind vpn:CleverVpnState.Up }" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="StateTextBorder.BorderBrush" Value="ForestGreen" />
@@ -34,7 +35,7 @@
                     <VisualState.StateTriggers>
                         <triggers:IsEqualStateTrigger                             
                             Value="{x:Bind  Vm.VpnState, Mode=OneWay}"
-                            To="{x:Bind vm:VpnState.Down }" />
+                            To="{x:Bind vpn:CleverVpnState.Down }" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="StateTextBorder.BorderBrush" Value="Gray" />
@@ -47,13 +48,13 @@
                     <VisualState.StateTriggers>
                         <triggers:IsEqualStateTrigger                             
                             Value="{x:Bind  Vm.VpnState, Mode=OneWay}"
-                            To="{x:Bind vm:VpnState.Connecting }" />
+                            To="{x:Bind vpn:CleverVpnState.Connecting }" />
                         <triggers:IsEqualStateTrigger                             
                             Value="{x:Bind  Vm.VpnState, Mode=OneWay}"
-                            To="{x:Bind vm:VpnState.Reconnecting }" />
+                            To="{x:Bind vpn:CleverVpnState.Reconnecting }" />
                         <triggers:IsEqualStateTrigger                             
                             Value="{x:Bind  Vm.VpnState, Mode=OneWay}"
-                            To="{x:Bind vm:VpnState.Disconnecting }" />
+                            To="{x:Bind vpn:CleverVpnState.Disconnecting }" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="StateTextGrid.Visibility" Value="Collapsed" />

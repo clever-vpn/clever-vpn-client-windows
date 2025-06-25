@@ -19,6 +19,8 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics;
 using Windows.Graphics.Display;
+using WinUIEx;
+using Clever_Vpn_Windows_Kit;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -38,7 +40,7 @@ namespace Clever_Vpn
 
     //}
 
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow : WindowEx
     {
         VpnViewModel vm { get; } = ((App)Application.Current).ViewModel;
         // The main frame of the application. This is used to navigate between different pages.
@@ -49,6 +51,12 @@ namespace Clever_Vpn
             this.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/appIcon.ico"));
 
             utils.Utils.ReSizeWindow(this, config.AppConfig.Width, config.AppConfig.Height);
+
+            this.SetIsShownInSwitchers(false);
+            this.IsVisibleInTray = true;
+            //this.WindowStateChanged += (_, e) =>
+            //{ if (e == WindowState.Minimized) this.Hide(); };
+
 
             //this.RootLayout.DataContext = vm;
 

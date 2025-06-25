@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Clever_Vpn.config;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,39 +30,39 @@ public sealed partial class BottomCard : UserControl
         InitializeComponent();
     }
 
-    private Visibility ShowLogo(VpnState s)
+    private Visibility ShowLogo(CleverVpnState s)
     {
                return s switch
         {
-            VpnState.Down or VpnState.Connecting  => Visibility.Visible,
+            CleverVpnState.Down or CleverVpnState.Connecting  => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }
 
-    private Visibility ShowTrafficCard(VpnState s)
+    private Visibility ShowTrafficCard(CleverVpnState s)
     {
         return s switch
         {
-            VpnState.Up or VpnState.Reconnecting or VpnState.Disconnecting => Visibility.Visible,
+            CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }
 
 
-    private bool LoadLogo(VpnState s)
+    private bool LoadLogo(CleverVpnState s)
     {
         return s switch
         {
-            VpnState.Down or VpnState.Connecting => true,
+            CleverVpnState.Down or CleverVpnState.Connecting => true,
             _ => false,
         };
     }
 
-    private bool LoadTrafficCard(VpnState s)
+    private bool LoadTrafficCard(CleverVpnState s)
     {
         return s switch
         {
-            VpnState.Up or VpnState.Reconnecting or VpnState.Disconnecting => true,
+            CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => true,
             _ => false,
         };
     }

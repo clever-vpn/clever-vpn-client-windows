@@ -1,5 +1,6 @@
 ﻿using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -65,13 +66,12 @@ public sealed partial class HomeCardLocationSelector : UserControl
         UpdateUILocations();
         await MyDlg.ShowAsync();
     }
-    private void OnItemClick(object sender, ItemClickEventArgs e)
+    private async void OnItemClick(object sender, ItemClickEventArgs e)
     {
         // 假设你的 ItemsSource 是 List<AddressRecord> 或 ObservableCollection<AddressRecord>
         var location = (Location)e.ClickedItem;
         int? id = (location.Id == -1) ? null : location.Id;
-        Vm.UserInfo = Vm.UserInfo! with { LocationId = id };
-
+        await Vm.UpdateLocation(id);
         MyDlg.Hide();
     }
 
@@ -80,7 +80,7 @@ public sealed partial class HomeCardLocationSelector : UserControl
         UpdateButtonLoading.Visibility = Visibility.Visible;
         UpdateButtonText.Opacity = 0;
 
-        await Vm.UpdateLocations();
+        await Vm.UpdateLocations(true);
         UpdateUILocations();
 
         UpdateButtonLoading.Visibility = Visibility.Collapsed;

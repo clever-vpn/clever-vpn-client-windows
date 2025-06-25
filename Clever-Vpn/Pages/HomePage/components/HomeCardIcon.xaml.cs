@@ -1,4 +1,5 @@
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -28,20 +29,20 @@ public sealed partial class HomeCardIcon : UserControl
         InitializeComponent();
     }
 
-    private Visibility ShowOnIcon(VpnState state)
+    private Visibility ShowOnIcon(CleverVpnState state)
     {
         return state switch
         {
-            VpnState.Up or VpnState.Reconnecting or VpnState.Disconnecting => Visibility.Visible,
+            CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }
 
-    private Visibility ShowOffIcon(VpnState state)
+    private Visibility ShowOffIcon(CleverVpnState state)
     {
         return state switch
         {
-            VpnState.Down or VpnState.Connecting => Visibility.Visible,
+            CleverVpnState.Down or CleverVpnState.Connecting => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }

@@ -43,5 +43,12 @@ namespace Clever_Vpn.utils
             File.AppendAllText(CrashLogPath,
                 $"[{DateTime.Now}] [{source}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
         }
+
+        public static void DebugLog(string msg)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(CrashLogPath)!);
+            File.AppendAllText(CrashLogPath,
+                $"[{DateTime.Now}] [Debug] {msg}");
+        }
     }
 }

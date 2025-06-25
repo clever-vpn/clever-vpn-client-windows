@@ -50,7 +50,7 @@ public sealed partial class LogPage : Page
         // 1. 准备文本内容
         var sb = new StringBuilder();
         foreach (var item in Vm.LogItems)
-            sb.AppendLine($"{item.Stamp:yyyy-MM-dd HH:mm:ss}    —    {item.Message}");
+            sb.AppendLine($"{item}");
 
         // 2. 弹出保存对话框
         var picker = new FileSavePicker
