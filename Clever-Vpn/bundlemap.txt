@@ -1,0 +1,4 @@
+[Files] 
+"C:\Users\bolin\source\Clever-Vpn\Clever-Vpn\Clever-Vpn\bin\Appx\Clever-Vpn_1.3.2.0_Test\Clever-Vpn_1.3.2.0_arm64.msix" "Clever-Vpn_1.3.2.0_arm64.msix" 
+"C:\Users\bolin\source\Clever-Vpn\Clever-Vpn\Clever-Vpn\bin\Appx\Clever-Vpn_1.3.2.0_Test\Clever-Vpn_1.3.2.0_x64.msix" "Clever-Vpn_1.3.2.0_x64.msix" 
+"C:\Users\bolin\source\Clever-Vpn\Clever-Vpn\Clever-Vpn\bin\Appx\Clever-Vpn_1.3.2.0_Test\Clever-Vpn_1.3.2.0_x86.msix" "Clever-Vpn_1.3.2.0_x86.msix" 

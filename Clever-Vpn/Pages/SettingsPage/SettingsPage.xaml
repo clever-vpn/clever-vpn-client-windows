@@ -23,19 +23,19 @@
                                       Width="48" Height="48"
                                       Click="OnBackClick" />
                     </c:TopBar.LeftContent>
-                    <TextBlock Text="Settings" Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock x:Uid="SettingTitle"  Style="{StaticResource SubtitleTextBlockStyle}" />
                 </c:TopBar>
             </c:Layout.TopBar>
             <ScrollViewer>
                 <StackPanel >
-                    <c1:SettingPanel Title="Activation Key">
+                    <c1:SettingPanel x:Uid="Key">
                         <StackPanel>
                             <TextBlock Text="{x:Bind FormatKey(Vm.UserInfo.Key) }" />
                             <c:Divider/>
-                            <Button Command="{x:Bind  Vm.DeActivateCommand}" Style="{ThemeResource AccentButtonStyle}">DeActivate</Button>
+                            <Button Command="{x:Bind  Vm.DeActivateCommand}" Style="{ThemeResource AccentButtonStyle}" x:Uid="DeActivate" />
                         </StackPanel>
                     </c1:SettingPanel>
-                    <c1:SettingPanel Title="Protocol Type">
+                    <c1:SettingPanel x:Uid="ProtocolType">
                         <ListView 
                             Loaded="OnProtocolSettingLoaded"
                             IsItemClickEnabled="True"
@@ -59,20 +59,42 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </c1:SettingPanel>
-                    <c1:SettingPanel Title="Logs">
-                        <Button Content="View Logs" Click="OnLogPage"></Button>
+
+                    <c1:SettingPanel x:Uid="RunAtStartup">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="14" x:Uid="RunAtStartup1" />
+
+                                <ToggleSwitch x:Name="StartupToggle"
+                                    VerticalAlignment="Center"
+                                    MinWidth="0" 
+                                    Grid.Column="2"
+                                    OffContent="Off"
+                                    OnContent="On"
+                                    Toggled="OnAutoStartupToggle"           
+                                    />
+                            </Grid>
+
                     </c1:SettingPanel>
-                    <c1:SettingPanel Title="About Us">
+                    <c1:SettingPanel x:Uid="Logs">
+                        <Button Click="OnLogPage" x:Uid="LogsButton" />
+                    </c1:SettingPanel>
+                    <c1:SettingPanel x:Uid="AboutUs">
                         <RichTextBlock>
                             <Paragraph>
-                                <Run>WebSite:</Run>
+                                <Run x:Uid="Website" />
                                 <Hyperlink  NavigateUri="{x:Bind Vm.UserInfo.Url}">
                                     <Run Text="{x:Bind Vm.UserInfo.Url}" />
                                 </Hyperlink>
                             </Paragraph>
                         </RichTextBlock>
                     </c1:SettingPanel>
-                    <c1:SettingPanel Title="Version" >
+                    <c1:SettingPanel x:Uid="Version" >
                         <TextBlock Text="{x:Bind GetVersion}" />
                     </c1:SettingPanel>
                 </StackPanel>

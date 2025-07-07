@@ -1,4 +1,7 @@
-﻿using Clever_Vpn.utils;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Clever_Vpn.utils;
 using Clever_Vpn_Windows_Kit;
 using Clever_Vpn_Windows_Kit.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -37,7 +40,7 @@ public enum ActivationState
 
 public partial class VpnViewModel : ObservableObject
 {
-    private Client _client = Client.Init();
+    private Client _client = Client.Init(Utils.GetAppVersion());
     [ObservableProperty]
     public partial string ActivationKey { get; set; } = string.Empty;
 
@@ -89,14 +92,14 @@ public partial class VpnViewModel : ObservableObject
 
     public async Task ToggleVpn(bool isOn)
     {
+       var setting = await services.SettingsService.LoadAsync();
         if (isOn)
         {
             if (VpnState == CleverVpnState.Down)
             {
-                //VpnState = CleverVpnState.Connecting;
                 await _client.Start();
                 StartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                //VpnState = CleverVpnState.Up;
+                setting.VpnIsOn = true;
             }
 
         }
@@ -105,9 +108,7 @@ public partial class VpnViewModel : ObservableObject
             if (VpnState == CleverVpnState.Up)
             {
                 await _client.Stop();
-                //VpnState = CleverVpnState.Disconnecting;
-                //await Task.Delay(1000);
-                //VpnState = CleverVpnState.Down;
+                setting.VpnIsOn = false;
             }
         }
     }

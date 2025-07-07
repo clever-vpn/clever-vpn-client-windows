@@ -23,7 +23,7 @@
                                       Width="48" Height="48"
                                       Click="OnBackClick" />
                     </c:TopBar.LeftContent>
-                    <TextBlock Text="Logs" Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock x:Uid="Logs1" Style="{StaticResource SubtitleTextBlockStyle}" />
                     <c:TopBar.RightContent>
                         <AppBarButton Icon="Save"  
                                     Width="48" Height="48"

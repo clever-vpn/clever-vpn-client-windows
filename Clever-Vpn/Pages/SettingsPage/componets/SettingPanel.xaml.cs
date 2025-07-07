@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
 using Clever_Vpn.components;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

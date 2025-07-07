@@ -1,4 +1,9 @@
-﻿using Clever_Vpn.ViewModel;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit;
+using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -7,7 +12,9 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.Windows.BadgeNotifications;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,12 +22,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics;
 using Windows.Graphics.Display;
+using Windows.UI.WindowManagement;
 using WinUIEx;
-using Clever_Vpn_Windows_Kit;
+
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -50,48 +59,61 @@ namespace Clever_Vpn
 
             this.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/appIcon.ico"));
 
+
             utils.Utils.ReSizeWindow(this, config.AppConfig.Width, config.AppConfig.Height);
 
-            this.SetIsShownInSwitchers(false);
-            this.IsVisibleInTray = true;
-            //this.WindowStateChanged += (_, e) =>
-            //{ if (e == WindowState.Minimized) this.Hide(); };
+            if (utils.Utils.IsPackaged())
+            {
+                BadgeNotificationManager.Current.SetBadgeAsGlyph(BadgeNotificationGlyph.None);
+            }
 
-
-            //this.RootLayout.DataContext = vm;
-
-            //vm.PropertyChanged += Vm_PropertyChanged;
-            //this.Closed += MainWindow_Closed;
-
-            //NavigateByActivateState();
+            //vm.PropertyChanged += vm_PropertyChanged;
         }
 
-        //private void Vm_PropertyChanged(object? s, PropertyChangedEventArgs e)
-        //{
-        //    if (e.PropertyName == nameof(VpnViewModel.ActivateState))
-        //        NavigateByActivateState();
-        //}
 
-        //private void MainWindow_Closed(object? sender, WindowEventArgs e)
-        //{
-        //    vm.PropertyChanged -= Vm_PropertyChanged;
-        //    this.Closed -= MainWindow_Closed;
-        //}
 
-        //void NavigateByActivateState()
-        //{
-        //    switch (vm.ActivateState)
-        //    {
-        //        case ActivationState.Activated:
-        //            Navigate(typeof(Pages.HomePage.HomePage), null);
-        //            break;
-        //        default:
-        //            Navigate(typeof(Pages.ActivatePage.ActivatePage), null);
-        //            break;
-        //    }
+        private void vm_PropertyChanged(object? s, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(VpnViewModel.VpnState)) {
+                if (utils.Utils.IsPackaged())
+                {
+                   switch(vm.VpnState)
+                    {
+                        case CleverVpnState.Up:
+                            BadgeNotificationManager.Current.SetBadgeAsGlyph(BadgeNotificationGlyph.Available);
+                            break;
+                        case CleverVpnState.Down:
+                            BadgeNotificationManager.Current.SetBadgeAsGlyph(BadgeNotificationGlyph.None);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    switch(vm.VpnState)
+                    {
+                        case CleverVpnState.Up:
+                            this.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/appIcon-with-check.ico"));
+                            break;
+                        case CleverVpnState.Down:
+                            this.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/appIcon.ico"));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (vm.VpnState == CleverVpnState.Up)
+                {
+                    this.Title = "Clever VPN - Connected";
+                }
+                else if (vm.VpnState == CleverVpnState.Down)
+                {
+                    this.Title = "Clever VPN - Disconnected";
+                }
+            }
+        }
 
-        //    MainFrame.BackStack.Clear();
-        //}
 
         public bool Navigate(Type pageType, object? parameter)
         {

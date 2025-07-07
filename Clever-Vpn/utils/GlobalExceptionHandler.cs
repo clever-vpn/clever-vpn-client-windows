@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,14 +44,14 @@ namespace Clever_Vpn.utils
         {
             Directory.CreateDirectory(Path.GetDirectoryName(CrashLogPath)!);
             File.AppendAllText(CrashLogPath,
-                $"[{DateTime.Now}] [{source}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
+                $"[{DateTime.Now}] [{source}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}\n");
         }
 
         public static void DebugLog(string msg)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(CrashLogPath)!);
             File.AppendAllText(CrashLogPath,
-                $"[{DateTime.Now}] [Debug] {msg}");
+                $"[{DateTime.Now}] [Debug] {msg}\n");
         }
     }
 }

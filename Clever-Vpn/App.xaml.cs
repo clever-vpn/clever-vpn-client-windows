@@ -1,6 +1,12 @@
-﻿using Clever_Vpn.utils;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Data;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -10,6 +16,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
 using Microsoft.Windows.AppLifecycle;
+using Microsoft.Windows.BadgeNotifications;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,7 +44,9 @@ namespace Clever_Vpn
     /// </summary>
     public partial class App : Application
     {
-        private static AppInstance _mainInstance;
+        //private static AppInstance _mainInstance;
+        public static bool HandleClosedEvents { get; set; } = true;
+
 
         public VpnViewModel ViewModel { get; } = new();
         public services.AppSettings AppSettings { get; set; } = new();
@@ -50,11 +59,21 @@ namespace Clever_Vpn
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
-        {
-
-            InitializeComponent();
+        {            
             GlobalExceptionHandler.Initialize();
-
+            if (!Utils.IsPackaged())
+            {
+                try
+                {
+                    NativeMethods.SetCurrentProcessExplicitAppUserModelID("net.clever-vpn.window-app");
+                }
+                catch (Exception ex)
+                {
+                    GlobalExceptionHandler.DebugLog("Failed to set AppUserModelID: " + ex.Message);
+                }
+            }
+            InitializeComponent();
+            GlobalExceptionHandler.DebugLog("Clever-Vpn started!");
         }
 
 
@@ -66,10 +85,10 @@ namespace Clever_Vpn
         {
 #if UNPACKAGED
             // —— 如果是“非打包(Unpackaged)”项目，要主动给进程设置一个 AUMID，供 AppInstance 使用
-            AppInstance.SetAppUserModelId("net.clever-vpn.windows.app"); 
+            AppInstance.SetAppUserModelId("net.clever-vpn.windows.app");
 #endif
 
-            _mainInstance = AppInstance.FindOrRegisterForKey("MySingleInstanceKey");
+            var _mainInstance = AppInstance.FindOrRegisterForKey("MySingleInstanceKey");
             _mainInstance.Activated += async (sender, e) =>
             {
                 // 1. 找到主窗口实体
@@ -90,8 +109,6 @@ namespace Clever_Vpn
                     });
                 }
             };
-
-
             // 如果不是“主实例”，就把启动事件重定向给已有实例，然后自己退出
             if (!_mainInstance.IsCurrent)
             {
@@ -103,11 +120,92 @@ namespace Clever_Vpn
 
             AppSettings = await services.SettingsService.LoadAsync();
             _window = new MainWindow();
-            _window.Activate();
-            await ViewModel.Init();
+            ViewModel.PropertyChanged += vm_PropertyChanged;
+
+            _window.Closed += (s, e) =>
+            {
+                if (HandleClosedEvents)
+                {
+                    e.Handled = true; // 如果处理关闭事件，就设置为已处理
+                    MainWindow.Hide();
+                }
+            };
+
+            //_window.AppWindow.Closing += OnAppWindowClosing;
+
+            if (AutoStartHelper.IsAutoStartup())
+            {
+                await ViewModel.Init();
+                _window.Hide();
+            }
+            else
+            {
+                _window.Activate();
+                await ViewModel.Init();
+            }
+
+            if (AppSettings.VpnIsOn)
+            {
+                await ViewModel.ToggleVpn(true);
+            }
+
         }
 
-       private  void DoWindowActivationBehavior()
+        private void vm_PropertyChanged(object? s, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(VpnViewModel.VpnState))
+            {
+                if (utils.Utils.IsPackaged())
+                {
+                    switch (ViewModel.VpnState)
+                    {
+                        case CleverVpnState.Up:
+                            BadgeNotificationManager.Current.SetBadgeAsGlyph(BadgeNotificationGlyph.Available);
+                            break;
+                        case CleverVpnState.Down:
+                            BadgeNotificationManager.Current.SetBadgeAsGlyph(BadgeNotificationGlyph.None);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (ViewModel.VpnState)
+                    {
+                        case CleverVpnState.Up:
+                            MainWindow.SetIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets/appIcon-with-check.ico"));
+                            break;
+                        case CleverVpnState.Down:
+                            MainWindow.SetIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets/appIcon.ico"));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (ViewModel.VpnState == CleverVpnState.Up)
+                {
+                    MainWindow.Title = "Clever VPN - Connected";
+                }
+                else if (ViewModel.VpnState == CleverVpnState.Down)
+                {
+                    MainWindow.Title = "Clever VPN - Disconnected";
+                }
+            }
+        }
+
+        public async Task DisposeEx()
+        {
+            ViewModel.PropertyChanged -= vm_PropertyChanged;
+            var settings = new services.AppSettings();
+            settings.PolicyAccepted = AppSettings.PolicyAccepted;
+            settings.VpnIsOn = AppSettings.VpnIsOn;
+
+            await ViewModel.ToggleVpn(false);
+            await services.SettingsService.SaveAsync(settings);
+        }
+
+        private void DoWindowActivationBehavior()
         {
             try
             {
@@ -120,49 +218,6 @@ namespace Clever_Vpn
                 GlobalExceptionHandler.DebugLog("Error in window activation behavior: " + ex);
             }
         }
-
-
-        //        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        //        {
-        //#if UNPACKAGED
-        //            // —— 如果是“非打包(Unpackaged)”项目，要主动给进程设置一个 AUMID，供 AppInstance 使用
-        //            AppInstance.SetAppUserModelId("com.mycompany.myapp"); 
-        //#endif
-        //            // —— 下面这一行在 Packaged／Unpackaged 都要执行，拿到当前“实例”对象
-        //            _mainInstance = AppInstance.FindOrRegisterForKey("MySingleInstanceKey");
-
-        //            // 如果不是“主实例”，就把启动事件重定向给已有实例，然后自己退出
-        //            if (!_mainInstance.IsCurrent)
-        //            {
-        //                _mainInstance.RedirectActivationTo();
-        //                Environment.Exit(0);
-        //                return;
-        //            }
-
-        //            // 到这里说明“我是主实例”，就正常创建窗口
-        //            _window = new MainWindow();
-        //            _window.Activate();
-        //        }
-
-        //private async Task<bool> IsFirstAppInstance()
-        //{
-        //    var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("main");
-
-        //    // If the instance that's executing the OnLaunched handler right now
-        //    // isn't the "main" instance.
-        //    if (!mainInstance.IsCurrent)
-        //    {
-        //        // Redirect the activation (and args) to the "main" instance, and exit.
-        //        var activatedEventArgs =
-        //            Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().GetActivatedEventArgs();
-        //        await mainInstance.RedirectActivationToAsync(activatedEventArgs);
-        //        System.Diagnostics.Process.GetCurrentProcess().Kill();
-        //        return false;
-        //    }
-
-        //    return true;
-
-        //}
 
 
     }

@@ -10,7 +10,8 @@
     xmlns:triggers="using:CommunityToolkit.WinUI"
     xmlns:utils="using:Clever_Vpn.utils"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:behaviors="using:Clever_Vpn.behaviors"
+    xmlns:behaviors="using:Clever_Vpn.behaviors" 
+    xmlns:components="using:Clever_Vpn.components"
     mc:Ignorable="d"
     Title="Clever-Vpn">
 
@@ -29,6 +30,7 @@
             Severity="Warning"
             Title="Warning"
             Message="{x:Bind vm.LastError.FormattedMessage, Mode=OneWay}" />
+         <components:TrayIconView  x:Name="TrayIconView" />
     </Grid>
 
 </winuiEx:WindowEx>

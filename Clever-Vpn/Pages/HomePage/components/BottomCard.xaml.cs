@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,25 +32,6 @@ public sealed partial class BottomCard : UserControl
     {
         InitializeComponent();
     }
-
-    private Visibility ShowLogo(CleverVpnState s)
-    {
-               return s switch
-        {
-            CleverVpnState.Down or CleverVpnState.Connecting  => Visibility.Visible,
-            _ => Visibility.Collapsed,
-        };
-    }
-
-    private Visibility ShowTrafficCard(CleverVpnState s)
-    {
-        return s switch
-        {
-            CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => Visibility.Visible,
-            _ => Visibility.Collapsed,
-        };
-    }
-
 
     private bool LoadLogo(CleverVpnState s)
     {

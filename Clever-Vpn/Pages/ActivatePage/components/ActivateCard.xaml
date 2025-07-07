@@ -13,7 +13,7 @@
 
     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
         <TextBox x:Name="ActivationCodeBox"
-                 Header="Enter your key:"
+                 x:Uid="InputKeyBox"
                  PlaceholderText="Example: 1111-1111-1111-1111"
                  Text="{x:Bind Vm.ActivationKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  InputScope="AlphanumericFullWidth"
@@ -28,8 +28,7 @@
             </Grid.ColumnDefinitions>
             
             <Button     Grid.Column="0"  HorizontalAlignment="Left"  Background="Transparent"
-        BorderBrush="Transparent" Foreground="CornflowerBlue"  FontSize="10" Margin="-10,0,0,0">
-                    Agree to associate device data to your account
+        BorderBrush="Transparent" Foreground="CornflowerBlue"  FontSize="10" Margin="-10,0,0,0" x:Uid="PolicyButton">
                 <Button.Flyout>
                     <Flyout>
                         <TextBlock Width="300" Text="{x:Bind policyText}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" Margin="0,0,0,0" /> 
@@ -48,7 +47,7 @@
                Command="{x:Bind Vm.ActivateCommand}"
                Visibility="{x:Bind utils:Converters.NotEqualToDisplay(Vm.ActivateState, vm:ActivationState.Activating), Mode=OneWay}"
                Style="{StaticResource AccentButtonStyle}"
-               Content="Activate"
+               x:Uid="Activate"
                HorizontalAlignment="Stretch"
                Margin="0,50,0,0"
                IsEnabled="{x:Bind utils:Converters.ConvertNullBoolToBool(PolicyCheckBox.IsChecked), Mode=OneWay}"

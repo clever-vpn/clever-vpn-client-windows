@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;

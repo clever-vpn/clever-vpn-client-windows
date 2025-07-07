@@ -1,4 +1,7 @@
-﻿using Clever_Vpn.utils;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
 using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
@@ -52,7 +55,7 @@ public sealed partial class HomeCardLocationSelector : UserControl
     private string GetLocationName(UserInfo? userInfo)
     {
        var locationId = userInfo?.LocationId;
-        var name = "Auto Selected";
+        var name = GetI18nFromKey("AutoSelected");
         if (locationId != null)
         {
             name = Vm.Locations.Find(x => x.Id == locationId)?.Label ?? name;
@@ -68,7 +71,6 @@ public sealed partial class HomeCardLocationSelector : UserControl
     }
     private async void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        // 假设你的 ItemsSource 是 List<AddressRecord> 或 ObservableCollection<AddressRecord>
         var location = (Location)e.ClickedItem;
         int? id = (location.Id == -1) ? null : location.Id;
         await Vm.UpdateLocation(id);
@@ -90,8 +92,15 @@ public sealed partial class HomeCardLocationSelector : UserControl
     private void UpdateUILocations()
     {
 
-       List<Location> newList = (new[] { new Location(-1, "", "Auto Selected") }).Concat(Vm.Locations).ToList();
+        List<Location> newList = (new[] { new Location(-1, "", GetI18nFromKey("AutoSelected")) }).Concat(Vm.Locations).ToList();
         AddressListView.ItemsSource = newList;
+    }
+
+    private string GetI18nFromKey(string key)
+    {
+        var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
+        return  resourceLoader.GetString(key);
+        
     }
 
     private void OnCancelClick(object sender, RoutedEventArgs e)

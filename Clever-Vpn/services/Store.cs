@@ -1,4 +1,7 @@
-﻿using Clever_Vpn.services;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Clever_Vpn.services;
 using System;
 using System.IO;
 using System.Net.Http.Json;
@@ -39,9 +42,6 @@ public class Store
             using var stream = File.Create(filePath);
             await JsonSerializer.SerializeAsync(stream, data, info);
 
-            //var json = JsonSerializer.Serialize(data, info);
-            //Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-            //await File.WriteAllTextAsync(filePath, json);
         }
 
     }
@@ -60,10 +60,5 @@ public class Store
         {
             return default;
         }
-      
-
-        //if (!File.Exists(_filePath)) return default;
-        //string json = await File.ReadAllTextAsync(_filePath);
-        //return JsonSerializer.Deserialize(json, MyJsonContext.Default.GetTypeInfo<T>());
     }
 }

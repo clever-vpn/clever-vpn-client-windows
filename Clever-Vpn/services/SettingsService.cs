@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,12 +21,13 @@ public class AppSettings : IFileStorable
     public static string FileName => config.AppConfig.SettingsFileName;
 
     /// <summary>
-    /// 是否接受隐私政策
+    /// Accepted the privacy policy or not.
     /// </summary>
     [JsonPropertyName("policy_accepted")]
     public bool PolicyAccepted { get; set; } = false;
+    [JsonPropertyName("vpn_is_on")]
+    public bool VpnIsOn { get; set; } = false;
 }
-
 
 
 public static class SettingsService
@@ -31,7 +35,7 @@ public static class SettingsService
     private static AppSettings? _cache;
 
     /// <summary>
-    /// 异步加载或创建默认设置
+    /// Loads the application settings from the storage.
     /// </summary>
     public static async Task<AppSettings> LoadAsync()
     {
@@ -56,7 +60,7 @@ public static class SettingsService
     }
 
     /// <summary>
-    /// 异步保存当前设置
+    /// Saves the current settings to the storage.
     /// </summary>
     public static async Task SaveAsync(AppSettings? settings = null)
     {
@@ -70,103 +74,3 @@ public static class SettingsService
     }
 
 }
-
-
-//public static class SettingsService
-//{
-//    private static readonly string _folder =
-//        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-//                     config.AppConfig.AppName);
-
-//    //private static readonly string _folder =
-//    //Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path,
-//    //             config.AppConfig.AppName);
-
-//    private static readonly string _filePath = Path.Combine(_folder, config.AppConfig.SettingsFileName);
-
-//    private static AppSettings? _cache;
-
-//    /// <summary>
-//    /// 异步加载或创建默认设置
-//    /// </summary>
-//    public static async Task<AppSettings> LoadAsync()
-//    {
-//        if (_cache != null)
-//            return _cache;
-
-//        try
-//        {
-//            if (!Directory.Exists(_folder))
-//                Directory.CreateDirectory(_folder);
-
-//            if (File.Exists(_filePath))
-//            {
-//                using var stream = File.OpenRead(_filePath);
-//                _cache = await JsonSerializer.DeserializeAsync<AppSettings>(stream, JsonContext.Default.AppSettings)
-//                         ?? new AppSettings();
-//                //_cache = 
-
-//            }
-//            else
-//            {
-//                _cache = new AppSettings();
-//                await SaveAsync(_cache);
-//            }
-//        }
-//        catch
-//        {
-//            // 读取失败时返回默认
-//            _cache = new AppSettings();
-//        }
-
-//        return _cache;
-//    }
-
-//    /// <summary>
-//    /// 异步保存当前设置
-//    /// </summary>
-//    public static async Task SaveAsync(AppSettings? settings = null)
-//    {
-//        if (settings != null)
-//            _cache = settings;
-
-//        if (_cache == null)
-//            return;
-
-//        using var stream = File.Create(_filePath);
-//        await JsonSerializer.SerializeAsync(stream, _cache,  JsonContext.Default.AppSettings);
-//    }
-
-
-
-
-//    public static  string? Serialize<TValue>(
-//    this JsonSerializerContext ctx,
-//    TValue value)
-//    {
-
-//        var info = ctx.GetTypeInfo(typeof(TValue));
-
-//        if (info != null && value != null)
-//        {
-//            return JsonSerializer.Serialize(value, info);
-//        }
-//        else
-//        {
-//            return default;
-//        }
-//    }
-
-
-//    public static TValue? Deserialize<TValue>(this JsonSerializerContext ctx, string json)
-//    {
-//        var info = ctx.GetTypeInfo(typeof(TValue));
-//        if (info != null)
-//        {
-//            return (TValue?)JsonSerializer.Deserialize(json, info);
-//        } else
-//        {
-//            return default;
-//        }
-//    }
-//}

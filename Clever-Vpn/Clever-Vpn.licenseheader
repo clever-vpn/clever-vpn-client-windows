@@ -1,0 +1,19 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+extensions: .aspx .ascx
+<%-- 
+// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+--%>
+extensions: .vb
+'Sample license text.
+extensions:  .xml .config .xsd .xaml
+<!--
+// Copyright (c) CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+-->

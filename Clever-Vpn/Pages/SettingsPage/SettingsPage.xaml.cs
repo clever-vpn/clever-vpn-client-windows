@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
 using Clever_Vpn_Windows_Kit.Data;
@@ -14,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -32,6 +36,20 @@ namespace Clever_Vpn.Pages.SettingsPage
         public SettingsPage()
         {
             InitializeComponent();
+            Loaded += OnSettingsPageLoaded;
+        }
+
+        private async void OnSettingsPageLoaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= OnSettingsPageLoaded;
+            if (Utils.IsPackaged())
+            {
+                StartupToggle.IsOn = await AutoStartHelper.IsAutoStartEnabledPackaged();
+            }
+            else
+            {
+                StartupToggle.IsOn = AutoStartHelper.IsAutoStartEnabledUnPackaged();
+            }
         }
 
         void OnBackClick(object sender, RoutedEventArgs e)
@@ -39,17 +57,23 @@ namespace Clever_Vpn.Pages.SettingsPage
             ((App)Application.Current).MainWindow.GoBack();
         }
 
-        Vector3 BorderSetter()
-        {
-            return new Vector3(0, 0, 16);
-        }
+         async void OnAutoStartupToggle(object sender, RoutedEventArgs e) {
+            bool enable = StartupToggle.IsOn;
+            if (Utils.IsPackaged())
+            {
+               await AutoStartHelper.SetAutoStartPackaged(enable);
+            }else
+            {
+                AutoStartHelper.SetAutoStartUnpackaged(enable);
+            }
+
+        }       
+        
         void OnLogPage(object sender, RoutedEventArgs e)
         {
             ((App)Application.Current).MainWindow.Navigate(typeof(LogPage.LogPage), null);
         }
-        void OnLogOff(object sender, RoutedEventArgs e) {
-            Vm.ActivateState = ActivationState.DeActivated;
-            }
+
 
         void OnProtocolSettingLoaded(object sender, RoutedEventArgs e)
         {
@@ -67,6 +91,7 @@ namespace Clever_Vpn.Pages.SettingsPage
             await Vm.UpdateProtocolType(type);
             //OnProtocolSettingLoaded(sender, e);
         }
+
 
         public static string TipOfProtocolType(ProtocolType type)
         {
@@ -98,7 +123,7 @@ namespace Clever_Vpn.Pages.SettingsPage
                 .Where(s => s.Trim().Length > 0));
         }
 
-        string GetVersion { get; } = utils.AppVersionHelper.GetAppVersion();
+        string GetVersion { get; } = Utils.GetAppVersion();
 
     }
 }

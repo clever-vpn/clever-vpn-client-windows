@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) 2025 CleverVPN Team
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+//
+using Clever_Vpn.utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,6 +20,7 @@ public static class Program
     [global::System.STAThreadAttribute]
     static async Task Main(string[] args)
     {
+        GlobalExceptionHandler.DebugLog("Clever-Vpn main() started!");
 
         if (await Clever_Vpn_Windows_Kit.Service.Run()) return;
 
@@ -24,6 +29,9 @@ public static class Program
         {
             var context = new global::Microsoft.UI.Dispatching.DispatcherQueueSynchronizationContext(global::Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
             global::System.Threading.SynchronizationContext.SetSynchronizationContext(context);
+
+            GlobalExceptionHandler.DebugLog("Clever-Vpn creat App started!");
+
             new App();
         });
     }

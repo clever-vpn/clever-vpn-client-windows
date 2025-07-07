@@ -50,7 +50,7 @@
 
                                 <TextBlock                            
                                 Grid.Column="1"
-                                Text="{Binding Label}" />
+                                Text="{x:Bind Label}" />
 
                                 <!-- Check icon if selected -->
                                 <FontIcon 
