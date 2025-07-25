@@ -1,0 +1,30 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Package Id="CleverVPNTeam.MsiInstaller"
+			 Name="Clever VPN"
+			 Manufacturer="Clever VPN Team"
+			 Version="1.3.0.0">
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+		<Icon Id="MyIcon" SourceFile="..\Clever-Vpn\Assets\appIcon.ico" />
+		<Property Id="ARPPRODUCTICON" Value="MyIcon" />
+		<Media Id='1' EmbedCab='yes' Cabinet='main.cab' CompressionLevel='high' />
+
+
+		<Feature Id="Main">
+			<ComponentGroupRef Id="CleverVpnComponents" />
+		</Feature>
+		
+		
+		<CustomAction
+			Id="LaunchApp"
+			FileRef="CleverVpnExe"
+			ExeCommand=""
+			Execute="deferred"
+			Impersonate="yes"
+			Return="asyncNoWait" /> 
+		
+		<InstallExecuteSequence>
+			<Custom Action="LaunchApp" Before="InstallFinalize" Condition="NOT Installed"/>
+		</InstallExecuteSequence>
+		
+	</Package>
+</Wix>

@@ -1,0 +1,58 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Fragment>
+		<ComponentGroup Id="CleverVpnComponents" Directory="INSTALLFOLDER">
+			<Files Include="!(bindpath.ToBeHarvested)\**" Directory="INSTALLFOLDER" >
+				<Exclude Files="!(bindpath.ToBeHarvested)\Clever-Vpn.exe"></Exclude>
+			</Files>
+			<File Id="CleverVpnExe"  Source="!(bindpath.ToBeHarvested)\Clever-Vpn.exe" Directory="INSTALLFOLDER"></File>
+
+			<Component Id="SetupCleverVpn">
+				<ServiceControl
+				  Id="ScRemoveBefore"
+				  Name="$(var.VpnBrokerService)"
+				  Stop="both"
+				  Remove="both"
+				  Wait="yes" />
+
+				<ServiceControl
+				  Id="ScRemoveBefore1"
+				  Name="$(var.VpnTunnelService)"
+				  Stop="both"
+				  Remove="both"
+				  Wait="yes" />
+
+				<!-- Start Menu Shortcut -->
+				<Shortcut
+				  Id="MyAppStartMenuShortcut"
+				  Directory="ProgramMenuFolder"
+				  Name="Clever VPN"
+				  Advertise="no"
+				  Icon="MyIcon"
+				  IconIndex="0"
+				  Description="Launch Clever VPN"
+				  Target="[INSTALLFOLDER]Clever-Vpn.exe"
+				  WorkingDirectory="INSTALLFOLDER" />
+
+				<!-- Desktop Menu Shortcut -->
+				<Shortcut
+				  Id="MyAppDesktopShortcut"
+				  Directory="DesktopFolder"
+				  Name="Clever VPN"
+				  Advertise="no"
+				  Icon="MyIcon"
+				  IconIndex="0"
+				  Description="Launch Clever VPN"
+				  Target="[INSTALLFOLDER]Clever-Vpn.exe"
+				  WorkingDirectory="INSTALLFOLDER" />
+
+				<RegistryValue Root="HKCU"
+				   Key="Software\!(bind.Property.Manufacturer)\!(bind.Property.ProductName)"
+				   Name="installed"
+				   Type="integer"
+				   Value="1"
+				   KeyPath="yes" />
+
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

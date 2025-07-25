@@ -1,0 +1,2215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PriInfo>
+	<ResourceMap name="77bbaf7c-a80f-4537-a7d8-06387862c57a" version="1.0" primary="true">
+		<Qualifiers>
+			<AlternateForm>LIGHTUNPLATED,UNPLATED</AlternateForm>
+			<Language>EN-US,DE-DE,ES-ES,FR-FR,IT-IT,JA-JP,KO-KR,PT-BR,RU-RU,UK-UA,ZH-CN,ZH-TW</Language>
+			<Scale>200,400,150,125,100</Scale>
+			<TargetSize>256,16,24,32,48</TargetSize>
+		</Qualifiers>
+		<ResourceMapSubtree name="Files">
+			<NamedResource name="App.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/App.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="appsettings.Development.json" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/appsettings.Development.json">
+				<Candidate type="Path">
+					<Value>appsettings.Development.json</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="appsettings.json" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/appsettings.json">
+				<Candidate type="Path">
+					<Value>appsettings.json</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="MainWindow.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/MainWindow.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<ResourceMapSubtree name="Assets">
+				<NamedResource name="appIcon-with-check.ico" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/appIcon-with-check.ico">
+					<Candidate type="Path">
+						<Value>Assets\appIcon-with-check.ico</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="appIcon.ico" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/appIcon.ico">
+					<Candidate type="Path">
+						<Value>Assets\appIcon.ico</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="LargeTile.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/LargeTile.png">
+					<Candidate qualifiers="Scale-400" isDefault="true" type="Path">
+						<Value>Assets\LargeTile.scale-400.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\LargeTile.scale-200.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-150" isDefault="true" type="Path">
+						<Value>Assets\LargeTile.scale-150.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-125" isDefault="true" type="Path">
+						<Value>Assets\LargeTile.scale-125.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\LargeTile.scale-100.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="LockScreenLogo.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/LockScreenLogo.png">
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\LockScreenLogo.scale-200.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="MirrorPCConsent.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/MirrorPCConsent.svg">
+					<Candidate type="Path">
+						<Value>Assets\MirrorPCConsent.svg</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="SmallTile.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/SmallTile.png">
+					<Candidate qualifiers="Scale-400" isDefault="true" type="Path">
+						<Value>Assets\SmallTile.scale-400.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\SmallTile.scale-200.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-150" isDefault="true" type="Path">
+						<Value>Assets\SmallTile.scale-150.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-125" isDefault="true" type="Path">
+						<Value>Assets\SmallTile.scale-125.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\SmallTile.scale-100.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="SplashScreen.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/SplashScreen.png">
+					<Candidate qualifiers="Scale-400" isDefault="true" type="Path">
+						<Value>Assets\SplashScreen.scale-400.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\SplashScreen.scale-200.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-150" isDefault="true" type="Path">
+						<Value>Assets\SplashScreen.scale-150.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-125" isDefault="true" type="Path">
+						<Value>Assets\SplashScreen.scale-125.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\SplashScreen.scale-100.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="Square150x150Logo.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Square150x150Logo.png">
+					<Candidate qualifiers="Scale-400" isDefault="true" type="Path">
+						<Value>Assets\Square150x150Logo.scale-400.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\Square150x150Logo.scale-200.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-150" isDefault="true" type="Path">
+						<Value>Assets\Square150x150Logo.scale-150.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-125" isDefault="true" type="Path">
+						<Value>Assets\Square150x150Logo.scale-125.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\Square150x150Logo.scale-100.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="Square44x44Logo.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Square44x44Logo.png">
+					<Candidate qualifiers="TargetSize-48, AlternateForm-UNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-unplated_targetsize-48.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-48, AlternateForm-LIGHTUNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-48" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.targetsize-48.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-32, AlternateForm-UNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-unplated_targetsize-32.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-32, AlternateForm-LIGHTUNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-32" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.targetsize-32.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-256, AlternateForm-UNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-unplated_targetsize-256.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-256, AlternateForm-LIGHTUNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-256" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.targetsize-256.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-24, AlternateForm-UNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-24, AlternateForm-LIGHTUNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-24" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.targetsize-24.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-16, AlternateForm-UNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-unplated_targetsize-16.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-16, AlternateForm-LIGHTUNPLATED" type="Path">
+						<Value>Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png</Value>
+					</Candidate>
+					<Candidate qualifiers="TargetSize-16" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.targetsize-16.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-400" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.scale-400.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.scale-200.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-150" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.scale-150.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-125" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.scale-125.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\Square44x44Logo.scale-100.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="StoreLogo.backup.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/StoreLogo.backup.png">
+					<Candidate type="Path">
+						<Value>Assets\StoreLogo.backup.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="StoreLogo.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/StoreLogo.png">
+					<Candidate qualifiers="Scale-400" isDefault="true" type="Path">
+						<Value>Assets\StoreLogo.scale-400.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\StoreLogo.scale-200.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-150" isDefault="true" type="Path">
+						<Value>Assets\StoreLogo.scale-150.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-125" isDefault="true" type="Path">
+						<Value>Assets\StoreLogo.scale-125.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\StoreLogo.scale-100.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="Wide310x150Logo.png" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Wide310x150Logo.png">
+					<Candidate qualifiers="Scale-400" isDefault="true" type="Path">
+						<Value>Assets\Wide310x150Logo.scale-400.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-200" isDefault="true" type="Path">
+						<Value>Assets\Wide310x150Logo.scale-200.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-150" isDefault="true" type="Path">
+						<Value>Assets\Wide310x150Logo.scale-150.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-125" isDefault="true" type="Path">
+						<Value>Assets\Wide310x150Logo.scale-125.png</Value>
+					</Candidate>
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\Wide310x150Logo.scale-100.png</Value>
+					</Candidate>
+				</NamedResource>
+				<ResourceMapSubtree name="Flags">
+					<NamedResource name="ad.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ad.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ad.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ae.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ae.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ae.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="af.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/af.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\af.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ag.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ag.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ag.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ai.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ai.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ai.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="al.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/al.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\al.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="am.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/am.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\am.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ao.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ao.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ao.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="aq.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/aq.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\aq.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ar.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ar.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ar.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="as.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/as.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\as.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="at.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/at.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\at.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="au.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/au.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\au.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="aw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/aw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\aw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ax.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ax.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ax.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="az.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/az.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\az.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ba.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ba.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ba.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bb.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bb.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bb.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bd.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bd.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bd.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="be.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/be.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\be.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bh.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bh.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bh.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bi.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bi.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bi.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bj.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bj.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bj.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bl.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bl.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bl.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bo.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bo.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bo.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bq.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bq.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bq.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="br.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/br.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\br.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bs.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bs.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bs.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bt.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bt.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bt.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bv.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bv.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bv.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="by.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/by.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\by.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="bz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/bz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\bz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ca.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ca.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ca.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cc.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cc.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cc.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cd.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cd.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cd.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ch.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ch.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ch.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ci.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ci.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ci.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ck.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ck.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ck.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cl.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cl.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cl.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="co.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/co.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\co.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cv.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cv.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cv.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cx.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cx.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cx.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cy.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cy.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cy.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="cz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/cz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\cz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="de.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/de.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\de.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="dj.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/dj.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\dj.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="dk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/dk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\dk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="dm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/dm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\dm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="do.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/do.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\do.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="dz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/dz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\dz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ec.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ec.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ec.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ee.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ee.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ee.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="eg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/eg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\eg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="eh.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/eh.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\eh.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="er.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/er.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\er.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="es.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/es.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\es.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="et.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/et.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\et.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="eu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/eu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\eu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="fi.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/fi.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\fi.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="fj.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/fj.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\fj.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="fk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/fk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\fk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="fm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/fm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\fm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="fo.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/fo.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\fo.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="fr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/fr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\fr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ga.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ga.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ga.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gb-eng.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gb-eng.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gb-eng.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gb-nir.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gb-nir.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gb-nir.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gb-sct.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gb-sct.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gb-sct.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gb-wls.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gb-wls.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gb-wls.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gb.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gb.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gb.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gd.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gd.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gd.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ge.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ge.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ge.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gh.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gh.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gh.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gi.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gi.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gi.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gl.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gl.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gl.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="global.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/global.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\global.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gp.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gp.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gp.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gq.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gq.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gq.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gs.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gs.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gs.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gt.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gt.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gt.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="gy.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/gy.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\gy.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="hk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/hk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\hk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="hm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/hm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\hm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="hn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/hn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\hn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="hr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/hr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\hr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ht.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ht.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ht.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="hu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/hu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\hu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="id.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/id.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\id.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ie.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ie.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ie.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="il.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/il.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\il.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="im.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/im.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\im.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="in.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/in.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\in.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="io.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/io.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\io.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="iq.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/iq.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\iq.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ir.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ir.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ir.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="is.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/is.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\is.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="it.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/it.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\it.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="je.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/je.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\je.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="jm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/jm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\jm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="jo.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/jo.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\jo.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="jp.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/jp.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\jp.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ke.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ke.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ke.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="kg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/kg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\kg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="kh.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/kh.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\kh.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ki.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ki.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ki.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="km.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/km.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\km.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="kn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/kn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\kn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="kp.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/kp.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\kp.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="kr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/kr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\kr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="kw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/kw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\kw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ky.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ky.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ky.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="kz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/kz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\kz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="la.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/la.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\la.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="lb.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/lb.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\lb.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="lc.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/lc.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\lc.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="li.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/li.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\li.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="lk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/lk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\lk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="lr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/lr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\lr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ls.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ls.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ls.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="lt.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/lt.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\lt.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="lu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/lu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\lu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="lv.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/lv.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\lv.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ly.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ly.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ly.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ma.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ma.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ma.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mc.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mc.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mc.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="md.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/md.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\md.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="me.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/me.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\me.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mh.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mh.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mh.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ml.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ml.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ml.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mo.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mo.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mo.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mp.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mp.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mp.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mq.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mq.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mq.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ms.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ms.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ms.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mt.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mt.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mt.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mv.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mv.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mv.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mx.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mx.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mx.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="my.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/my.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\my.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="mz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/mz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\mz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="na.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/na.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\na.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="nc.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/nc.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\nc.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ne.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ne.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ne.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="nf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/nf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\nf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ng.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ng.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ng.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ni.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ni.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ni.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="nl.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/nl.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\nl.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="no.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/no.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\no.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="np.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/np.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\np.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="nr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/nr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\nr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="nu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/nu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\nu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="nz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/nz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\nz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="om.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/om.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\om.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pa.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pa.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pa.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pe.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pe.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pe.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ph.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ph.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ph.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pl.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pl.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pl.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ps.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ps.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ps.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pt.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pt.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pt.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="pw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/pw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\pw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="py.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/py.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\py.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="qa.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/qa.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\qa.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="re.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/re.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\re.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ro.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ro.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ro.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="rs.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/rs.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\rs.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ru.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ru.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ru.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="rw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/rw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\rw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sa.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sa.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sa.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sb.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sb.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sb.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sc.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sc.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sc.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sd.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sd.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sd.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="se.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/se.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\se.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sh.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sh.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sh.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="si.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/si.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\si.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sj.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sj.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sj.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sl.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sl.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sl.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="so.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/so.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\so.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ss.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ss.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ss.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="st.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/st.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\st.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sv.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sv.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sv.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sx.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sx.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sx.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sy.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sy.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sy.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="sz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/sz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\sz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tc.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tc.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tc.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="td.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/td.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\td.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="th.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/th.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\th.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tj.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tj.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tj.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tl.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tl.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tl.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="to.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/to.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\to.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tr.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tr.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tr.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tt.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tt.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tt.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tv.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tv.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tv.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tw.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="tz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/tz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\tz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ua.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ua.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ua.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ug.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ug.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ug.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="um.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/um.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\um.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="us.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/us.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\us.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="uy.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/uy.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\uy.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="uz.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/uz.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\uz.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="va.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/va.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\va.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="vc.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/vc.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\vc.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ve.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ve.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ve.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="vg.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/vg.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\vg.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="vi.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/vi.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\vi.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="vn.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/vn.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\vn.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="vu.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/vu.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\vu.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="wf.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/wf.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\wf.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ws.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ws.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ws.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="xk.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/xk.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\xk.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="ye.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/ye.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\ye.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="yt.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/yt.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\yt.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="za.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/za.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\za.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="zm.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/zm.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\zm.svg</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="zw.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/Flags/zw.svg">
+						<Candidate type="Path">
+							<Value>Assets\Flags\zw.svg</Value>
+						</Candidate>
+					</NamedResource>
+				</ResourceMapSubtree>
+				<ResourceMapSubtree name="icon">
+					<NamedResource name="logo.svg" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Assets/icon/logo.svg">
+						<Candidate type="Path">
+							<Value>Assets\icon\logo.svg</Value>
+						</Candidate>
+					</NamedResource>
+				</ResourceMapSubtree>
+			</ResourceMapSubtree>
+			<ResourceMapSubtree name="components">
+				<NamedResource name="Divider.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/Divider.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="ErrorBar.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/ErrorBar.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="Layout.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/Layout.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="Logo.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/Logo.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="OffIcon.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/OffIcon.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="OnIcon.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/OnIcon.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="TopBar.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/TopBar.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="TrayIconView.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/components/TrayIconView.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+			</ResourceMapSubtree>
+			<ResourceMapSubtree name="Pages">
+				<ResourceMapSubtree name="ActivatePage">
+					<NamedResource name="ActivatePage.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/ActivatePage/ActivatePage.xbf">
+						<Candidate type="EmbeddedData">
+							<Base64Value>[Embedded Binary Data]</Base64Value>
+						</Candidate>
+					</NamedResource>
+					<ResourceMapSubtree name="components">
+						<NamedResource name="ActivateCard.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/ActivatePage/components/ActivateCard.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+						<NamedResource name="ActivateHeader.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/ActivatePage/components/ActivateHeader.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+					</ResourceMapSubtree>
+				</ResourceMapSubtree>
+				<ResourceMapSubtree name="HomePage">
+					<NamedResource name="HomePage.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/HomePage/HomePage.xbf">
+						<Candidate type="EmbeddedData">
+							<Base64Value>[Embedded Binary Data]</Base64Value>
+						</Candidate>
+					</NamedResource>
+					<ResourceMapSubtree name="components">
+						<NamedResource name="BottomCard.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/HomePage/components/BottomCard.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+						<NamedResource name="HomeCard.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/HomePage/components/HomeCard.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+						<NamedResource name="HomeCardDivider.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/HomePage/components/HomeCardDivider.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+						<NamedResource name="HomeCardIcon.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/HomePage/components/HomeCardIcon.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+						<NamedResource name="HomeCardLocationSelector.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/HomePage/components/HomeCardLocationSelector.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+						<NamedResource name="TrafficCard.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/HomePage/components/TrafficCard.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+					</ResourceMapSubtree>
+				</ResourceMapSubtree>
+				<ResourceMapSubtree name="LogPage">
+					<NamedResource name="LogPage.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/LogPage/LogPage.xbf">
+						<Candidate type="EmbeddedData">
+							<Base64Value>[Embedded Binary Data]</Base64Value>
+						</Candidate>
+					</NamedResource>
+				</ResourceMapSubtree>
+				<ResourceMapSubtree name="SettingsPage">
+					<NamedResource name="SettingsPage.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/SettingsPage/SettingsPage.xbf">
+						<Candidate type="EmbeddedData">
+							<Base64Value>[Embedded Binary Data]</Base64Value>
+						</Candidate>
+					</NamedResource>
+					<ResourceMapSubtree name="componets">
+						<NamedResource name="SelectedIcon.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/SettingsPage/componets/SelectedIcon.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+						<NamedResource name="SettingPanel.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/Pages/SettingsPage/componets/SettingPanel.xbf">
+							<Candidate type="EmbeddedData">
+								<Base64Value>[Embedded Binary Data]</Base64Value>
+							</Candidate>
+						</NamedResource>
+					</ResourceMapSubtree>
+				</ResourceMapSubtree>
+			</ResourceMapSubtree>
+			<ResourceMapSubtree name="WinUIEx">
+				<ResourceMapSubtree name="Themes">
+					<NamedResource name="Generic.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/WinUIEx/Themes/Generic.xbf">
+						<Candidate type="EmbeddedData">
+							<Base64Value>[Embedded Binary Data]</Base64Value>
+						</Candidate>
+					</NamedResource>
+				</ResourceMapSubtree>
+				<ResourceMapSubtree name="TitleBar">
+					<NamedResource name="TitleBar.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/WinUIEx/TitleBar/TitleBar.xbf">
+						<Candidate type="EmbeddedData">
+							<Base64Value>[Embedded Binary Data]</Base64Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="TitleBar_themeresources.xbf" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Files/WinUIEx/TitleBar/TitleBar_themeresources.xbf">
+						<Candidate type="EmbeddedData">
+							<Base64Value>[Embedded Binary Data]</Base64Value>
+						</Candidate>
+					</NamedResource>
+				</ResourceMapSubtree>
+			</ResourceMapSubtree>
+		</ResourceMapSubtree>
+		<ResourceMapSubtree name="Microsoft.Xaml.Interactivity">
+			<ResourceMapSubtree name="Strings">
+				<NamedResource name="CallMethodActionValidMethodNotFoundExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/CallMethodActionValidMethodNotFoundExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>在類型 {1} 的物件上找不到符合預期的簽章且名稱為 {0} 的方法。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>在 {1} 类型的对象上找不到符合正确签名的名为 {0} 的方法。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Неможливо знайти метод з ім'ям {0} в об'єкті типу {1}, який відповідав би очікуваному підпису.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Невозможно найти метод с именем {0} в объекте типа {1}, который соответствовал бы ожидаемой подписи.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Não é possível encontrar o método de nome {0} no objeto de tipo {1} que corresponda a assinatura esperada.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>{1} 형식의 개체에서 예상 시그니처와 일치하는 이름이 {0}인 메서드를 찾을 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>メソッド {0} が、期待される署名と一致する型 {1} のオブジェクトにありません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile trovare il metodo denominato {0} in un oggetto di tipo {1} corrispondente alla firma prevista.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Impossible de trouver la méthode nommée {0} sur l'objet de type {1} qui correspond à la signature attendue.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>No se puede encontrar el método denominado {0} en el objeto de tipo {1} que coincida con la signatura esperada.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Cannot find method named {0} on object of type {1} that matches the expected signature.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Keine Methode mit der Bezeichnung {0} im Objekt vom Typ {1} gefunden, die mit der erwarteten Signatur übereinstimmt.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="CannotAttachBehaviorMultipleTimesExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/CannotAttachBehaviorMultipleTimesExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>無法一次將行為執行個體附加到多個物件。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>行为的实例不能一次附加到多个对象。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Неможливо прикріпити екземпляр поведінки до декількох об'єктів одночасно.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Невозможно прикрепить экземпляр поведения к нескольким объектам одновременно.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Não é possível anexar uma instância de Behavior a mais de um objeto simultaneamente.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>동작의 인스턴스 하나를 한 번에 둘 이상의 개체에 연결할 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>ビヘイビアーのインスタンスは、1 度に複数のオブジェクトに追加することはできません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile associare l'istanza di un comportamento a più di un oggetto alla volta.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Une instance de Behavior ne peut pas être attachée à plus d'un objet à la fois.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>No se puede adjuntar una instancia de Behavior a más de un objeto simultáneamente.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>An instance of a behavior cannot be attached to more than one object at a time.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Eine Instanz eines Verhaltens kann nicht mehreren Objekten gleichzeitig angefügt werden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="CannotFindEventNameExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/CannotFindEventNameExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>在類型 {1} 上找不到名稱為 {0} 的事件。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>在类型 {1} 上找不到名为 {0} 的事件。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Неможливо знайти подію з ім'ям {0} в типі {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Невозможно найти событие с именем {0} в типе {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Não é possível encontrar um evento de nome {0} no tipo {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>이름이 {0}인 형식 {1}의 이벤트를 찾을 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>名前が {0} (型 {1}) のイベントが見つかりません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile trovare un evento denominato {0} nel tipo {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Impossible de trouver un événement nommé {0} sur le type {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>No se puede encontrar un evento con el nombre {0} en el tipo {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Cannot find an event named {0} on type {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Kein Ereignis mit der Bezeichnung {0} auf Typ {1} gefunden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="ChangePropertyActionCannotFindPropertyNameExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/ChangePropertyActionCannotFindPropertyNameExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>在類型 {1} 上找不到名稱為 {0} 的屬性。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>在类型 {1} 上找不到名为 {0} 的属性。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Неможливо знайти властивість з ім'ям {0} в типі {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Невозможно найти свойство с именем {0} в типе {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Não é possível encontrar uma propriedade de nome {0} no tipo {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>이름이 {0}인 형식 {1}의 속성을 찾을 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>名前が {0} (型 {1}) のプロパティが見つかりません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile trovare una proprietà denominata {0} nel tipo {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Impossible de trouver une propriété nommée {0} sur le type {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>No se puede encontrar una propiedad con el nombre {0} en el tipo {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Cannot find a property named {0} on type {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Keine Eigenschaft mit der Bezeichnung {0} auf Typ {1} gefunden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="ChangePropertyActionCannotSetValueExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/ChangePropertyActionCannotSetValueExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>無法將類型 {0} 的值指派給類型 {2} 的屬性 {1}。只有類型 {2} 的值能夠指派給 {1} 屬性。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>无法将 {0} 类型的值赋予 {2} 类型的属性 {1}。{1} 属性只可接受 {2} 类型的赋值。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Неможливо призначити значення типу {0} властивості {1} типу {2}. Властивості {1} можна призначити тільки значення типу {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Невозможно назначить значение типа {0} свойству {1} типа {2}. Свойству {1} можно назначить только значения типа {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Nao é possível atribuir um valor do tipo {0} à propriedade {1} de tipo {2}. A propriedade {1} pode receber somente valores do tipo {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>{0} 형식의 값을 {2} 형식의 속성 {1}에 할당할 수 없습니다. {1} 속성에는 {2} 형식의 값만 할당할 수 있습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>型 {0} の値をプロパティ {1} (型 {2}) に割り当てることができません。{1} プロパティは、型 {2} の値にのみ割り当てることができます。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile assegnare un valore di tipo {0} alla proprietà {1} di tipo {2}. Alla proprietà {1} possono essere assegnati solo valori di tipo {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Impossible d'attribuer une valeur de type {0} à la propriété {1} de type {2}. Seules des valeurs de type {2} peuvent être attribuées à la propriété {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>No se puede asignar un valor del tipo {0} a la propiedad {1} del tipo {2}. A la propiedad {1} solo se le pueden asignar valores del tipo {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Cannot assign value of type {0} to property {1} of type {2}. The {1} property can be assigned only values of type {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Kann keinen Wert vom Typ {0} zu einer Eigenschaft {1} vom Typ {2} zuweisen. Die Eigenschaft {1} kann nur Werten vom Typ {2} zugewiesen werden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="ChangePropertyActionPropertyIsReadOnlyExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/ChangePropertyActionPropertyIsReadOnlyExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>類型 {1} 所定義的屬性 {0} 未公開 set 方法，因此無法修改。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>类型 {1} 定义的属性 {0} 不 揭示 set 方法，因此不可修改。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Властивість {0}, яке визначається типом {1}, не надає заданий метод і, отже, не може бути змінено.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Свойство {0}, определяемое типом {1}, не предоставляет заданный метод и, следовательно, не может быть изменено.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>A propriedade {0} definido pelo tipo {1} não expõe um método set e, portanto, não pode ser modificado.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>{1} 형식으로 정의된 {0} 속성이 set 메서드를 노출하지 않으므로 수정할 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>プロパティ {0} (型 {1} で定義) は、set メソッドを提示していないため、修正できません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>La proprietà {0} definita dal tipo {1} non espone un metodo set. Impossibile modificarla.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>La propriété {0} définie par le type {1} n'expose pas une méthode set et ne peut, par conséquent, pas être modifiée.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>La propiedad {0} definida por el tipo {1} no expone un método establecido y, por lo tanto, no se puede modificar.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Property {0} defined by type {1} does not expose a set method and therefore cannot be modified.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Die vom Typ {1} definierte Eigenschaft {0} gibt keine Methode zum Festlegen an und kann daher nicht geändert werden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="DuplicateBehaviorInCollectionExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/DuplicateBehaviorInCollectionExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>無法重複將行為執行個體加到 BehaviorCollection。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>不能多次将行为的实例添加到 BehaviorCollection。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Неможливо додати екземпляр поведінки в колекцію BehaviorCollection більше одного разу.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Невозможно добавить экземпляр поведения в коллекцию BehaviorCollection более одного раза.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Não é possível adicionar uma instância de um behavior à um BehaviorCollection mais de uma vez.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>동작의 인스턴스 하나를 BehaviorCollection에 두 번 이상 추가할 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>ビヘイビアーのインスタンスを BehaviorCollection に複数回追加することはできません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile aggiungere l'istanza di un comportamento a BehaviorCollection più di una volta.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Impossible d'ajouter à plusieurs reprises une instance de Behavior à une BehaviorCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>No se puede agregar una instancia de Behavior a un BehaviorCollection más de una vez.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Cannot add an instance of a behavior to a BehaviorCollection more than once.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Eine Instanz eines Verhaltens kann einer BehaviorCollection höchstens einmal hinzugefügt werden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="EventNotSupportedExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/EventNotSupportedExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>不支援事件 {0}。請考慮實作自訂的 IBehavior 以回應這個事件。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>不支持事件 {0}。请考虑实现自定义 IBehavior 以响应此事件。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Подія {0} не підтримується. Для відгуку на дану подію рекомендується реалізувати користувальницьку поведінку IBehavior.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Событие {0} не поддерживается. Для отклика на данное событие рекомендуется реализовать пользовательское поведение IBehavior.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Evento {0} não é suportado. Considere a implementação de um IBehavior personalizado para responder a este evento.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>{0} 이벤트가 지원되지 않습니다. 이 이벤트에 응답하도록 사용자 지정 IBehavior를 구현해 보십시오.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>イベント {0} はサポートされていません。カスタム IBehavior を実装して、このイベントに応答することを検討してください。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>L'evento {0} non è supportato. Implementare un elemento IBehavior personalizzato per rispondere a questo evento.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>L'événement {0} n'est pas pris en charge. Si possible, implémentez un type iBehavior personnalisé pour répondre à cet événement.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>No se admite el evento {0}. Considere implementar un IBehavior personalizado para responder a este evento.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Event {0} is not supported. Consider implementing a custom IBehavior to respond to this event.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Ereignis {0} ist nicht unterstützt. Erwägen Sie die Implementierung eines benutzerdefinierten IBehavior, um auf dieses Ereignis zu reagieren.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="GoToStateActionTargetHasNoStateGroups" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/GoToStateActionTargetHasNoStateGroups">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>目標 {0} 未定義任何 VisualStateGroups。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>目标 {0} 不定义任何 VisualStateGroups。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Цільовий об'єкт {0} не визначає ніяких груп VisualStateGroups.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Целевой объект {0} не определяет никаких групп VisualStateGroups.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>O destino {0} não define qualquer VisualStateGroups.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>대상 {0}이(가) VisualStateGroups를 정의하지 않습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>ターゲット {0} は、VisualStateGroups を一切定義していません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>La destinazione {0} non definisce VisualStateGroups.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>La cible {0} ne définit pas de VisualStateGroups.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>El destino {0} no define ningún objeto VisualStateGroup.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Target {0} does not define any VisualStateGroups.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Das Ziel {0} definiert keine VisualStateGroups.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="InvalidAssociatedObjectExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/InvalidAssociatedObjectExceptionMessage">
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>AssociatedObject is of type {0} but should be of type {1}.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="InvalidLeftOperand" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/InvalidLeftOperand">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>類型 {0} 的 Binding 屬性無法搭配運算子 {1} 一起使用。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>{0} 类型的 Binding 属性无法用于运算符 {1}。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Властивість прив'язки типу {0} неможливо використовувати з оператором {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Свойство привязки типа {0} невозможно использовать с оператором {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>A propriedade Binding do tipo {0} não pode ser usada com o operador {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>{0} 형식의 Binding 속성을 {1} 연산자와 함께 사용할 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>型 {0} の Binding プロパティは、演算子 {1} と共に使用できません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile utilizzare la proprietà Binding di tipo {0} con l'operatore {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>La propriété de liaison de type {0} ne peut pas être utilisée avec l'opérateur {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>La propiedad Binding del tipo {0} no se puede usar con el operador {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Binding property of type {0} cannot be used with operator {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Die Bindungseigenschaft vom Typ {0} kann nicht mit dem Operator {1} verwendet werden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="InvalidOperands" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/InvalidOperands">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>類型 {0} 的 Binding 屬性和類型 {1} 的 Value 屬性無法搭配運算子 {2} 一起使用。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>{0} 类型的 Binding 属性以及 {1} 类型的 Value 属性无法用于运算符 {2}。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Властивість прив'язки типу {0} і властивість значення типу {1} неможливо використовувати з оператором {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Свойство привязки типа {0} и свойство значения типа {1} невозможно использовать с оператором {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>A propriedade Binding do tipo {0} e a propriedade Value do tipo {1} não podem ser usadas com o operador {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>{0} 형식의 Binding 속성과 {1} 형식의 Value 속성을 {2} 연산자와 함께 사용할 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>型 {0} の Binding プロパティと型 {1} の Value プロパティは、演算子 {2} と共に使用できません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile utilizzare la proprietà Binding di tipo {0} e la proprietà Value di tipo {1} con l'operatore {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>La propriété de liaison de {0} la propriété de valeur de type {1} ne peuvent pas être utilisées avec l'opérateur {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>La propiedad Binding del tipo {0} y la propiedad Value del tipo {1} no se pueden usar con el operador {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Binding property of type {0} and Value property of type {1} cannot be used with operator {2}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Die Bindungseigenschaft vom Typ {0} und die Werteigenschaft vom Typ {1} können nicht mit dem Operator {2} verwendet werden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="InvalidRightOperand" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/InvalidRightOperand">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>類型 {0} 的 Value 屬性無法搭配運算子 {1} 一起使用。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>{0} 类型的 Value 属性无法用于运算符 {1}。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>Властивість значення типу {0} неможливо використовувати з оператором {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>Свойство значения типа {0} невозможно использовать с оператором {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>A propriedade de valor do tipo {0} não pode ser usada com o operador {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>{0} 형식의 Value 속성을 {1} 연산자와 함께 사용할 수 없습니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>型 {0} の Value プロパティは、演算子 {1} と共に使用できません。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Impossibile utilizzare la proprietà Value di tipo {0} con l'operatore {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>La propriété de valeur de type {0} ne peut pas être utilisée avec l'opérateur {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>La propiedad Value del tipo {0} no se puede usar con el operador {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Value property of type {0} cannot be used with operator {1}.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Die Werteigenschaft vom Typ {0} kann nicht mit dem Operator {1} verwendet werden.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="NonActionAddedToActionCollectionExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/NonActionAddedToActionCollectionExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>ActionCollection 只支援 IAction 類型。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>在 ActionCollection 中只支持 IAction 类型。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>В колекції ActionCollection підтримуються тільки типи Action.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>В коллекции ActionCollection поддерживаются только типы IAction.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Somente tipos de IAction são suportados em um ActionCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>ActionCollection에서 IAction 형식만 지원됩니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>ActionCollection では IAction 型のみサポートされます。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Solo i tipi IAction sono supportati in ActionCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Seuls les types IAction sont pris en charge dans une ActionCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>Solo se admiten tipos IAction en ActionCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Only IAction types are supported in an ActionCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Nur IAction-Typen werden in einer ActionCollection unterstützt.</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="NonBehaviorAddedToBehaviorCollectionExceptionMessage" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Microsoft.Xaml.Interactivity/Strings/NonBehaviorAddedToBehaviorCollectionExceptionMessage">
+					<Candidate qualifiers="Language-ZH-TW" type="String">
+						<Value>BehaviorCollection 只支援 IBehavior 類型。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>在 BehaviorCollection 中只支持 IBehavior 类型。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-UK-UA" type="String">
+						<Value>В колекції BehaviorCollection підтримуються тільки типи Behavior.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-RU-RU" type="String">
+						<Value>В коллекции BehaviorCollection поддерживаются только типы IBehavior.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-PT-BR" type="String">
+						<Value>Somente tipos de IBehavior são suportados em um BehaviorCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-KO-KR" type="String">
+						<Value>BehaviorCollection에서 IBehavior 형식만 지원됩니다.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-JA-JP" type="String">
+						<Value>BehaviorCollection では IBehavior 型のみサポートされます。</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-IT-IT" type="String">
+						<Value>Solo i tipi IBehavior sono supportati in BehaviorCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-FR-FR" type="String">
+						<Value>Seuls les types IBehavior sont pris en charge dans une BehaviorCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-ES-ES" type="String">
+						<Value>Solo se admiten tipos IBehavior en BehaviorCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Only IBehavior types are supported in a BehaviorCollection.</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-DE-DE" type="String">
+						<Value>Nur IBehavior-Typen werden in einer BehaviorCollection unterstützt.</Value>
+					</Candidate>
+				</NamedResource>
+			</ResourceMapSubtree>
+		</ResourceMapSubtree>
+		<ResourceMapSubtree name="Resources">
+			<ResourceMapSubtree name="SettingTile">
+				<NamedResource name="Text" uri="ms-resource://77bbaf7c-a80f-4537-a7d8-06387862c57a/Resources/SettingTile/Text">
+					<Candidate qualifiers="Language-ZH-CN" type="String">
+						<Value>设置</Value>
+					</Candidate>
+					<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+						<Value>Settings-Test</Value>
+					</Candidate>
+				</NamedResource>
+			</ResourceMapSubtree>
+		</ResourceMapSubtree>
+	</ResourceMap>
+</PriInfo>

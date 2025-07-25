@@ -1,0 +1,235 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<ApplicationIcon>Assets\appIcon.ico</ApplicationIcon>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+		<RootNamespace>Clever_Vpn</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x86;x64;ARM64</Platforms>
+		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+		<UseWinUI>true</UseWinUI>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+		<SelfContained>true</SelfContained>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<FileVersion>1.3.0</FileVersion>
+		<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+		<Version>1.3.0.0</Version>
+		<PackageVersion>$(Version)</PackageVersion>
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+		<!--<WindowsPackageType>None</WindowsPackageType> -->
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Remove="Assets\bak\logo.svg" />
+		<Content Remove="Assets\bak\logo_png.png" />
+		<Content Remove="Assets\bak\logo_with_check.svg" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(WindowsPackageType)' == 'None'">
+		<Content Include="Assets\*.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Flags\*.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icon\*.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<None Remove="components\Divider.xaml" />
+		<None Remove="components\ErrorBar.xaml" />
+		<None Remove="components\Layout.xaml" />
+		<None Remove="components\Logo.xaml" />
+		<None Remove="components\OffIcon.xaml" />
+		<None Remove="components\OnIcon.xaml" />
+		<None Remove="components\TopBar.xaml" />
+		<None Remove="components\TrayIconView.xaml" />
+		<None Remove="Pages\ActivatePage\ActivatePage.xaml" />
+		<None Remove="Pages\ActivatePage\components\ActivateCard.xaml" />
+		<None Remove="Pages\ActivatePage\components\ActivateHeader.xaml" />
+		<None Remove="Pages\HomePage\components\HomeCard.xaml" />
+		<None Remove="Pages\HomePage\components\HomeCardDivider.xaml" />
+		<None Remove="Pages\HomePage\components\HomeCardLocationSelector.xaml" />
+		<None Remove="Pages\HomePage\components\TrafficCard.xaml" />
+		<None Remove="Pages\HomePage\HomePage.xaml" />
+		<None Remove="Pages\LogPage\LogPage.xaml" />
+		<None Remove="Pages\SettingsPage\componets\SelectedIcon.xaml" />
+		<None Remove="Pages\SettingsPage\componets\SettingPanel.xaml" />
+		<None Remove="Pages\SettingsPage\SettingsPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Assets\SplashScreen.scale-200.png" />
+		<Content Include="Assets\LockScreenLogo.scale-200.png" />
+		<Content Include="Assets\Square150x150Logo.scale-200.png" />
+		<Content Include="Assets\Square44x44Logo.scale-200.png" />
+		<Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+		<Content Include="Assets\Wide310x150Logo.scale-200.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Manifest Include="$(ApplicationManifest)" />
+	</ItemGroup>
+
+	<!--
+    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+    Tools extension to be activated for this project even if the Windows App SDK Nuget
+    package has not yet been restored.
+  -->
+	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<ProjectCapability Include="Msix" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Clever-Vpn-Windows-Kit" Version="1.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.250402" />
+		<PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.2.250402" />
+		<PackageReference Include="H.NotifyIcon.WinUI" Version="2.3.0" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
+		<PackageReference Include="WinUIEx" Version="2.6.0" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Page Update="components\TrayIconView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\SettingsPage\componets\SelectedIcon.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="components\Divider.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\HomePage\components\TrafficCard.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\HomePage\components\BottomCard.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\HomePage\components\HomeCardLocationSelector.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\HomePage\components\HomeCardDivider.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\HomePage\components\HomeCardIcon.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="components\ErrorBar.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\ActivatePage\components\ActivateCard.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="components\Logo.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="components\OffIcon.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="components\OnIcon.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="components\TopBar.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\SettingsPage\SettingsPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\ActivatePage\ActivatePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\HomePage\HomePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\ActivatePage\components\ActivateHeader.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\HomePage\components\HomeCard.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\LogPage\LogPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Pages\SettingsPage\componets\SettingPanel.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<!--
+    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
+    Explorer "Package and Publish" context menu entry to be enabled for this project even if
+    the Windows App SDK Nuget package has not yet been restored.
+  -->
+	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+	</PropertyGroup>
+
+	<!-- Publish Properties -->
+	<PropertyGroup>
+		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
+		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
+		<PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
+		<PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+		<GenerateTestArtifacts>False</GenerateTestArtifacts>
+		<AppxBundle>Always</AppxBundle>
+		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<AppxBundlePlatforms>x86|x64|arm64</AppxBundlePlatforms>
+		<AppxPackageDir>C:\Users\bolin\source\Clever-Vpn\Clever-Vpn\Clever-Vpn\bin\Appx</AppxPackageDir>
+	</PropertyGroup>
+</Project>

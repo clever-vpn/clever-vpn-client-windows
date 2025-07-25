@@ -1,0 +1,25 @@
+﻿<Project Sdk="WixToolset.Sdk/6.0.1">
+	<PropertyGroup>
+		<SuppressIces>ICE03;ICE30;ICE82;</SuppressIces>
+		<DefineConstants>
+			VpnBrokerService=CleverVpnBrokerService;
+			VpnTunnelService=CleverVpnTunnelService;
+		</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<BindPath Include="..\Clever-Vpn\bin\msi\$(Platform)">
+			<BindName>ToBeHarvested</BindName>
+		</BindPath>
+	</ItemGroup>
+	
+	<Target Name="PublishCleverVpnApp" BeforeTargets="BeforeBuild">
+		<MSBuild
+		  Projects="..\Clever-Vpn\Clever-Vpn.csproj"
+		  Targets="Publish"
+		  Properties="Platform=$(Platform); PublishProfile=msi-win;"
+		  />
+	</Target> 
+
+
+
+</Project>

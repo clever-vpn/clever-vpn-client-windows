@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Clever_Vpn.Pages.ActivatePage.ActivatePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clever_Vpn.Pages.ActivatePage"
+    xmlns:c="using:Clever_Vpn.Pages.ActivatePage.components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:components="using:Clever_Vpn.components"
+    xmlns:utils="using:Clever_Vpn.utils"
+    xmlns:vm="using:Clever_Vpn.ViewModel"
+    xmlns:triggers="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d">
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup> 
+                
+                <VisualState x:Name="NotLocalCheckState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNotEqualStateTrigger
+                            Value="{x:Bind  vm.ActivateState, Mode=OneWay}"
+                            To="{x:Bind vm:ActivationState.LocalCheck }" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RootPanel.VerticalAlignment" Value="{x:Null}" />
+                        <Setter Target="ActivateCard.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState> 
+                <VisualState x:Name="LocalCheckState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsEqualStateTrigger                             
+                            Value="{x:Bind  vm.ActivateState, Mode=OneWay}"
+                            To="{x:Bind vm:ActivationState.LocalCheck }" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RootPanel.VerticalAlignment" Value="Center" />
+                        <Setter Target="ActivateCard.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <StackPanel x:Name="RootPanel" Orientation="Vertical" HorizontalAlignment="Stretch">
+            <c:ActivateHeader x:Name="ActivateHeader" Height="340" />
+            <c:ActivateCard x:Name="ActivateCard" />
+        </StackPanel>
+    </Grid>
+</Page>

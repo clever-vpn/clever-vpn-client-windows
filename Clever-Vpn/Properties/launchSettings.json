@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Clever-Vpn (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Clever-Vpn (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

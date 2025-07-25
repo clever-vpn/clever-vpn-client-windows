@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<winuiEx:WindowEx
+    x:Class="Clever_Vpn.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:winuiEx="using:WinUIEx"
+    xmlns:local="using:Clever_Vpn"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:triggers="using:CommunityToolkit.WinUI"
+    xmlns:utils="using:Clever_Vpn.utils"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:Clever_Vpn.behaviors" 
+    xmlns:components="using:Clever_Vpn.components"
+    mc:Ignorable="d"
+    Title="Clever-Vpn">
+
+    <winuiEx:WindowEx.SystemBackdrop >
+        <MicaBackdrop />
+    </winuiEx:WindowEx.SystemBackdrop>
+    <Grid x:Name="RootLayout" Margin="10, 0, 10, 10">
+        <Frame x:Name="MainFrame" >
+            <interactivity:Interaction.Behaviors>
+                <behaviors:FrameNavigateBehavior />
+            </interactivity:Interaction.Behaviors>
+        </Frame>
+        <InfoBar
+            IsOpen="{x:Bind utils:Converters.ConvertObjectToBool(vm.LastError), Mode=OneWay}"
+            CloseButtonCommand="{x:Bind vm.ClearLastErrorCommand}"
+            Severity="Warning"
+            Title="Warning"
+            Message="{x:Bind vm.LastError.FormattedMessage, Mode=OneWay}" />
+         <components:TrayIconView  x:Name="TrayIconView" />
+    </Grid>
+
+</winuiEx:WindowEx>
