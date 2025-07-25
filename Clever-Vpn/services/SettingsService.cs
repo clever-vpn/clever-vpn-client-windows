@@ -18,7 +18,7 @@ namespace Clever_Vpn.services;
 public class AppSettings : IFileStorable
 
 {
-    public static string FileName => config.AppConfig.SettingsFileName;
+    public static string FileName => "settings.json";
 
     /// <summary>
     /// Accepted the privacy policy or not.

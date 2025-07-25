@@ -11,6 +11,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,7 +41,23 @@ public enum ActivationState
 
 public partial class VpnViewModel : ObservableObject
 {
-    private Client _client = Client.Init(Utils.GetAppVersion());
+    private Client _client;
+    public VpnViewModel()
+        {
+        // Initialize the client with the app version
+        string dataPath = "";
+        if (utils.Utils.IsPackaged())
+        {
+            dataPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "CleverVpnData");
+        }else
+        {
+            dataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CleverVpnData");
+        }
+        
+        _client = Client.Init(dataPath, Utils.GetAppVersion());
+     }
+
+
     [ObservableProperty]
     public partial string ActivationKey { get; set; } = string.Empty;
 

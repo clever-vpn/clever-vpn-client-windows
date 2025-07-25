@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2025 CleverVPN Team
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
+using Clever_Vpn.config;
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
 using Clever_Vpn_Windows_Kit.Data;
@@ -73,7 +74,9 @@ namespace Clever_Vpn
                 }
             }
             InitializeComponent();
+            
             GlobalExceptionHandler.DebugLog("Clever-Vpn started!");
+            
         }
 
 

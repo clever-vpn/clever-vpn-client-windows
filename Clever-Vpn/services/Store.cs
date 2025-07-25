@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2025 CleverVPN Team
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
+using Clever_Vpn.config;
 using Clever_Vpn.services;
 using System;
 using System.IO;
@@ -24,20 +25,16 @@ public interface IFileStorable
 
 public class Store
 {
-    private static readonly string _folder =
-    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                 config.AppConfig.AppName);
-
     public static async Task SaveAsync<T>(T data) where T : IFileStorable
 
     {
-        var filePath = Path.Combine(_folder, T.FileName);
+        var filePath = Path.Combine(AppConfig.DataDir, T.FileName);
         var info = JsonContext.Default.GetTypeInfo(typeof(T));
 
         if (info != null)
         {
-            if (!Directory.Exists(_folder))
-                Directory.CreateDirectory(_folder);
+            if (!Directory.Exists(AppConfig.DataDir))
+                Directory.CreateDirectory(AppConfig.DataDir);
 
             using var stream = File.Create(filePath);
             await JsonSerializer.SerializeAsync(stream, data, info);
@@ -49,7 +46,7 @@ public class Store
     public static async Task<T?> LoadAsync<T>() where T : IFileStorable
 
     {
-        var filePath = Path.Combine(_folder, T.FileName);
+        var filePath = Path.Combine(AppConfig.DataDir, T.FileName);
         var info = JsonContext.Default.GetTypeInfo(typeof(T));
 
         if (info != null && File.Exists(filePath))

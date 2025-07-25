@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Windows.Storage;
 
 namespace Clever_Vpn;
 #if DISABLE_XAML_GENERATED_MAIN
@@ -20,8 +21,6 @@ public static class Program
     [global::System.STAThreadAttribute]
     static async Task Main(string[] args)
     {
-        GlobalExceptionHandler.DebugLog("Clever-Vpn main() started!");
-
         if (await Clever_Vpn_Windows_Kit.Service.Run()) return;
 
         global::WinRT.ComWrappersSupport.InitializeComWrappers();
@@ -29,8 +28,6 @@ public static class Program
         {
             var context = new global::Microsoft.UI.Dispatching.DispatcherQueueSynchronizationContext(global::Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
             global::System.Threading.SynchronizationContext.SetSynchronizationContext(context);
-
-            GlobalExceptionHandler.DebugLog("Clever-Vpn creat App started!");
 
             new App();
         });

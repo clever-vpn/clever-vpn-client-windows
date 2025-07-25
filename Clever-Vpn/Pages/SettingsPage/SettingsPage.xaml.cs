@@ -114,7 +114,7 @@ namespace Clever_Vpn.Pages.SettingsPage
         {
             key = key.Replace("-", "");
             var l = key.Length;
-            return string.Join("-", Enumerable.Range(0, 4)
+            return string.Join("-", Enumerable.Range(0, 5)
                 .Select(i => {
                     int start = i * 4;
                     int len = Math.Min(4, key.Length - start);

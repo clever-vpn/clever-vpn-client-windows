@@ -1,8 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
 
+for /f "usebackq delims=" %%i in (`powershell -Command "$xml = [xml](Get-Content -Path 'Package.appxmanifest'); $xml.Package.Identity.Version"`) do set Version=%%i
+
 rem === 设置目录路径 ===
-set "MSIX_DIR=bin/Appx/Clever-Vpn_1.3.2.0_Test"
+set "MSIX_DIR=bin/Appx/Clever-Vpn_%Version%_Test"
 set "BUNDLE_NAME=bin/Appx/bundle/clevervpn.msixbundle"
 
 rem === 检查是否存在 makeappx.exe ===

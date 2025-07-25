@@ -37,7 +37,7 @@ public sealed partial class BottomCard : UserControl
     {
         return s switch
         {
-            CleverVpnState.Down or CleverVpnState.Connecting => true,
+            CleverVpnState.Down or CleverVpnState.Connecting or CleverVpnState.Disconnecting => true,
             _ => false,
         };
     }
@@ -46,7 +46,8 @@ public sealed partial class BottomCard : UserControl
     {
         return s switch
         {
-            CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => true,
+            //CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => true,
+            CleverVpnState.Up or CleverVpnState.Reconnecting  => true,
             _ => false,
         };
     }

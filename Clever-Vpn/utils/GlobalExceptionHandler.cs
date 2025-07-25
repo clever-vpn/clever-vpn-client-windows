@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2025 CleverVPN Team
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
+using Clever_Vpn.config;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -39,9 +40,9 @@ namespace Clever_Vpn.utils
             };
         }
 
-        private static readonly string CrashLogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Clever-Vpn", "crash.log");
         private static void Log(Exception ex, string source)
         {
+            string CrashLogPath = Path.Combine(AppConfig.DataDir, "crash.log");
             Directory.CreateDirectory(Path.GetDirectoryName(CrashLogPath)!);
             File.AppendAllText(CrashLogPath,
                 $"[{DateTime.Now}] [{source}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}\n");
@@ -49,6 +50,7 @@ namespace Clever_Vpn.utils
 
         public static void DebugLog(string msg)
         {
+            string CrashLogPath = Path.Combine(AppConfig.DataDir, "crash.log");
             Directory.CreateDirectory(Path.GetDirectoryName(CrashLogPath)!);
             File.AppendAllText(CrashLogPath,
                 $"[{DateTime.Now}] [Debug] {msg}\n");

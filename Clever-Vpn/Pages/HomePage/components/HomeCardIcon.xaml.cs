@@ -36,7 +36,8 @@ public sealed partial class HomeCardIcon : UserControl
     {
         return state switch
         {
-            CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => Visibility.Visible,
+            //CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => Visibility.Visible,
+            CleverVpnState.Up or CleverVpnState.Reconnecting => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }
@@ -45,7 +46,7 @@ public sealed partial class HomeCardIcon : UserControl
     {
         return state switch
         {
-            CleverVpnState.Down or CleverVpnState.Connecting => Visibility.Visible,
+            CleverVpnState.Down or CleverVpnState.Connecting or CleverVpnState.Disconnecting => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }
