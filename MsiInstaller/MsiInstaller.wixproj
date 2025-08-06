@@ -5,6 +5,7 @@
 			VpnBrokerService=CleverVpnBrokerService;
 			VpnTunnelService=CleverVpnTunnelService;
 		</DefineConstants>
+		<OutputName>CleverVPN</OutputName>
 	</PropertyGroup>
 	<ItemGroup>
 		<BindPath Include="..\Clever-Vpn\bin\msi\$(Platform)">
