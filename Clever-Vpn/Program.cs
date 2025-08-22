@@ -21,7 +21,7 @@ public static class Program
     [global::System.STAThreadAttribute]
     static async Task Main(string[] args)
     {
-        if (await Clever_Vpn_Windows_Kit.Service.Run()) return;
+        if (await Clever_Vpn_Windows_Kit.Service.Run(new Clever_Vpn_Windows_Kit.CleverVpnConfiguration(10, 1200))) return;
 
         global::WinRT.ComWrappersSupport.InitializeComWrappers();
         global::Microsoft.UI.Xaml.Application.Start((p) =>

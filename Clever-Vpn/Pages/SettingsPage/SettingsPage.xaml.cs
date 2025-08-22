@@ -31,8 +31,9 @@ namespace Clever_Vpn.Pages.SettingsPage
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        VpnViewModel Vm { get; } = ((App)Application.Current).ViewModel;
+        VpnViewModel vm { get; } = ((App)Application.Current).ViewModel;
 
+        private string testKey = "123";
         public SettingsPage()
         {
             InitializeComponent();
@@ -88,7 +89,7 @@ namespace Clever_Vpn.Pages.SettingsPage
         async void OnProtocolItemClick(object sender, ItemClickEventArgs e)
         {
             var type = (ProtocolType)e.ClickedItem;
-            await Vm.UpdateProtocolType(type);
+            await vm.UpdateProtocolType(type);
             //OnProtocolSettingLoaded(sender, e);
         }
 
@@ -110,20 +111,36 @@ namespace Clever_Vpn.Pages.SettingsPage
             VpnViewModel vm  = ((App)Application.Current).ViewModel;
             return  (vm.UserInfo?.ProtocolType == type) ? Visibility.Visible : Visibility.Collapsed;
         }
-        string FormatKey(string key)
+       public string FormatKey(UserInfo? userInfo)
         {
-            key = key.Replace("-", "");
+            string key = userInfo?.Key?.Replace("-", "") ?? "";
             var l = key.Length;
             return string.Join("-", Enumerable.Range(0, 5)
-                .Select(i => {
+                .Select(i =>
+                {
                     int start = i * 4;
                     int len = Math.Min(4, key.Length - start);
                     return len > 0 ? key.Substring(start, len) : string.Empty;
-                    })
+                })
                 .Where(s => s.Trim().Length > 0));
         }
 
+        //public string FormatKey(string? key)
+        //{
+        //    key = key?.Replace("-", "") ?? "***";
+        //    var l = key.Length;
+        //    return string.Join("-", Enumerable.Range(0, 5)
+        //        .Select(i =>
+        //        {
+        //            int start = i * 4;
+        //            int len = Math.Min(4, key.Length - start);
+        //            return len > 0 ? key.Substring(start, len) : string.Empty;
+        //        })
+        //        .Where(s => s.Trim().Length > 0));
+        //}
+
         string GetVersion { get; } = Utils.GetAppVersion();
+        string SupportUrl => vm.UserInfo?.Url ?? "https://www.clevert-vpn.net";
 
     }
 }

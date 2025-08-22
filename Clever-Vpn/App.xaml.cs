@@ -135,16 +135,17 @@ namespace Clever_Vpn
             };
 
             //_window.AppWindow.Closing += OnAppWindowClosing;
+            await ViewModel.Init();
 
             if (AutoStartHelper.IsAutoStartup())
             {
-                await ViewModel.Init();
+                //await ViewModel.Init();
                 _window.Hide();
             }
             else
             {
                 _window.Activate();
-                await ViewModel.Init();
+                //await ViewModel.Init();
             }
 
             if (AppSettings.VpnIsOn)

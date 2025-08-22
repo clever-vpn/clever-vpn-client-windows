@@ -30,9 +30,9 @@
                 <StackPanel >
                     <c1:SettingPanel x:Uid="Key">
                         <StackPanel>
-                            <TextBlock Text="{x:Bind FormatKey(Vm.UserInfo.Key) }" />
+                            <TextBlock Text="{x:Bind FormatKey(vm.UserInfo), Mode=OneWay }"/>
                             <c:Divider/>
-                            <Button Command="{x:Bind  Vm.DeActivateCommand}" Style="{ThemeResource AccentButtonStyle}" x:Uid="DeActivate" />
+                            <Button Command="{x:Bind  vm.DeActivateCommand}" Style="{ThemeResource AccentButtonStyle}" x:Uid="DeActivate" />
                         </StackPanel>
                     </c1:SettingPanel>
                     <c1:SettingPanel x:Uid="ProtocolType">
@@ -88,8 +88,8 @@
                         <RichTextBlock>
                             <Paragraph>
                                 <Run x:Uid="Website" />
-                                <Hyperlink  NavigateUri="{x:Bind Vm.UserInfo.Url}">
-                                    <Run Text="{x:Bind Vm.UserInfo.Url}" />
+                                <Hyperlink  NavigateUri="{x:Bind SupportUrl}">
+                                    <Run Text="{x:Bind SupportUrl}" />
                                 </Hyperlink>
                             </Paragraph>
                         </RichTextBlock>
