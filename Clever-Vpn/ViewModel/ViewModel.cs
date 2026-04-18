@@ -2,7 +2,8 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 using Clever_Vpn.utils;
-using Clever_Vpn_Windows_Kit;
+using Clever_Vpn_Windows_Kit.Client;
+using Clever_Vpn_Windows_Kit.Common;
 using Clever_Vpn_Windows_Kit.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,11 +11,9 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.Media.Protection.PlayReady;
@@ -25,8 +24,7 @@ public enum ActivationState
 {
     DeActivated,
     Activated,
-    LocalCheck,
-    Activating,
+    Waiting,
 }
 
 //public enum VpnState
@@ -43,19 +41,10 @@ public partial class VpnViewModel : ObservableObject
 {
     private Client _client;
     public VpnViewModel()
-        {
-        // Initialize the client with the app version
-        string dataPath = "";
-        if (utils.Utils.IsPackaged())
-        {
-            dataPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "CleverVpnData");
-        }else
-        {
-            dataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CleverVpnData");
-        }
-        
-        _client = Client.Init(dataPath, Utils.GetAppVersion());
-     }
+    {
+        _client = new Client();
+        SubscribeClientEvents();
+    }
 
 
     [ObservableProperty]
@@ -65,10 +54,13 @@ public partial class VpnViewModel : ObservableObject
     public partial UserInfo? UserInfo { get; set; }
 
     [ObservableProperty]
-    public partial ActivationState ActivateState { get; set; } = ActivationState.LocalCheck;
+    public partial ActivationState ActivateState { get; set; } = ActivationState.Waiting;
 
     [ObservableProperty]
-    public partial CleverVpnState VpnState { get; set; } = CleverVpnState.Down;
+    public partial ApiState VpnApiState { get; set; } = ApiState.Idle;
+
+    [ObservableProperty]
+    public partial CleverVpnState VpnState { get; set; } = CleverVpnState.Idle;
 
     [ObservableProperty]
     public partial long StartTime { get; set; } = 0;
@@ -76,17 +68,22 @@ public partial class VpnViewModel : ObservableObject
     [ObservableProperty]
     public partial CleverVpnError? LastError { get; set; }
 
-    public ObservableCollection<string> LogItems { get; } = [];
+    [ObservableProperty]
+    public partial Traffic? Traffic { get; set; }
 
-    public List<Location> Locations { get; set; } = new List<Location>();
+    [ObservableProperty]
+    public partial VpnConnectionInfo? ConnectionInfo { get; set; }
+
+    [ObservableProperty]
+    public partial List<LogEntry> Logs { get; set; } = [];
+
+    [ObservableProperty]
+    public partial List<Line> Lines { get; set; } = [];
 
     [RelayCommand(CanExecute = nameof(CanActivate))]
     private async Task Activate()
     {
-        ActivateState = ActivationState.Activating;
         await _client.Activate(ActivationKey);
-        UserInfo = await _client.GetUserInfo();
-        ActivateState = (UserInfo == null) ? ActivationState.DeActivated : ActivationState.Activated;
     }
 
     [ObservableProperty]
@@ -96,8 +93,6 @@ public partial class VpnViewModel : ObservableObject
     private async Task DeActivate()
     {
         await _client.Deactivate();
-        UserInfo = await _client.GetUserInfo();
-        ActivateState = (UserInfo == null) ? ActivationState.DeActivated : ActivationState.Activated;
     }
 
 
@@ -109,20 +104,19 @@ public partial class VpnViewModel : ObservableObject
 
     public async Task ToggleVpn(bool isOn)
     {
-       var setting = await services.SettingsService.LoadAsync();
+        var setting = await services.SettingsService.LoadAsync();
         if (isOn)
         {
-            if (VpnState == CleverVpnState.Down)
+            if (VpnState == CleverVpnState.Idle)
             {
                 await _client.Start();
-                StartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 setting.VpnIsOn = true;
             }
 
         }
         else
         {
-            if (VpnState == CleverVpnState.Up)
+            if (VpnState == CleverVpnState.Started)
             {
                 await _client.Stop();
                 setting.VpnIsOn = false;
@@ -130,108 +124,144 @@ public partial class VpnViewModel : ObservableObject
         }
     }
 
-    public async Task<Traffic> GetTraffic()
-    {
-        return await Task.Run(_client.GetTraffic);
-    }
-
-    private CancellationTokenSource? logTaskCts;
-    public async void StartFetchLogs()
-    {
-        logTaskCts = new();
-        var token = logTaskCts.Token;
-        try
-        {
-            await Task.Run(async () =>
-             {
-                 while (true)
-                 {
-                     token.ThrowIfCancellationRequested();
-                     var items = await Task.Run(async () => await _client.GetLogLines(), token);
-                     runUI(() =>
-                     {
-                         foreach (var item in items)
-                         {
-                             LogItems.Add(item);
-                         }
-                     });
-
-                     await Task.Delay(1000);
-                 }
-
-             }, token);
-        }
-        catch (OperationCanceledException)
-        {
-        }
-    }
-
-    public void StopFetchLogs()
-    {
-        logTaskCts?.Cancel();
-    }
-   
     public async Task UpdateProtocolType(ProtocolType type)
     {
-        await Task.Run(async () =>
-        {
             await _client.UpdateProtocolType(type);
-            var _userInfo = await _client.GetUserInfo();
-            runUI(()=> { UserInfo = _userInfo; });
-        });
     }
 
-    public async Task UpdateLocation(int? id)
+    public async Task UpdateLine(int? id)
     {
-        await Task.Run(async () =>
-        {
-            await _client.UpdateLocation(id);
-            var _userInfo = await _client.GetUserInfo();
-            runUI(() => { UserInfo = _userInfo; });
-        });
+        await _client.UpdateLine(id);
     }
-    public async Task UpdateLocations(bool api = false)
-    {
-        await Task.Run(async () =>
-          {
-              var items = await _client.GetLocations(api);
-              runUI( () =>
-              {
-                  Locations = items;
-              });
-          });
 
+    public async Task RefreshLines()
+    {
+        await _client.RefreshLines();
     }
-   
-    
-    public async Task Init()
+
+    public async Task SetTrafficSubscriptionEnabled(bool enabled)
+    {
+        await _client.SetTrafficSubscriptionEnabled(enabled);
+    }
+
+    public async Task SetLogSubscriptionEnabled(bool enabled)
+    {
+        await _client.SetLogSubscriptionEnabled(enabled);
+    }
+
+
+    private void SubscribeClientEvents()
     {
         _client.VpnStateChanged += (s, state) =>
         {
             runUI(() =>
             {
-                        VpnState = state;
+                VpnState = state;
             });
         };
+
         _client.LastErrorChanged += (s, error) =>
         {
-            if (error != null)
+            runUI(() =>
             {
-                runUI(() =>
-                {
-                    LastError = error;
-                });
-            }
+                LastError = error;
+            });
         };
 
-        UserInfo = await _client.GetUserInfo();
-        ActivateState = (UserInfo == null) ? ActivationState.DeActivated : ActivationState.Activated;
-        Locations = await _client.GetLocations();
+        _client.TrafficChanged += (s, traffic) =>
+        {
+            runUI(() =>
+            {
+                Traffic = traffic;
+            });
+        };
+
+        _client.ConnectionInfoChanged += (s, connectionInfo) =>
+        {
+            runUI(() =>
+            {
+                ConnectionInfo = connectionInfo;
+            });
+        };
+
+        _client.ConnectionStartTimeChanged += (s, startTime) =>
+        {
+            runUI(() =>
+            {
+                StartTime = startTime;
+            });
+        };
+
+        _client.LinesChanged += (s, lines) =>
+        {
+            runUI(() =>
+            {
+                Lines = lines;
+            });
+        };
+
+        _client.ApiStateChanged += (s, state) =>
+        {
+            runUI(() =>
+            {
+                VpnApiState = state;
+            });
+        };
+
+        _client.UserInfoChanged += (s, userInfo) =>
+        {
+            runUI(() =>
+            {
+                UserInfo = userInfo;
+                UpdateActivateState();
+            });
+        };
+
+        _client.LogsChanged += (s, logs) =>
+        {
+            runUI(() =>
+            {
+                Logs = logs;
+            });
+        };
+    }
+
+    public async Task Init()
+    {
+        VpnApiState = _client.VpnApiState;
+        VpnState = _client.VpnState;
+        StartTime = _client.ConnectionStartTime;
+        UserInfo = _client.UserInfo;
+        Traffic = _client.Traffic;
+        Logs = _client.Logs;
+        Lines = _client.Lines;
+        UpdateActivateState();
+    }
+
+    private void UpdateActivateState()
+    {
+        ActivateState = UserInfo?.Activated == true
+            ? ActivationState.Activated
+            : ActivationState.DeActivated;
     }
 
     private void runUI(Action action)
     {
-        // Fix for CS1503: Convert 'System.Action' to 'Microsoft.UI.Dispatching.DispatcherQueueHandler'
-        ((App)Application.Current).MainWindow.DispatcherQueue.TryEnqueue(() => action());
+        var app = Application.Current as App;
+        var dispatcherQueue = app?.MainWindow?.DispatcherQueue;
+
+        if (dispatcherQueue == null)
+        {
+            action();
+            return;
+        }
+
+        if (dispatcherQueue.HasThreadAccess)
+        {
+            action();
+            return;
+        }
+
+        dispatcherQueue.TryEnqueue(() => action());
     }
 }

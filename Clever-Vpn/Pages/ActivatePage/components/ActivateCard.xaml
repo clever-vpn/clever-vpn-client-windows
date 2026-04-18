@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Clever_Vpn.Pages.ActivatePage.components"
     xmlns:vm="using:Clever_Vpn.ViewModel"
+    xmlns:common="using:Clever_Vpn_Windows_Kit.Common"
     xmlns:utils="using:Clever_Vpn.utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -45,7 +46,7 @@
     
        <Button x:Name="ActivateButton"
                Command="{x:Bind Vm.ActivateCommand}"
-               Visibility="{x:Bind utils:Converters.NotEqualToDisplay(Vm.ActivateState, vm:ActivationState.Activating), Mode=OneWay}"
+               Visibility="{x:Bind utils:Converters.NotEqualToDisplay(Vm.VpnApiState, common:ApiState.Running), Mode=OneWay}"
                Style="{StaticResource AccentButtonStyle}"
                x:Uid="Activate"
                HorizontalAlignment="Stretch"
@@ -56,6 +57,6 @@
         <ProgressRing IsActive="True"
                       Margin="0,50,0,0"
                       Width="32" Height="32"
-                      Visibility="{x:Bind utils:Converters.EqualToDisplay(Vm.ActivateState, vm:ActivationState.Activating), Mode=OneWay}" />
+                      Visibility="{x:Bind utils:Converters.EqualToDisplay(Vm.VpnApiState, common:ApiState.Running), Mode=OneWay}" />
     </StackPanel>
 </UserControl>

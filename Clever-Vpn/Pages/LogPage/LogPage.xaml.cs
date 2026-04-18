@@ -3,6 +3,7 @@
 //
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Common;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -49,11 +50,9 @@ public sealed partial class LogPage : Page
 
     async void  OnSaveClick(object sender, RoutedEventArgs e)
     {
-        //((App)Application.Current).MainWindow.GoBack();
-        // 1. 准备文本内容
         var sb = new StringBuilder();
-        foreach (var item in Vm.LogItems)
-            sb.AppendLine($"{item}");
+        foreach (var item in Vm.Logs)
+            sb.AppendLine($"[{FormatLogLevel(item.Level)}] {item.Message}");
 
         // 2. 弹出保存对话框
         var picker = new FileSavePicker
@@ -97,19 +96,26 @@ public sealed partial class LogPage : Page
             }
         }
     }
-    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    private async void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-        Vm.StartFetchLogs();
+        await Vm.SetLogSubscriptionEnabled(true);
     }
 
-    private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+    private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
     {
-        Vm.StopFetchLogs();
+        await Vm.SetLogSubscriptionEnabled(false);
     }
 
-    public static string FormatDateTime(DateTime dateTime)
+    public static string FormatLogLevel(int level)
     {
-        return dateTime.ToString("MM-dd HH:mm:ss");
+        return level switch
+        {
+            >= 4 => "ERROR",
+            3 => "WARN",
+            2 => "INFO",
+            1 => "DEBUG",
+            _ => level.ToString(),
+        };
     }
 
 }

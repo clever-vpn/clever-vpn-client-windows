@@ -232,6 +232,6 @@
 		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxBundlePlatforms>x86|x64|arm64</AppxBundlePlatforms>
-		<AppxPackageDir>C:\Users\bolin\source\Clever-Vpn\Clever-Vpn\Clever-Vpn\bin\Appx</AppxPackageDir>
+		<AppxPackageDir>C:\Users\bolin\Clever-VPN\Clever-VPN-Apps\open-source\windows\Clever-Vpn\Clever-Vpn\bin\Appx\</AppxPackageDir>
 	</PropertyGroup>
 </Project>

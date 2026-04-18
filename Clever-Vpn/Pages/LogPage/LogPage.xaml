@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:c="using:Clever_Vpn.components"
+    xmlns:common="using:Clever_Vpn_Windows_Kit.Common"
     xmlns:utils="using:Clever_Vpn.utils"
     Loaded="UserControl_Loaded"
     Unloaded="UserControl_Unloaded"
@@ -32,16 +33,15 @@
 
                 </c:TopBar>
             </c:Layout.TopBar>
-            <ListView ItemsSource="{x:Bind Vm.LogItems}" Loaded="OnListViewLoaded">
+            <ListView ItemsSource="{x:Bind Vm.Logs}" Loaded="OnListViewLoaded">
                 <ListView.ItemTemplate>
-                    <!-- <DataTemplate x:DataType="utils:LogItem"> -->
-                    <DataTemplate x:DataType="x:String">
+                    <DataTemplate x:DataType="common:LogEntry">
                         <RichTextBlock Padding="8" TextWrapping="Wrap">
                             <Paragraph>
-       <!--                         <Run Text="{x:Bind local:LogPage.FormatDateTime(Stamp), Mode=OneWay}" FontSize="12" Foreground="Gray"/>
-                                <Run Text=" "/>
-                                <Run Text="{x:Bind Message, Mode=OneWay}" FontSize="12"/> -->
-                                <Run Text="{x:Bind Mode=OneWay}" FontSize="12" />  
+                                <Run Text="[" FontSize="12" Foreground="Gray"/>
+                                <Run Text="{x:Bind local:LogPage.FormatLogLevel(Level), Mode=OneWay}" FontSize="12" Foreground="Gray"/>
+                                <Run Text="] " FontSize="12" Foreground="Gray"/>
+                                <Run Text="{x:Bind Message, Mode=OneWay}" FontSize="12" />
                             </Paragraph>
                         </RichTextBlock>
                     </DataTemplate>

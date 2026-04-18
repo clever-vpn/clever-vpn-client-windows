@@ -17,7 +17,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Clever_Vpn.ViewModel;
 using Microsoft.UI.Dispatching;
-using Clever_Vpn_Windows_Kit.Data;
+using Clever_Vpn_Windows_Kit.Common;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -38,6 +38,21 @@ public sealed partial class HomeCardDivider : UserControl
         dqTimer.Interval = TimeSpan.FromMilliseconds(1000);
     }
 
+    private bool IsStartedState(CleverVpnState state)
+    {
+        return state == CleverVpnState.Started;
+    }
+
+    private bool IsIdleState(CleverVpnState state)
+    {
+        return state == CleverVpnState.Idle;
+    }
+
+    private bool IsTransitionState(CleverVpnState state)
+    {
+        return state == CleverVpnState.Starting || state == CleverVpnState.Stopping;
+    }
+
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
         dqTimer.Tick += DqTimer_Tick;
@@ -51,40 +66,40 @@ public sealed partial class HomeCardDivider : UserControl
 
     private void DqTimer_Tick(DispatcherQueueTimer sender, object args)
     {
-        StateTextBlock.Text = StateUIText();
+        StateTextBlock.Text = StateUIText(Vm.VpnState, Vm.StartTime);
     }
 
-    private string GetStateText(CleverVpnState s)
+    private string GetStateText(CleverVpnState state, long startTime)
     {
-       switch (s)
+       switch (state)
         {
-            case CleverVpnState.Up:
+            case CleverVpnState.Started:
                 dqTimer.Start();
                 break;
-            case CleverVpnState.Down:
-                dqTimer.Stop();
-                break;
             default:
+                dqTimer.Stop();
                 break;
         }
 
-        return StateUIText();
+        return StateUIText(state, startTime);
     }
 
 
 
-    private string StateUIText()
+    private string StateUIText(CleverVpnState state, long startTime)
     {
-        if (Vm.VpnState == CleverVpnState.Up || Vm.VpnState == CleverVpnState.Reconnecting)
+        if (state == CleverVpnState.Started)
         {
-            var diff = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Vm.StartTime;
-            TimeSpan timeSpan = TimeSpan.FromSeconds(diff);
+            var diff = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTime;
+            if (diff < 0)
+            {
+                diff = 0;
+            }
+
+            TimeSpan timeSpan = TimeSpan.FromMilliseconds(diff);
             return timeSpan.ToString(@"hh\:mm\:ss");
         }
-        else
-        {
-            return "Vpn Off";
 
-        }
+        return "Vpn Off";
     }
 }

@@ -11,75 +11,114 @@
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Center">
-        <Button  Background="Transparent" BorderThickness="0" Click="OpenDlg">
+        <Button Background="Transparent" BorderThickness="0" Click="OnOpenLineSelectorClick">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
-                <Image x:Name="FlagImage"
-               Width="20"
-               Height="20"
-               Source="{x:Bind GetFlag(Vm.UserInfo), Mode=OneWay}"
-               Stretch="Uniform"/>
-                <TextBlock Text="{x:Bind GetLocationName(Vm.UserInfo), Mode=OneWay}" />
+                <Image Width="20" Height="20"
+                       Source="{x:Bind GetLineIconSource(Vm.UserInfo, Vm.Lines), Mode=OneWay}"
+                       Stretch="Uniform"/>
+                <TextBlock Text="{x:Bind GetLineName(Vm.UserInfo, Vm.Lines), Mode=OneWay}" />
                 <FontIcon Glyph="&#xE70F;" Foreground="DeepSkyBlue" FontSize="14"/>
             </StackPanel>
         </Button>
-        <ContentDialog x:Name="MyDlg">
-            <Grid >
+
+        <ContentDialog x:Name="LineSelectorDlg">
+            <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+
+                <!-- Legend: concise labels with auto wrap to avoid clipping on narrow width -->
+                <ItemsControl Grid.Row="0" Margin="0,0,0,6">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Items>
+                        <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,8,2" VerticalAlignment="Center">
+                            <TextBlock Text="xN" FontWeight="SemiBold"/>
+                            <TextBlock Text="traffic"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,8,2" VerticalAlignment="Center">
+                            <Image Width="14" Height="14"
+                                   Source="{x:Bind local:HomeCardLocationSelector.GetRelayIcon(), Mode=OneWay}"
+                                   Stretch="Uniform"/>
+                            <TextBlock Text="relay"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,2,2" VerticalAlignment="Center">
+                            <Image Width="14" Height="14"
+                                   Source="{x:Bind local:HomeCardLocationSelector.GetUpstreamIcon(), Mode=OneWay}"
+                                   Stretch="Uniform"/>
+                            <TextBlock Text="upstream"/>
+                        </StackPanel>
+                    </ItemsControl.Items>
+                </ItemsControl>
+
+                <!-- Line list: SelectionMode=Single provides standard selection highlight -->
                 <ListView
-                    x:Name="AddressListView"
+                    Grid.Row="1"
+                    x:Name="LineListView"
+                    SelectionMode="Single"
                     IsItemClickEnabled="True"
-                    ItemClick="OnItemClick"
-                    SelectionMode="None">
+                    ItemClick="OnLineItemClick">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="vpn:Location">
-                            <Grid Padding="10">
+                        <DataTemplate x:DataType="vpn:Line">
+                            <Grid Padding="4,6">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image
-                               Width="20"
-                               Height="20"
-                               Source="{x:Bind local:HomeCardLocationSelector.GetFlagFromCode(Code), Mode=OneWay}"
-                               Stretch="Uniform" Margin="0, 0, 20, 0"/>
+                                <Image Width="20" Height="20"
+                                       Source="{x:Bind local:HomeCardLocationSelector.GetLineIconPath(Icon, IconKind), Mode=OneWay}"
+                                       Stretch="Uniform" Margin="0,0,12,0"/>
 
-                                <TextBlock                            
-                                Grid.Column="1"
-                                Text="{x:Bind Label}" />
+                                <TextBlock Grid.Column="1" Text="{x:Bind Label}" VerticalAlignment="Center" Margin="0,0,8,0"/>
 
-                                <!-- Check icon if selected -->
-                                <FontIcon 
-                                Glyph="&#xE73E;"
-                                Foreground="DeepSkyBlue"
-                                Visibility="{x:Bind local:HomeCardLocationSelector.ShowSelected(Id), Mode=OneWay}"
-                                Grid.Column="2" />
+                                <!-- Right aligned: traffic factor + relay/upstream badges -->
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <TextBlock
+                                        Text="{x:Bind local:HomeCardLocationSelector.GetLineFactorText(Factor), Mode=OneWay}"
+                                        Foreground="DeepSkyBlue"
+                                        FontSize="12"
+                                        VerticalAlignment="Center"/>
+                                    <Image Width="14" Height="14"
+                                           Source="{x:Bind local:HomeCardLocationSelector.GetRelayIcon(), Mode=OneWay}"
+                                           Visibility="{x:Bind local:HomeCardLocationSelector.BoolToVisibility(HasRelay), Mode=OneWay}"
+                                           Stretch="Uniform" VerticalAlignment="Center"/>
+                                    <Image Width="14" Height="14"
+                                           Source="{x:Bind local:HomeCardLocationSelector.GetUpstreamIcon(), Mode=OneWay}"
+                                           Visibility="{x:Bind local:HomeCardLocationSelector.BoolToVisibility(HasUpstream), Mode=OneWay}"
+                                           Stretch="Uniform" VerticalAlignment="Center"/>
+                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Grid Grid.Row="1" HorizontalAlignment="Stretch" BorderThickness="0,1,0,0" BorderBrush="LightGray" Margin="0,10,0,0">
-                    <StackPanel Grid.Row="1" 
+                <!-- Footer -->
+                <Grid Grid.Row="2" HorizontalAlignment="Stretch" BorderThickness="0,1,0,0" BorderBrush="LightGray" Margin="0,10,0,0">
+                    <StackPanel
                         Padding="0,10,0,0"
-                        Orientation="Horizontal" 
-                        HorizontalAlignment="Right" 
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Spacing="20">
-                        <Button
-                            Click="OnUpdateClick"
-                        >
-                            <Grid >
-                                <TextBlock x:Name="UpdateButtonText" >Update</TextBlock>
-                                <ProgressRing x:Name="UpdateButtonLoading" Height="22" Width="22" IsActive="True" Visibility="Collapsed"/>
+                        <Button Click="OnRefreshLinesClick">
+                            <Grid>
+                                <TextBlock x:Name="RefreshButtonText">Refresh</TextBlock>
+                                <ProgressRing x:Name="RefreshButtonLoading" Height="22" Width="22" IsActive="True" Visibility="Collapsed"/>
                             </Grid>
                         </Button>
-                        <Button Content="Cancel"
-                      Click="OnCancelClick" />
+                        <Button Content="Cancel" Click="OnCancelClick"/>
                     </StackPanel>
                 </Grid>
             </Grid>

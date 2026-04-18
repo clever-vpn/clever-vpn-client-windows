@@ -2,7 +2,8 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 using Clever_Vpn.ViewModel;
-using Clever_Vpn_Windows_Kit.Data;
+using Clever_Vpn.utils;
+using Clever_Vpn_Windows_Kit.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
@@ -49,19 +50,41 @@ public partial class TrayIconView : UserControl
     [RelayCommand]
     public async Task ExitApplication()
     {
+        var app = (App)Application.Current;
+
+        App.HandleClosedEvents = false;
+
         try
         {
-            App.HandleClosedEvents = false;
-            var app = ((App)Application.Current);
-            app.MainWindow.Hide();
-
             await app.DisposeEx();
-            TrayIcon.Dispose();
-            app.Exit();
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            GlobalExceptionHandler.DebugLog($"Exit cleanup failed: {ex}");
+        }
+        finally
+        {
+            try
+            {
+                TrayIcon.Dispose();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptionHandler.DebugLog($"TrayIcon dispose failed: {ex}");
+            }
+
+            try
+            {
+                app.MainWindow.Close();
+            }
+            catch (Exception ex)
+            {
+                GlobalExceptionHandler.DebugLog($"MainWindow close failed: {ex}");
+            }
+
+            app.Exit();
+            // Ensure the process exits even if background threads keep the message loop alive.
+            Environment.Exit(0);
         }
     }
 
@@ -69,7 +92,7 @@ public partial class TrayIconView : UserControl
     {
         return vm.VpnState switch
         {
-            CleverVpnState.Up => (BitmapImage)Application.Current.Resources["UpIconImage"],
+            CleverVpnState.Started => (BitmapImage)Application.Current.Resources["UpIconImage"],
             _ => (BitmapImage)Application.Current.Resources["NormalIconImage"]
         };
     }

@@ -4,6 +4,8 @@
 using Clever_Vpn.config;
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Client;
+using Clever_Vpn_Windows_Kit.Common;
 using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI;
@@ -47,9 +49,14 @@ namespace Clever_Vpn
     {
         //private static AppInstance _mainInstance;
         public static bool HandleClosedEvents { get; set; } = true;
+        private const uint MbOk = 0x00000000;
+        private const uint MbIconError = 0x00000010;
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern int MessageBoxW(IntPtr hWnd, string lpText, string lpCaption, uint uType);
 
 
-        public VpnViewModel ViewModel { get; } = new();
+        public VpnViewModel ViewModel { get; private set; } = null!;
         public services.AppSettings AppSettings { get; set; } = new();
 
         private Window? _window;
@@ -121,6 +128,17 @@ namespace Clever_Vpn
                 return;
             }
 
+            var initError = await Client.Init(AppConfig.DataDir, Utils.GetAppVersion());
+            if (initError != null)
+            {
+                var message = $"安装/初始化 VPN 服务失败，应用将退出。\n\n{initError.FormattedMessage}";
+                GlobalExceptionHandler.DebugLog($"Client.Init failed: {initError.FormattedMessage}");
+                MessageBoxW(IntPtr.Zero, message, "Clever VPN", MbOk | MbIconError);
+                Environment.Exit(-1);
+                return;
+            }
+
+            ViewModel = new VpnViewModel();
             AppSettings = await services.SettingsService.LoadAsync();
             _window = new MainWindow();
             ViewModel.PropertyChanged += vm_PropertyChanged;
@@ -163,10 +181,10 @@ namespace Clever_Vpn
                 {
                     switch (ViewModel.VpnState)
                     {
-                        case CleverVpnState.Up:
+                        case CleverVpnState.Started:
                             BadgeNotificationManager.Current.SetBadgeAsGlyph(BadgeNotificationGlyph.Available);
                             break;
-                        case CleverVpnState.Down:
+                        case CleverVpnState.Idle:
                             BadgeNotificationManager.Current.SetBadgeAsGlyph(BadgeNotificationGlyph.None);
                             break;
                         default:
@@ -177,21 +195,21 @@ namespace Clever_Vpn
                 {
                     switch (ViewModel.VpnState)
                     {
-                        case CleverVpnState.Up:
+                        case CleverVpnState.Started:
                             MainWindow.SetIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets/appIcon-with-check.ico"));
                             break;
-                        case CleverVpnState.Down:
+                        case CleverVpnState.Idle:
                             MainWindow.SetIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets/appIcon.ico"));
                             break;
                         default:
                             break;
                     }
                 }
-                if (ViewModel.VpnState == CleverVpnState.Up)
+                if (ViewModel.VpnState == CleverVpnState.Started)
                 {
                     MainWindow.Title = "Clever VPN - Connected";
                 }
-                else if (ViewModel.VpnState == CleverVpnState.Down)
+                else if (ViewModel.VpnState == CleverVpnState.Idle)
                 {
                     MainWindow.Title = "Clever VPN - Disconnected";
                 }

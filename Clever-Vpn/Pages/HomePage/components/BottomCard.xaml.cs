@@ -17,7 +17,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Clever_Vpn.config;
 using Clever_Vpn.ViewModel;
-using Clever_Vpn_Windows_Kit.Data;
+using Clever_Vpn_Windows_Kit.Common;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,7 +37,7 @@ public sealed partial class BottomCard : UserControl
     {
         return s switch
         {
-            CleverVpnState.Down or CleverVpnState.Connecting or CleverVpnState.Disconnecting => true,
+            CleverVpnState.Idle or CleverVpnState.Starting or CleverVpnState.Stopping => true,
             _ => false,
         };
     }
@@ -46,8 +46,7 @@ public sealed partial class BottomCard : UserControl
     {
         return s switch
         {
-            //CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => true,
-            CleverVpnState.Up or CleverVpnState.Reconnecting  => true,
+            CleverVpnState.Started => true,
             _ => false,
         };
     }

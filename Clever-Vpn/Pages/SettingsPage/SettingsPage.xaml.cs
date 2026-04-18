@@ -98,10 +98,12 @@ namespace Clever_Vpn.Pages.SettingsPage
         {
             return type switch
             {
-                ProtocolType.AUTO => "auto Select Protocol (default)",
-                ProtocolType.UDP => "for low packet loss",
-                ProtocolType.KUDP => "for high packet loss",
-                ProtocolType.TCP => "for UDP not available",
+                ProtocolType.Auto => "auto Select Protocol (default)",
+                ProtocolType.UdpTunnel => "for low packet loss",
+                ProtocolType.UdpFast => "for low latency",
+                ProtocolType.UdpStable => "for unstable network",
+                ProtocolType.TcpFast => "for UDP not available",
+                ProtocolType.TcpStable => "for high reliability",
                 _ => string.Empty,
             };
         }
@@ -140,7 +142,7 @@ namespace Clever_Vpn.Pages.SettingsPage
         //}
 
         string GetVersion { get; } = Utils.GetAppVersion();
-        string SupportUrl => vm.UserInfo?.Url ?? "https://www.clevert-vpn.net";
+        string SupportUrl => vm.UserInfo?.ProviderUrl ?? "https://www.clevert-vpn.net";
 
     }
 }

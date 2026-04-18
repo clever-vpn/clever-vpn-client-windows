@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 using Clever_Vpn.ViewModel;
-using Clever_Vpn_Windows_Kit.Data;
+using Clever_Vpn_Windows_Kit.Common;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -46,10 +46,10 @@ public sealed partial class HomeCard : UserControl
         var ret = OnOffSwitch.IsOn;
         switch (s)
         {
-            case CleverVpnState.Down:
+            case CleverVpnState.Idle:
                 ret = false;
                 break;
-            case CleverVpnState.Up:
+            case CleverVpnState.Started:
                 ret = true;
                 break;
             default:
@@ -62,7 +62,7 @@ public sealed partial class HomeCard : UserControl
     {
         return s switch
         {
-            CleverVpnState.Down or CleverVpnState.Up => true,
+            CleverVpnState.Idle or CleverVpnState.Started => true,
             _ => false,
         };
     }

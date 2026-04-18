@@ -3,8 +3,7 @@
 //
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
-using Clever_Vpn_Windows_Kit.Data;
-using Microsoft.UI.Dispatching;
+using Clever_Vpn_Windows_Kit.Common;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -14,10 +13,10 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -29,39 +28,38 @@ namespace Clever_Vpn.Pages.HomePage.components;
 public sealed partial class TrafficCard : UserControl
 {
     VpnViewModel Vm { get; } = ((App)Application.Current).ViewModel;
-    readonly DispatcherQueueTimer dqTimer;
 
     public TrafficCard()
     {
         InitializeComponent();
-        var dq = DispatcherQueue.GetForCurrentThread();
-        dqTimer = dq.CreateTimer();
-        dqTimer.Interval = TimeSpan.FromMilliseconds(1000);
     }
 
-    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    private async void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-        dqTimer.Start();
-        dqTimer.Tick += DqTimer_Tick;
-        DqTimer_Tick(null, null);
+        Vm.PropertyChanged += Vm_PropertyChanged;
+        UpdateTrafficText();
+        await Vm.SetTrafficSubscriptionEnabled(true);
     }
 
-    private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+    private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
     {
-        dqTimer.Tick -= DqTimer_Tick;
-        dqTimer.Stop();
+        Vm.PropertyChanged -= Vm_PropertyChanged;
+        await Vm.SetTrafficSubscriptionEnabled(false);
     }
 
-    private async void DqTimer_Tick(DispatcherQueueTimer? sender, object? args)
+    private void Vm_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        Traffic traffic = await Task<Traffic>.Run(async () =>
+        if (e.PropertyName == nameof(VpnViewModel.Traffic))
         {
-            return await Vm.GetTraffic();
-        });
+            UpdateTrafficText();
+        }
+    }
 
+    private void UpdateTrafficText()
+    {
+        var traffic = Vm.Traffic ?? new Traffic(0, 0);
         RxTextBlock.Text = Utils.PrettyBytes(traffic.Rx);
         TxTextBlock.Text = Utils.PrettyBytes(traffic.Tx);
-
     }
 
 }

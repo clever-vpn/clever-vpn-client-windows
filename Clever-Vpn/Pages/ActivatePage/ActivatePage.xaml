@@ -16,22 +16,22 @@
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup> 
                 
-                <VisualState x:Name="NotLocalCheckState">
+                <VisualState x:Name="NotWaitingState">
                     <VisualState.StateTriggers>
                         <triggers:IsNotEqualStateTrigger
                             Value="{x:Bind  vm.ActivateState, Mode=OneWay}"
-                            To="{x:Bind vm:ActivationState.LocalCheck }" />
+                            To="{x:Bind vm:ActivationState.Waiting }" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootPanel.VerticalAlignment" Value="{x:Null}" />
                         <Setter Target="ActivateCard.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState> 
-                <VisualState x:Name="LocalCheckState">
+                <VisualState x:Name="WaitingState">
                     <VisualState.StateTriggers>
                         <triggers:IsEqualStateTrigger                             
                             Value="{x:Bind  vm.ActivateState, Mode=OneWay}"
-                            To="{x:Bind vm:ActivationState.LocalCheck }" />
+                            To="{x:Bind vm:ActivationState.Waiting }" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootPanel.VerticalAlignment" Value="Center" />

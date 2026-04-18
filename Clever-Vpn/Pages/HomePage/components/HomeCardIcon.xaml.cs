@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 using Clever_Vpn.ViewModel;
-using Clever_Vpn_Windows_Kit.Data;
+using Clever_Vpn_Windows_Kit.Common;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -36,8 +36,7 @@ public sealed partial class HomeCardIcon : UserControl
     {
         return state switch
         {
-            //CleverVpnState.Up or CleverVpnState.Reconnecting or CleverVpnState.Disconnecting => Visibility.Visible,
-            CleverVpnState.Up or CleverVpnState.Reconnecting => Visibility.Visible,
+            CleverVpnState.Started => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }
@@ -46,7 +45,7 @@ public sealed partial class HomeCardIcon : UserControl
     {
         return state switch
         {
-            CleverVpnState.Down or CleverVpnState.Connecting or CleverVpnState.Disconnecting => Visibility.Visible,
+            CleverVpnState.Idle or CleverVpnState.Starting or CleverVpnState.Stopping => Visibility.Visible,
             _ => Visibility.Collapsed,
         };
     }

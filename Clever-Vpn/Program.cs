@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Windows.Storage;
+using Clever_Vpn_Windows_Kit.Services;
 
 namespace Clever_Vpn;
 #if DISABLE_XAML_GENERATED_MAIN
@@ -21,7 +22,7 @@ public static class Program
     [global::System.STAThreadAttribute]
     static async Task Main(string[] args)
     {
-        if (await Clever_Vpn_Windows_Kit.Service.Run(new Clever_Vpn_Windows_Kit.CleverVpnConfiguration(10, 1200))) return;
+        if (await Service.Run()) return;
 
         global::WinRT.ComWrappersSupport.InitializeComWrappers();
         global::Microsoft.UI.Xaml.Application.Start((p) =>

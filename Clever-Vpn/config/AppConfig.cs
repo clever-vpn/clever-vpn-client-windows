@@ -1,13 +1,9 @@
 ﻿// Copyright (c) 2025 CleverVPN Team
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
-using Microsoft.Windows.Storage;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Clever_Vpn.utils;
 
 namespace Clever_Vpn.config
 {
@@ -18,7 +14,18 @@ namespace Clever_Vpn.config
         public const string AppName = "CleverVpn";
         public const int OnOffIconSize = (int) (Height / 5.5);
         public const string AutoStartUpFlag = "auto-startup";
-        public static string DataDir = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData), config.AppConfig.AppName);
+
+        // Single source of truth for both app local data and kit initialization path.
+        public static string DataDir => GetClientDataPath();
+
+        private static string GetClientDataPath()
+        {
+            if (Utils.IsPackaged())
+            {
+                return Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "CleverVpnData");
+            }
+
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CleverVpnData");
+        }
     }
 }

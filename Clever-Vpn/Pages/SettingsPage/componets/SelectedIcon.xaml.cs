@@ -44,7 +44,7 @@ public sealed partial class SelectedIcon : UserControl
             nameof(ProtocolType),
             typeof(ProtocolType),
             typeof(SelectedIcon),
-            new PropertyMetadata(ProtocolType.AUTO));
+            new PropertyMetadata(ProtocolType.Auto));
 
    Visibility ProtocolTypeSelector(ProtocolType e, ProtocolType t) {
         if (e == t)

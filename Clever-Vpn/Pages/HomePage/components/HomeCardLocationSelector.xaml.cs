@@ -1,32 +1,17 @@
 ﻿// Copyright (c) 2025 CleverVPN Team
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
-using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
 using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage.Streams;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace Clever_Vpn.Pages.HomePage.components;
 
@@ -39,100 +24,95 @@ public sealed partial class HomeCardLocationSelector : UserControl
         InitializeComponent();
     }
 
-    private ImageSource GetFlag(UserInfo? userInfo)
+    /// <summary>
+    /// Resolves the effective current Line: match by UserInfo.Line, fall back to the default Line.
+    /// </summary>
+    private static Line? ResolveCurrentLine(UserInfo? userInfo, List<Line> lines)
     {
-        string? code = null;
-        var locationId = userInfo?.LocationId;
-
-        if (locationId != null)
+        var lineId = userInfo?.Line ?? 0;
+        if (lineId > 0)
         {
-            code = Vm.Locations.Find(x => x.Id == locationId)?.Code;
+            var found = lines.Find(x => x.Id == lineId);
+            if (found != null) return found;
         }
-
-        return GetFlagFromCode(code);
+        return lines.Find(x => x.IsDefault == true);
     }
 
-    private string GetLocationName(UserInfo? userInfo)
-    {
-       var locationId = userInfo?.LocationId;
-        var name = GetI18nFromKey("AutoSelected");
-        if (locationId != null)
-        {
-            name = Vm.Locations.Find(x => x.Id == locationId)?.Label ?? name;
-        } 
+    // Instance methods for x:Bind – dependency on both UserInfo and Lines ensures re-evaluation on either change.
+    private ImageSource GetLineIconSource(UserInfo? userInfo, List<Line> lines)
+        => GetLineIcon(ResolveCurrentLine(userInfo, lines));
 
-        return name;
+    private string GetLineName(UserInfo? userInfo, List<Line> lines)
+        => ResolveCurrentLine(userInfo, lines)?.Label ?? string.Empty;
+
+    private async void OnOpenLineSelectorClick(object sender, RoutedEventArgs e)
+    {
+        RefreshLineList();
+        await LineSelectorDlg.ShowAsync();
     }
 
-    private async void  OpenDlg(object sender, RoutedEventArgs e)
+    private async void OnLineItemClick(object sender, ItemClickEventArgs e)
     {
-        UpdateUILocations();
-        await MyDlg.ShowAsync();
-    }
-    private async void OnItemClick(object sender, ItemClickEventArgs e)
-    {
-        var location = (Location)e.ClickedItem;
-        int? id = (location.Id == -1) ? null : location.Id;
-        await Vm.UpdateLocation(id);
-        MyDlg.Hide();
+        if (e.ClickedItem is not Line line) return;
+        await Vm.UpdateLine(line.Id);
+        LineSelectorDlg.Hide();
     }
 
-    private async void OnUpdateClick(object sender, RoutedEventArgs e)
+    private async void OnRefreshLinesClick(object sender, RoutedEventArgs e)
     {
-        UpdateButtonLoading.Visibility = Visibility.Visible;
-        UpdateButtonText.Opacity = 0;
+        RefreshButtonLoading.Visibility = Visibility.Visible;
+        RefreshButtonText.Opacity = 0;
 
-        await Vm.UpdateLocations(true);
-        UpdateUILocations();
+        await Vm.RefreshLines();
+        RefreshLineList();
 
-        UpdateButtonLoading.Visibility = Visibility.Collapsed;
-        UpdateButtonText.Opacity = 1;
+        RefreshButtonLoading.Visibility = Visibility.Collapsed;
+        RefreshButtonText.Opacity = 1;
     }
 
-    private void UpdateUILocations()
+    private void RefreshLineList()
     {
+        var lines = Vm.Lines
+            .OrderByDescending(x => x.IsDefault == true)
+            .ThenBy(x => x.Label, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
 
-        List<Location> newList = (new[] { new Location(-1, "", GetI18nFromKey("AutoSelected")) }).Concat(Vm.Locations).ToList();
-        AddressListView.ItemsSource = newList;
-    }
+        LineListView.ItemsSource = lines;
 
-    private string GetI18nFromKey(string key)
-    {
-        var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse();
-        return  resourceLoader.GetString(key);
-        
+        var currentLine = ResolveCurrentLine(Vm.UserInfo, lines);
+        LineListView.SelectedItem = currentLine != null
+            ? lines.Find(x => x.Id == currentLine.Id)
+            : null;
     }
 
     private void OnCancelClick(object sender, RoutedEventArgs e)
     {
-        MyDlg.Hide();
+        LineSelectorDlg.Hide();
     }
 
-    public static Visibility ShowSelected(int id)
+    public static ImageSource GetLineIcon(Line? line)
     {
-        VpnViewModel Vm = ((App)Application.Current).ViewModel;
-        if (Vm.UserInfo?.LocationId == id)
-        {
-            return Visibility.Visible;
-        }
-        else
-        {
-            return Visibility.Collapsed;
-        }
-    }
-
-    public static ImageSource GetFlagFromCode(string? code)
-    {
-        if (code?.Length > 0)
-        {
-            return new SvgImageSource(new Uri($"ms-appx:///Assets/Flags/{code.ToLower()}.svg"));
-        }
-        else
-        {
+        if (line == null)
             return new SvgImageSource(new Uri("ms-appx:///Assets/Flags/global.svg"));
-
-        }
+        return GetLineIconPath(line.Icon, line.IconKind);
     }
 
+    public static ImageSource GetLineIconPath(string? icon, string? iconKind)
+    {
+        var relativePath = LineIconResolver.GetSvgRelativePath(icon, iconKind);
+        return new SvgImageSource(new Uri($"ms-appx:///{relativePath}"));
+    }
 
+    public static ImageSource GetRelayIcon() => GetLineIconPath("relay", "service");
+
+    public static ImageSource GetUpstreamIcon() => GetLineIconPath("upstream", "service");
+
+    public static string GetLineFactorText(double factor)
+    {
+        var f = factor > 0 ? factor : 1d;
+        return $"x{f.ToString("0.##", CultureInfo.InvariantCulture)}";
+    }
+
+    public static Visibility BoolToVisibility(bool value)
+        => value ? Visibility.Visible : Visibility.Collapsed;
 }
