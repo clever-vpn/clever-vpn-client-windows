@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,7 +76,7 @@ public partial class VpnViewModel : ObservableObject
     public partial VpnConnectionInfo? ConnectionInfo { get; set; }
 
     [ObservableProperty]
-    public partial List<LogEntry> Logs { get; set; } = [];
+    public partial ObservableCollection<LogEntry> Logs { get; set; } = [];
 
     [ObservableProperty]
     public partial List<Line> Lines { get; set; } = [];
@@ -116,7 +117,7 @@ public partial class VpnViewModel : ObservableObject
         }
         else
         {
-            if (VpnState == CleverVpnState.Started)
+            if (VpnState == CleverVpnState.Started || VpnState == CleverVpnState.Starting)
             {
                 await _client.Stop();
                 setting.VpnIsOn = false;
@@ -132,6 +133,11 @@ public partial class VpnViewModel : ObservableObject
     public async Task UpdateLine(int? id)
     {
         await _client.UpdateLine(id);
+    }
+
+    public async Task UpdateSplit(SplitInfo splitInfo)
+    {
+        await _client.UpdateSplit(splitInfo);
     }
 
     public async Task RefreshLines()
@@ -221,7 +227,7 @@ public partial class VpnViewModel : ObservableObject
         {
             runUI(() =>
             {
-                Logs = logs;
+                SyncLogs(logs);
             });
         };
     }
@@ -233,9 +239,48 @@ public partial class VpnViewModel : ObservableObject
         StartTime = _client.ConnectionStartTime;
         UserInfo = _client.UserInfo;
         Traffic = _client.Traffic;
-        Logs = _client.Logs;
+        SyncLogs(_client.Logs);
         Lines = _client.Lines;
         UpdateActivateState();
+    }
+
+    private void SyncLogs(IReadOnlyList<LogEntry> logs)
+    {
+        if (logs == null || logs.Count == 0)
+        {
+            Logs.Clear();
+            return;
+        }
+
+        // Fast path: when incoming snapshot preserves the current prefix, append only the tail.
+        if (logs.Count >= Logs.Count)
+        {
+            var prefixMatches = true;
+            for (var i = 0; i < Logs.Count; i++)
+            {
+                if (!Equals(Logs[i], logs[i]))
+                {
+                    prefixMatches = false;
+                    break;
+                }
+            }
+
+            if (prefixMatches)
+            {
+                for (var i = Logs.Count; i < logs.Count; i++)
+                {
+                    Logs.Add(logs[i]);
+                }
+
+                return;
+            }
+        }
+
+        Logs.Clear();
+        foreach (var log in logs)
+        {
+            Logs.Add(log);
+        }
     }
 
     private void UpdateActivateState()

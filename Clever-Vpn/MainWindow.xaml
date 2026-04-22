@@ -13,6 +13,7 @@
     xmlns:behaviors="using:Clever_Vpn.behaviors" 
     xmlns:components="using:Clever_Vpn.components"
     mc:Ignorable="d"
+    x:Uid="MainWindow"
     Title="Clever-Vpn">
 
     <winuiEx:WindowEx.SystemBackdrop >
@@ -25,11 +26,46 @@
             </interactivity:Interaction.Behaviors>
         </Frame>
         <InfoBar
-            IsOpen="{x:Bind utils:Converters.ConvertObjectToBool(vm.LastError), Mode=OneWay}"
+            x:Name="MainErrorBar"
+            IsOpen="False"
             CloseButtonCommand="{x:Bind vm.ClearLastErrorCommand}"
             Severity="Warning"
-            Title="Warning"
-            Message="{x:Bind vm.LastError.FormattedMessage, Mode=OneWay}" />
+            x:Uid="MainWindowWarningBar"
+            Message="">
+            <InfoBar.Content>
+                <Grid RowSpacing="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        IsTextSelectionEnabled="True"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Text="{x:Bind vm.LastError.FormattedMessage, Mode=OneWay}" />
+
+                    <AppBarButton
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Padding="0"
+                        Margin="0,-10,0,0"
+                        Width="24"
+                        Height="36"
+                        MinWidth="24"
+                        MinHeight="24"
+                        Click="OnCopyErrorClick"
+                        ToolTipService.ToolTip="Copy error message"
+                        IsCompact="True">
+                        <AppBarButton.Icon>
+                            <FontIcon x:Name="CopyErrorIcon" Glyph="&#xE8C8;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                </Grid>
+            </InfoBar.Content>
+        </InfoBar>
          <components:TrayIconView  x:Name="TrayIconView" />
     </Grid>
 

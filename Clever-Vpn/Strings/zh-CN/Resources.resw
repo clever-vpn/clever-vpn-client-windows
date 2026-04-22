@@ -138,10 +138,10 @@
   <data name="Logs.Title" xml:space="preserve">
     <value>日志</value>
   </data>
-  <data name="LogsButton.Content" xml:space="preserve">
+  <data name="LogsButton.Text" xml:space="preserve">
     <value>日志详情</value>
   </data>
-  <data name="AbountUs.Title" xml:space="preserve">
+  <data name="AboutUs.Title" xml:space="preserve">
     <value>关于我们</value>
   </data>
   <data name="Website.Text" xml:space="preserve">
@@ -164,5 +164,144 @@
   </data>
   <data name="Logs1.Text" xml:space="preserve">
     <value>日志</value>
+  </data>
+  <data name="SplitTitle.Text" xml:space="preserve">
+    <value>分流</value>
+  </data>
+  <data name="SplitRegionTitle.Text" xml:space="preserve">
+    <value>区域</value>
+  </data>
+  <data name="SplitRegionEnable.Header" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SplitRegionCodeLabel.Text" xml:space="preserve">
+    <value>区域代码</value>
+  </data>
+  <data name="SplitIpTitle.Text" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="SplitIpEnable.Header" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SplitIpEditor.PlaceholderText" xml:space="preserve">
+    <value>45.77.181.25/32</value>
+  </data>
+  <data name="SplitDomainTitle.Text" xml:space="preserve">
+    <value>域名</value>
+  </data>
+  <data name="SplitDomainEnable.Header" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SplitBasicDomainEditor.PlaceholderText" xml:space="preserve">
+    <value>www.google.com
+.google.com</value>
+  </data>
+  <data name="SplitDomainAdvanced.Header" xml:space="preserve">
+    <value>高级</value>
+  </data>
+  <data name="SplitAdvancedDomainEditor.PlaceholderText" xml:space="preserve">
+    <value>^.+\.google.com$</value>
+  </data>
+  <data name="MainWindow.Title" xml:space="preserve">
+    <value>Clever-Vpn</value>
+  </data>
+  <data name="MainWindowWarningBar.Title" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="TrayIcon.ToolTipText" xml:space="preserve">
+    <value>欢迎使用 Clever VPN</value>
+  </data>
+  <data name="TrayMenuShowHide.Text" xml:space="preserve">
+    <value>显示/隐藏窗口</value>
+  </data>
+  <data name="TrayMenuExit.Text" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="ActivateHeaderTitle.Text" xml:space="preserve">
+    <value>Clever VPN</value>
+  </data>
+  <data name="ActivateHeaderSubtitle.Text" xml:space="preserve">
+    <value>高速现代 VPN</value>
+  </data>
+  <data name="InputKeyBox.PlaceholderText" xml:space="preserve">
+    <value>示例: 1111-1111-1111-1111</value>
+  </data>
+  <data name="LineSelectorLegendFactor.Text" xml:space="preserve">
+    <value>xN</value>
+  </data>
+  <data name="LineSelectorLegendTraffic.Text" xml:space="preserve">
+    <value>倍率</value>
+  </data>
+  <data name="LineSelectorLegendRelay.Text" xml:space="preserve">
+    <value>中继</value>
+  </data>
+  <data name="LineSelectorLegendUpstream.Text" xml:space="preserve">
+    <value>上游</value>
+  </data>
+  <data name="LineSelectorRefresh.Text" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="LineSelectorCancel.Content" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="LogSaveInfoBar.Title" xml:space="preserve">
+    <value>保存日志</value>
+  </data>
+  <data name="LogSaveInfoBar.Message" xml:space="preserve">
+    <value>日志文件保存成功！</value>
+  </data>
+  <data name="LogSaveFileTypeText" xml:space="preserve">
+    <value>文本文件</value>
+  </data>
+  <data name="LogSaveFileName" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="LogSaveSuccessMessageFormat" xml:space="preserve">
+    <value>日志文件 {0} 保存成功！</value>
+  </data>
+  <data name="SettingsActivationTitle.Text" xml:space="preserve">
+    <value>激活码</value>
+  </data>
+  <data name="SettingsProtocolTitle.Text" xml:space="preserve">
+    <value>协议</value>
+  </data>
+  <data name="SettingsConnectionInfoTitle.Text" xml:space="preserve">
+    <value>连接信息</value>
+  </data>
+  <data name="SettingsConnectionProtocolLabel.Text" xml:space="preserve">
+    <value>协议</value>
+  </data>
+  <data name="SettingsConnectionDelayLabel.Text" xml:space="preserve">
+    <value>延迟</value>
+  </data>
+  <data name="SettingsConnectionUpstreamLabel.Text" xml:space="preserve">
+    <value>上游</value>
+  </data>
+  <data name="SettingsSplitTitle.Text" xml:space="preserve">
+    <value>分流</value>
+  </data>
+  <data name="SettingsSplitSubtitle.Text" xml:space="preserve">
+    <value>区域、IP、域名与正则规则</value>
+  </data>
+  <data name="SettingsRunAtStartupTitle.Text" xml:space="preserve">
+    <value>开机启动</value>
+  </data>
+  <data name="SettingsRunAtStartupSubtitle.Text" xml:space="preserve">
+    <value>Windows 启动时自动启动 Clever VPN</value>
+  </data>
+  <data name="SettingsLogsSubtitle.Text" xml:space="preserve">
+    <value>查看实时运行日志</value>
+  </data>
+  <data name="SettingsAboutTitle.Text" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="SettingsCopyTooltip" xml:space="preserve">
+    <value>复制激活码</value>
+  </data>
+  <data name="SettingsCopiedTooltip" xml:space="preserve">
+    <value>已复制</value>
+  </data>
+  <data name="SettingsCopyButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>复制激活码</value>
   </data>
 </root>

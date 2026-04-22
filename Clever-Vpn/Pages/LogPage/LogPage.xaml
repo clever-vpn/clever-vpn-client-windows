@@ -33,22 +33,16 @@
 
                 </c:TopBar>
             </c:Layout.TopBar>
-            <ListView ItemsSource="{x:Bind Vm.Logs}" Loaded="OnListViewLoaded">
+            <ListView ItemsSource="{x:Bind Vm.Logs, Mode=OneWay}" Loaded="OnListViewLoaded" ContainerContentChanging="OnLogContainerContentChanging">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="common:LogEntry">
-                        <RichTextBlock Padding="8" TextWrapping="Wrap">
-                            <Paragraph>
-                                <Run Text="[" FontSize="12" Foreground="Gray"/>
-                                <Run Text="{x:Bind local:LogPage.FormatLogLevel(Level), Mode=OneWay}" FontSize="12" Foreground="Gray"/>
-                                <Run Text="] " FontSize="12" Foreground="Gray"/>
-                                <Run Text="{x:Bind Message, Mode=OneWay}" FontSize="12" />
-                            </Paragraph>
-                        </RichTextBlock>
+                        <RichTextBlock Padding="8" TextWrapping="Wrap" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </c:Layout>
         <InfoBar x:Name="InfoBar"
+            x:Uid="LogSaveInfoBar"
             Margin="0,40,0,0"
             Severity="Success"
             Title="Save Logs"

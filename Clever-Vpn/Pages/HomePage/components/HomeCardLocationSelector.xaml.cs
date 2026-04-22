@@ -93,7 +93,7 @@ public sealed partial class HomeCardLocationSelector : UserControl
     public static ImageSource GetLineIcon(Line? line)
     {
         if (line == null)
-            return new SvgImageSource(new Uri("ms-appx:///Assets/Flags/global.svg"));
+            return GetLineIconPath(null, "service");
         return GetLineIconPath(line.Icon, line.IconKind);
     }
 

@@ -3,6 +3,7 @@
 //
 using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Common;
 using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -13,13 +14,18 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.ApplicationModel.DataTransfer;
+using Microsoft.UI.Dispatching;
+using Windows.ApplicationModel.Resources;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,17 +38,27 @@ namespace Clever_Vpn.Pages.SettingsPage
     public sealed partial class SettingsPage : Page
     {
         VpnViewModel vm { get; } = ((App)Application.Current).ViewModel;
+        private const string CopyGlyph = "\uE8C8";
+        private const string CopiedGlyph = "\uE73E";
+        private readonly DispatcherQueueTimer _copyIconResetTimer;
+        private static readonly ResourceLoader ResourceLoader = ResourceLoader.GetForViewIndependentUse();
 
-        private string testKey = "123";
         public SettingsPage()
         {
             InitializeComponent();
             Loaded += OnSettingsPageLoaded;
+            Unloaded += OnSettingsPageUnloaded;
+
+            _copyIconResetTimer = DispatcherQueue.GetForCurrentThread().CreateTimer();
+            _copyIconResetTimer.Interval = TimeSpan.FromSeconds(2.5);
+            _copyIconResetTimer.IsRepeating = false;
+            _copyIconResetTimer.Tick += OnCopyIconResetTimerTick;
         }
 
         private async void OnSettingsPageLoaded(object sender, RoutedEventArgs e)
         {
             Loaded -= OnSettingsPageLoaded;
+            ResetCopyIcon();
             if (Utils.IsPackaged())
             {
                 StartupToggle.IsOn = await AutoStartHelper.IsAutoStartEnabledPackaged();
@@ -51,6 +67,11 @@ namespace Clever_Vpn.Pages.SettingsPage
             {
                 StartupToggle.IsOn = AutoStartHelper.IsAutoStartEnabledUnPackaged();
             }
+        }
+
+        private void OnSettingsPageUnloaded(object sender, RoutedEventArgs e)
+        {
+            _copyIconResetTimer.Stop();
         }
 
         void OnBackClick(object sender, RoutedEventArgs e)
@@ -82,15 +103,131 @@ namespace Clever_Vpn.Pages.SettingsPage
             if (listView != null)
             {
                 listView.ItemsSource = Enum.GetValues(typeof(ProtocolType)).Cast<ProtocolType>();
+                if (vm.UserInfo != null)
+                {
+                    listView.SelectedItem = vm.UserInfo.ProtocolType;
+                }
             }
 
         }
 
-        async void OnProtocolItemClick(object sender, ItemClickEventArgs e)
+        async void OnProtocolSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var type = (ProtocolType)e.ClickedItem;
+            if (e.AddedItems.Count == 0)
+            {
+                return;
+            }
+
+            var type = (ProtocolType)e.AddedItems[0];
             await vm.UpdateProtocolType(type);
-            //OnProtocolSettingLoaded(sender, e);
+        }
+
+        void OnCopyKeyClick(object sender, RoutedEventArgs e)
+        {
+            var key = FormatKey(vm.UserInfo);
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return;
+            }
+
+            if (TryCopyToClipboard(key))
+            {
+                ShowCopiedIconState();
+            }
+        }
+
+        private static bool TryCopyToClipboard(string text)
+        {
+            try
+            {
+                var dataPackage = new DataPackage();
+                dataPackage.SetText(text);
+                Clipboard.SetContent(dataPackage);
+                Clipboard.Flush();
+                return true;
+            }
+            catch (COMException)
+            {
+                // Fallback for environments where WinRT clipboard API is unavailable.
+                return TryCopyWithClipExe(text);
+            }
+        }
+
+        private static bool TryCopyWithClipExe(string text)
+        {
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = "clip",
+                    RedirectStandardInput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+
+                using var process = Process.Start(startInfo);
+                if (process == null)
+                {
+                    return false;
+                }
+
+                process.StandardInput.Write(text);
+                process.StandardInput.Close();
+                process.WaitForExit();
+                return process.ExitCode == 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void ShowCopiedIconState()
+        {
+            if (CopyKeyIcon == null)
+            {
+                return;
+            }
+
+            CopyKeyIcon.Glyph = CopiedGlyph;
+            ToolTipService.SetToolTip(CopyKeyIconButton, GetResource("SettingsCopiedTooltip", "Copied"));
+            _copyIconResetTimer.Stop();
+            _copyIconResetTimer.Start();
+        }
+
+        private void OnCopyIconResetTimerTick(DispatcherQueueTimer sender, object args)
+        {
+            sender.Stop();
+            ResetCopyIcon();
+        }
+
+        private void ResetCopyIcon()
+        {
+            if (CopyKeyIcon == null)
+            {
+                return;
+            }
+
+            CopyKeyIcon.Glyph = CopyGlyph;
+            ToolTipService.SetToolTip(CopyKeyIconButton, GetResource("SettingsCopyTooltip", "Copy activation code"));
+        }
+
+        private static string GetResource(string key, string fallback)
+        {
+            try
+            {
+                var value = ResourceLoader.GetString(key);
+                return string.IsNullOrWhiteSpace(value) ? fallback : value;
+            }
+            catch
+            {
+                return fallback;
+            }
+        }
+
+        void OnSplitSettingsClick(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current).MainWindow.Navigate(typeof(SplitSettingsPage), null);
         }
 
 
@@ -113,6 +250,7 @@ namespace Clever_Vpn.Pages.SettingsPage
             VpnViewModel vm  = ((App)Application.Current).ViewModel;
             return  (vm.UserInfo?.ProtocolType == type) ? Visibility.Visible : Visibility.Collapsed;
         }
+
        public string FormatKey(UserInfo? userInfo)
         {
             string key = userInfo?.Key?.Replace("-", "") ?? "";
@@ -126,6 +264,22 @@ namespace Clever_Vpn.Pages.SettingsPage
                 })
                 .Where(s => s.Trim().Length > 0));
         }
+
+        public string GetConnectionProtocol(VpnConnectionInfo? connectionInfo)
+            => string.IsNullOrWhiteSpace(connectionInfo?.Protocol) ? "None" : connectionInfo!.Protocol;
+
+        public string GetCurrentProtocolSummary(UserInfo? userInfo)
+            => $"Current: {(userInfo?.ProtocolType ?? ProtocolType.Auto)}";
+
+        public string GetConnectionSubtitle(VpnConnectionInfo? connectionInfo)
+            => $"Protocol: {GetConnectionProtocol(connectionInfo)}";
+
+        // Current kit model does not expose delay yet, keep placeholder as None.
+        public string GetConnectionDelay(VpnConnectionInfo? connectionInfo)
+            => "None";
+
+        public string GetConnectionUpstream(VpnConnectionInfo? connectionInfo)
+            => string.IsNullOrWhiteSpace(connectionInfo?.UpStream) ? "None" : connectionInfo!.UpStream!;
 
         //public string FormatKey(string? key)
         //{

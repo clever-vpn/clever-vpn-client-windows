@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:c="using:Clever_Vpn.components"
-    xmlns:c1="using:Clever_Vpn.Pages.SettingsPage.componets"
     xmlns:utils="using:Clever_Vpn.utils"
     xmlns:vpn="using:Clever_Vpn_Windows_Kit.Data"
     mc:Ignorable="d">
@@ -26,77 +25,255 @@
                     <TextBlock x:Uid="SettingTitle"  Style="{StaticResource SubtitleTextBlockStyle}" />
                 </c:TopBar>
             </c:Layout.TopBar>
-            <ScrollViewer>
-                <StackPanel >
-                    <c1:SettingPanel x:Uid="Key">
-                        <StackPanel>
-                            <TextBlock Text="{x:Bind FormatKey(vm.UserInfo), Mode=OneWay }"/>
-                            <c:Divider/>
-                            <Button Command="{x:Bind  vm.DeActivateCommand}" Style="{ThemeResource AccentButtonStyle}" x:Uid="DeActivate" />
-                        </StackPanel>
-                    </c1:SettingPanel>
-                    <c1:SettingPanel x:Uid="ProtocolType">
-                        <ListView 
-                            Loaded="OnProtocolSettingLoaded"
-                            IsItemClickEnabled="True"
-                            ItemClick="OnProtocolItemClick"
-                            SelectionMode="None">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="vpn:ProtocolType">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{x:Bind }" Style="{ThemeResource BodyStrongTextBlockStyle}" />
-                                        <TextBlock Grid.Column="1" Margin="10,0,0,0" Style="{ThemeResource CaptionTextBlockStyle}"
-                                                Text="{x:Bind local:SettingsPage.TipOfProtocolType((vpn:ProtocolType))}" />
-                                        <!-- Check icon if selected -->
-                                        <c1:SelectedIcon ProtocolType="{x:Bind}"  Grid.Column="2"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </c1:SettingPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="8" Padding="8,8,8,16">
 
-                    <c1:SettingPanel x:Uid="RunAtStartup">
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="0">
+                        <Expander IsExpanded="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <Grid Margin="-6,10,10,10" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Grid.Column="0" Glyph="&#xE192;" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    <StackPanel Grid.Column="1" Spacing="4" Margin="12,0,0,0" HorizontalAlignment="Stretch">
+                                        <TextBlock x:Uid="SettingsActivationTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                        <Grid HorizontalAlignment="Stretch">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{x:Bind FormatKey(vm.UserInfo), Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center" />
+                                            <Button
+                                                x:Uid="SettingsCopyButton"
+                                                x:Name="CopyKeyIconButton"
+                                                Grid.Column="1"
+                                                Click="OnCopyKeyClick"
+                                                ToolTipService.ToolTip="Copy activation code"
+                                                MinWidth="24"
+                                                MinHeight="24"
+                                                Padding="0"
+                                                Margin="0,0,0,0"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center">
+                                                <FontIcon x:Name="CopyKeyIcon" Glyph="&#xE8C8;" FontSize="15" />
+                                            </Button>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </Expander.Header>
+                            <StackPanel Spacing="10" Padding="12,0,12,12">
+                                <Button Command="{x:Bind vm.DeActivateCommand}" x:Uid="DeActivate" Style="{ThemeResource AccentButtonStyle}" HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </Expander>
+                    </Border>
 
-                            <Grid>
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="0">
+                        <Expander IsExpanded="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <Grid Margin="-6,10,10,10" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Grid.Column="0" Glyph="&#xE129;" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    <StackPanel Grid.Column="1" Spacing="2" Margin="12,0,0,0">
+                                        <TextBlock x:Uid="SettingsProtocolTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                        <TextBlock Text="{x:Bind GetCurrentProtocolSummary(vm.UserInfo), Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Expander.Header>
+                            <StackPanel Padding="12,0,12,12">
+                                <ListView
+                                    x:Name="ProtocolListView"
+                                    Loaded="OnProtocolSettingLoaded"
+                                    SelectionChanged="OnProtocolSelectionChanged"
+                                    SelectionMode="Single"
+                                    MinHeight="220">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="vpn:ProtocolType">
+                                            <Grid Padding="0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{x:Bind }" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                                <TextBlock Grid.Column="1" Margin="10,0,0,0" Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{x:Bind local:SettingsPage.TipOfProtocolType((vpn:ProtocolType))}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                        </Expander>
+                    </Border>
+
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="0">
+                        <Expander IsExpanded="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <Grid Margin="-6,10,10,10" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Grid.Column="0" Glyph="&#xE968;" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    <StackPanel Grid.Column="1" Spacing="2" Margin="12,0,0,0">
+                                        <TextBlock x:Uid="SettingsConnectionInfoTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                        <TextBlock Text="{x:Bind GetConnectionSubtitle(vm.ConnectionInfo), Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Expander.Header>
+                            <StackPanel Spacing="10" Padding="12,0,12,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" x:Uid="SettingsConnectionProtocolLabel" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind GetConnectionProtocol(vm.ConnectionInfo), Mode=OneWay}" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" x:Uid="SettingsConnectionDelayLabel" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind GetConnectionDelay(vm.ConnectionInfo), Mode=OneWay}" />
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" x:Uid="SettingsConnectionUpstreamLabel" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind GetConnectionUpstream(vm.ConnectionInfo), Mode=OneWay}" />
+                                </Grid>
+                            </StackPanel>
+                        </Expander>
+                    </Border>
+
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="0">
+                        <Button Click="OnSplitSettingsClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="10,10" Background="Transparent" BorderThickness="0">
+                            <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="14" x:Uid="RunAtStartup1" />
-
-                                <ToggleSwitch x:Name="StartupToggle"
-                                    VerticalAlignment="Center"
-                                    MinWidth="0" 
-                                    Grid.Column="2"
-                                    OffContent="Off"
-                                    OnContent="On"
-                                    Toggled="OnAutoStartupToggle"           
-                                    />
+                                <FontIcon Grid.Column="0" Glyph="&#xE8AB;" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                <StackPanel Grid.Column="1" Spacing="2" Margin="12,0,0,0">
+                                    <TextBlock x:Uid="SettingsSplitTitle" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                    <TextBlock x:Uid="SettingsSplitSubtitle" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                </StackPanel>
+                                <FontIcon Grid.Column="2" Glyph="&#xE76C;" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,6,0"/>
                             </Grid>
+                        </Button>
+                    </Border>
 
-                    </c1:SettingPanel>
-                    <c1:SettingPanel x:Uid="Logs">
-                        <Button Click="OnLogPage" x:Uid="LogsButton" />
-                    </c1:SettingPanel>
-                    <c1:SettingPanel x:Uid="AboutUs">
-                        <RichTextBlock>
-                            <Paragraph>
-                                <Run x:Uid="Website" />
-                                <Hyperlink  NavigateUri="{x:Bind SupportUrl}">
-                                    <Run Text="{x:Bind SupportUrl}" />
-                                </Hyperlink>
-                            </Paragraph>
-                        </RichTextBlock>
-                    </c1:SettingPanel>
-                    <c1:SettingPanel x:Uid="Version" >
-                        <TextBlock Text="{x:Bind GetVersion}" />
-                    </c1:SettingPanel>
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="12,10">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Grid.Column="0" Glyph="&#xE7E7;" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <StackPanel Grid.Column="1" Spacing="2" Margin="12,0,0,0">
+                                <TextBlock x:Uid="SettingsRunAtStartupTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                <TextBlock x:Uid="SettingsRunAtStartupSubtitle" Style="{ThemeResource CaptionTextBlockStyle}" />
+                            </StackPanel>
+                            <ToggleSwitch x:Name="StartupToggle"
+                                Margin="10,0,-10,0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Width="Auto"
+                                MinWidth="0"
+                                OffContent=""
+                                OnContent=""
+                                Grid.Column="2"
+                                Toggled="OnAutoStartupToggle" />
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="0">
+                        <Button Click="OnLogPage" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="10,10" Background="Transparent" BorderThickness="0">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Grid.Column="0" Glyph="&#xE756;" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                <StackPanel Grid.Column="1" Spacing="2" Margin="12,0,0,0">
+                                    <TextBlock Grid.Column="0" x:Uid="LogsButton" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                    <TextBlock x:Uid="SettingsLogsSubtitle" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                </StackPanel>
+                                <FontIcon Grid.Column="2" Glyph="&#xE76C;" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,6,0"/>
+                            </Grid>
+                        </Button>
+                    </Border>
+
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="12,10">
+                        <StackPanel Spacing="8">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Grid.Column="0" Glyph="&#xE946;" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                <StackPanel Grid.Column="1" Spacing="2" Margin="12,0,0,0">
+                                    <TextBlock x:Uid="SettingsAboutTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <RichTextBlock>
+                                        <Paragraph>
+                                            <Run x:Uid="Website" />
+                                            <Hyperlink NavigateUri="{x:Bind SupportUrl}">
+                                                <Run Text="{x:Bind SupportUrl}" />
+                                            </Hyperlink>
+                                        </Paragraph>
+                                    </RichTextBlock>
+                                    <TextBlock Text="{x:Bind GetVersion}" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </ScrollViewer>
         </c:Layout>

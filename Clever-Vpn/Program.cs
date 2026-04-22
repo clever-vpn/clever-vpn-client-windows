@@ -20,9 +20,12 @@ public static class Program
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.UI.Xaml.Markup.Compiler", " 3.0.0.2503")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.STAThreadAttribute]
-    static async Task Main(string[] args)
+    static void Main(string[] args)
     {
-        if (await Service.Run()) return;
+        if (Service.Run().GetAwaiter().GetResult())
+        {
+            return;
+        }
 
         global::WinRT.ComWrappersSupport.InitializeComWrappers();
         global::Microsoft.UI.Xaml.Application.Start((p) =>

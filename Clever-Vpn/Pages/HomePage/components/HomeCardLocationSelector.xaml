@@ -14,9 +14,9 @@
         <Button Background="Transparent" BorderThickness="0" Click="OnOpenLineSelectorClick">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
                 <Image Width="20" Height="20"
-                       Source="{x:Bind GetLineIconSource(Vm.UserInfo, Vm.Lines), Mode=OneWay}"
+                                            Source="{x:Bind GetLineIconSource(Vm.UserInfo, Vm.Lines), Mode=OneWay}"
                        Stretch="Uniform"/>
-                <TextBlock Text="{x:Bind GetLineName(Vm.UserInfo, Vm.Lines), Mode=OneWay}" />
+                                    <TextBlock Text="{x:Bind GetLineName(Vm.UserInfo, Vm.Lines), Mode=OneWay}" />
                 <FontIcon Glyph="&#xE70F;" Foreground="DeepSkyBlue" FontSize="14"/>
             </StackPanel>
         </Button>
@@ -33,25 +33,25 @@
                 <ItemsControl Grid.Row="0" Margin="0,0,0,6">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapGrid Orientation="Horizontal" />
+                            <WrapGrid Orientation="Horizontal" ItemWidth="96" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.Items>
                         <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,8,2" VerticalAlignment="Center">
-                            <TextBlock Text="xN" FontWeight="SemiBold"/>
-                            <TextBlock Text="traffic"/>
+                            <TextBlock x:Uid="LineSelectorLegendFactor" FontWeight="SemiBold"/>
+                            <TextBlock x:Uid="LineSelectorLegendTraffic"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,8,2" VerticalAlignment="Center">
                             <Image Width="14" Height="14"
-                                   Source="{x:Bind local:HomeCardLocationSelector.GetRelayIcon(), Mode=OneWay}"
+                                Source="{x:Bind local:HomeCardLocationSelector.GetRelayIcon(), Mode=OneTime}"
                                    Stretch="Uniform"/>
-                            <TextBlock Text="relay"/>
+                            <TextBlock x:Uid="LineSelectorLegendRelay"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,0,2,2" VerticalAlignment="Center">
                             <Image Width="14" Height="14"
-                                   Source="{x:Bind local:HomeCardLocationSelector.GetUpstreamIcon(), Mode=OneWay}"
+                                Source="{x:Bind local:HomeCardLocationSelector.GetUpstreamIcon(), Mode=OneTime}"
                                    Stretch="Uniform"/>
-                            <TextBlock Text="upstream"/>
+                            <TextBlock x:Uid="LineSelectorLegendUpstream"/>
                         </StackPanel>
                     </ItemsControl.Items>
                 </ItemsControl>
@@ -60,14 +60,10 @@
                 <ListView
                     Grid.Row="1"
                     x:Name="LineListView"
+                    HorizontalContentAlignment="Stretch"
                     SelectionMode="Single"
                     IsItemClickEnabled="True"
                     ItemClick="OnLineItemClick">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="vpn:Line">
                             <Grid Padding="4,6">
@@ -78,7 +74,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Image Width="20" Height="20"
-                                       Source="{x:Bind local:HomeCardLocationSelector.GetLineIconPath(Icon, IconKind), Mode=OneWay}"
+                                       Grid.Column="0"
+                                        Source="{x:Bind local:HomeCardLocationSelector.GetLineIconPath(Icon, IconKind), Mode=OneTime}"
                                        Stretch="Uniform" Margin="0,0,12,0"/>
 
                                 <TextBlock Grid.Column="1" Text="{x:Bind Label}" VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -86,17 +83,17 @@
                                 <!-- Right aligned: traffic factor + relay/upstream badges -->
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center" HorizontalAlignment="Right">
                                     <TextBlock
-                                        Text="{x:Bind local:HomeCardLocationSelector.GetLineFactorText(Factor), Mode=OneWay}"
+                                         Text="{x:Bind local:HomeCardLocationSelector.GetLineFactorText(Factor), Mode=OneTime}"
                                         Foreground="DeepSkyBlue"
                                         FontSize="12"
                                         VerticalAlignment="Center"/>
                                     <Image Width="14" Height="14"
-                                           Source="{x:Bind local:HomeCardLocationSelector.GetRelayIcon(), Mode=OneWay}"
-                                           Visibility="{x:Bind local:HomeCardLocationSelector.BoolToVisibility(HasRelay), Mode=OneWay}"
+                                         Source="{x:Bind local:HomeCardLocationSelector.GetRelayIcon(), Mode=OneTime}"
+                                         Visibility="{x:Bind local:HomeCardLocationSelector.BoolToVisibility(HasRelay), Mode=OneTime}"
                                            Stretch="Uniform" VerticalAlignment="Center"/>
                                     <Image Width="14" Height="14"
-                                           Source="{x:Bind local:HomeCardLocationSelector.GetUpstreamIcon(), Mode=OneWay}"
-                                           Visibility="{x:Bind local:HomeCardLocationSelector.BoolToVisibility(HasUpstream), Mode=OneWay}"
+                                         Source="{x:Bind local:HomeCardLocationSelector.GetUpstreamIcon(), Mode=OneTime}"
+                                         Visibility="{x:Bind local:HomeCardLocationSelector.BoolToVisibility(HasUpstream), Mode=OneTime}"
                                            Stretch="Uniform" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Grid>
@@ -114,11 +111,11 @@
                         Spacing="20">
                         <Button Click="OnRefreshLinesClick">
                             <Grid>
-                                <TextBlock x:Name="RefreshButtonText">Refresh</TextBlock>
+                                <TextBlock x:Name="RefreshButtonText" x:Uid="LineSelectorRefresh" />
                                 <ProgressRing x:Name="RefreshButtonLoading" Height="22" Width="22" IsActive="True" Visibility="Collapsed"/>
                             </Grid>
                         </Button>
-                        <Button Content="Cancel" Click="OnCancelClick"/>
+                        <Button x:Uid="LineSelectorCancel" Click="OnCancelClick"/>
                     </StackPanel>
                 </Grid>
             </Grid>

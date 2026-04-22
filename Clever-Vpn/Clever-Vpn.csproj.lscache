@@ -2,12 +2,10 @@ version=1
 
 # This file caches language service data to improve the performance of C# Dev Kit.
 # It is not intended for manual editing. It can safely be deleted and will be
-# regenerated automatically.
+# regenerated automatically. For more information, see https://aka.ms/lscache
 #
-# To exclude from version control, add *.lscache to your .gitignore file.
-#
-# To disable caching, add the following to your VS Code settings:
-#   "dotnet.projectsystem.enableLanguageServiceCache": false
+# To control where cache files are stored, use the following VS Code setting:
+#   "dotnet.projectsystem.cacheInProjectFolder": true
 
 [project]
 language=C#
@@ -16,7 +14,7 @@ lastDtbSucceeded
 
 [properties]
 AssemblyName=Clever-Vpn
-CommandLineArgsForDesignTimeEvaluation=-langversion:preview -define:TRACE;DISABLE_XAML_GENERATED_MAIN
+CommandLineArgsForDesignTimeEvaluation=-langversion:preview -define:TRACE;DISABLE_XAML_GENERATED_MAIN;DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
 CompilerGeneratedFilesOutputPath=
 MaxSupportedLangVersion=12.0
 ProjectAssetsFile=<PATH>obj/project.assets.json
@@ -39,7 +37,7 @@ TemporaryDependencyNodeTargetIdentifier=net8.0-windows10.0.19041.0
 /platform:arm64
 /errorreport:prompt
 /warn:8
-/define:TRACE;DISABLE_XAML_GENERATED_MAIN;MICROSOFT_WINDOWSAPPSDK_AUTOINITIALIZE_UNDOCKEDREGFREEWINRT;MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS10_0_19041_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS10_0_19041_0_OR_GREATER;WINDOWS10_0_18362_0_OR_GREATER;WINDOWS10_0_17763_0_OR_GREATER;WINDOWS8_0_OR_GREATER;WINDOWS7_0_OR_GREATER
+/define:TRACE;DISABLE_XAML_GENERATED_MAIN;DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION;MICROSOFT_WINDOWSAPPSDK_AUTOINITIALIZE_UNDOCKEDREGFREEWINRT;MICROSOFT_WINDOWSAPPSDK_SELFCONTAINED;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS10_0_19041_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS10_0_19041_0_OR_GREATER;WINDOWS10_0_18362_0_OR_GREATER;WINDOWS10_0_17763_0_OR_GREATER;WINDOWS8_0_OR_GREATER;WINDOWS7_0_OR_GREATER
 /highentropyva+
 /nullable:enable
 /debug+
@@ -66,7 +64,6 @@ App.xaml.cs
 behaviors/FrameNavigateBehavior.cs
 components/
  Divider.xaml.cs
- ErrorBar.xaml.cs
  Layout.xaml.cs
  Logo.xaml.cs
  OffIcon.xaml.cs
@@ -96,7 +93,9 @@ Pages/
  SettingsPage/componets/
   SelectedIcon.xaml.cs
   SettingPanel.xaml.cs
- SettingsPage/SettingsPage.xaml.cs
+ SettingsPage/
+  SettingsPage.xaml.cs
+  SplitSettingsPage.xaml.cs
 Program.cs
 services/
  JsonContext.cs

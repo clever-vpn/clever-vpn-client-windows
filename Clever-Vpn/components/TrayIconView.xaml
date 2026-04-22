@@ -10,9 +10,10 @@
 
     <tb:TaskbarIcon
         x:Name="TrayIcon"
+        x:Uid="TrayIcon"
         x:FieldModifier="public"
         IconSource="{x:Bind GetIconUrl(vm.VpnState), Mode=OneWay}"
-        ContextMenuMode="SecondWindow"
+        ContextMenuMode="PopupMenu"
         LeftClickCommand="{x:Bind ShowHideWindowCommand}"
         NoLeftClickDelay="True"
         ToolTipText="Wellcome to Clever Vpn"
@@ -20,11 +21,13 @@
         <tb:TaskbarIcon.ContextFlyout>
             <MenuFlyout AreOpenCloseAnimationsEnabled="False">
                 <MenuFlyoutItem
+                    x:Uid="TrayMenuShowHide"
                     Command="{x:Bind ShowHideWindowCommand}"
                     Text="Show/Hide Window"
                     />
                 <MenuFlyoutSeparator />
                 <MenuFlyoutItem
+                    x:Uid="TrayMenuExit"
                     Command="{x:Bind ExitApplicationCommand}"
                     Text="Exit"
                     />

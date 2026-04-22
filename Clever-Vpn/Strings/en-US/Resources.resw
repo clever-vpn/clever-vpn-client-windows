@@ -138,10 +138,10 @@
   <data name="Logs.Title" xml:space="preserve">
     <value>Logs</value>
   </data>
-  <data name="LogsButton.Content" xml:space="preserve">
+  <data name="LogsButton.Text" xml:space="preserve">
     <value>View Logs</value>
   </data>
-  <data name="AbountUs.Title" xml:space="preserve">
+  <data name="AboutUs.Title" xml:space="preserve">
     <value>About Us</value>
   </data>
   <data name="Website.Text" xml:space="preserve">
@@ -164,5 +164,144 @@
   </data>
   <data name="Logs1.Text" xml:space="preserve">
     <value>Logs</value>
+  </data>
+  <data name="SplitTitle.Text" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="SplitRegionTitle.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="SplitRegionEnable.Header" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SplitRegionCodeLabel.Text" xml:space="preserve">
+    <value>Region code</value>
+  </data>
+  <data name="SplitIpTitle.Text" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="SplitIpEnable.Header" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SplitIpEditor.PlaceholderText" xml:space="preserve">
+    <value>45.77.181.25/32</value>
+  </data>
+  <data name="SplitDomainTitle.Text" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="SplitDomainEnable.Header" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SplitBasicDomainEditor.PlaceholderText" xml:space="preserve">
+    <value>www.google.com
+.google.com</value>
+  </data>
+  <data name="SplitDomainAdvanced.Header" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="SplitAdvancedDomainEditor.PlaceholderText" xml:space="preserve">
+    <value>^.+\.google.com$</value>
+  </data>
+  <data name="MainWindow.Title" xml:space="preserve">
+    <value>Clever-Vpn</value>
+  </data>
+  <data name="MainWindowWarningBar.Title" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="TrayIcon.ToolTipText" xml:space="preserve">
+    <value>Welcome to Clever VPN</value>
+  </data>
+  <data name="TrayMenuShowHide.Text" xml:space="preserve">
+    <value>Show/Hide Window</value>
+  </data>
+  <data name="TrayMenuExit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="ActivateHeaderTitle.Text" xml:space="preserve">
+    <value>Clever VPN</value>
+  </data>
+  <data name="ActivateHeaderSubtitle.Text" xml:space="preserve">
+    <value>Fast Modern VPN</value>
+  </data>
+  <data name="InputKeyBox.PlaceholderText" xml:space="preserve">
+    <value>Example: 1111-1111-1111-1111</value>
+  </data>
+  <data name="LineSelectorLegendFactor.Text" xml:space="preserve">
+    <value>xN</value>
+  </data>
+  <data name="LineSelectorLegendTraffic.Text" xml:space="preserve">
+    <value>traffic</value>
+  </data>
+  <data name="LineSelectorLegendRelay.Text" xml:space="preserve">
+    <value>relay</value>
+  </data>
+  <data name="LineSelectorLegendUpstream.Text" xml:space="preserve">
+    <value>upstream</value>
+  </data>
+  <data name="LineSelectorRefresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="LineSelectorCancel.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="LogSaveInfoBar.Title" xml:space="preserve">
+    <value>Save Logs</value>
+  </data>
+  <data name="LogSaveInfoBar.Message" xml:space="preserve">
+    <value>Logs file saves successfully!</value>
+  </data>
+  <data name="LogSaveFileTypeText" xml:space="preserve">
+    <value>Text File</value>
+  </data>
+  <data name="LogSaveFileName" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="LogSaveSuccessMessageFormat" xml:space="preserve">
+    <value>Log file {0} save successfully!</value>
+  </data>
+  <data name="SettingsActivationTitle.Text" xml:space="preserve">
+    <value>Activation code</value>
+  </data>
+  <data name="SettingsProtocolTitle.Text" xml:space="preserve">
+    <value>Protocol</value>
+  </data>
+  <data name="SettingsConnectionInfoTitle.Text" xml:space="preserve">
+    <value>Connection Info</value>
+  </data>
+  <data name="SettingsConnectionProtocolLabel.Text" xml:space="preserve">
+    <value>Protocol</value>
+  </data>
+  <data name="SettingsConnectionDelayLabel.Text" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="SettingsConnectionUpstreamLabel.Text" xml:space="preserve">
+    <value>Upstream</value>
+  </data>
+  <data name="SettingsSplitTitle.Text" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="SettingsSplitSubtitle.Text" xml:space="preserve">
+    <value>Region, IP, domain and regex rules</value>
+  </data>
+  <data name="SettingsRunAtStartupTitle.Text" xml:space="preserve">
+    <value>Run at startup</value>
+  </data>
+  <data name="SettingsRunAtStartupSubtitle.Text" xml:space="preserve">
+    <value>Start Clever VPN when Windows starts</value>
+  </data>
+  <data name="SettingsLogsSubtitle.Text" xml:space="preserve">
+    <value>View live runtime logs</value>
+  </data>
+  <data name="SettingsAboutTitle.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="SettingsCopyTooltip" xml:space="preserve">
+    <value>Copy activation code</value>
+  </data>
+  <data name="SettingsCopiedTooltip" xml:space="preserve">
+    <value>Copied</value>
+  </data>
+  <data name="SettingsCopyButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Copy activation code</value>
   </data>
 </root>

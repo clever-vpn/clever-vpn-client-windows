@@ -11,7 +11,7 @@
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
         <c:Logo Ratio="0.15" Margin="0,0,0, 20"  HorizontalAlignment="Center" />
-        <TextBlock Text="Clever Vpn" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0, 5"  HorizontalAlignment="Center" />
-        <TextBlock Text="Fast Modern Vpn" Style="{StaticResource BodyTextBlockStyle}"  HorizontalAlignment="Center" />
+        <TextBlock x:Uid="ActivateHeaderTitle" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0, 5"  HorizontalAlignment="Center" />
+        <TextBlock x:Uid="ActivateHeaderSubtitle" Style="{StaticResource BodyTextBlockStyle}"  HorizontalAlignment="Center" />
     </StackPanel>
 </UserControl>

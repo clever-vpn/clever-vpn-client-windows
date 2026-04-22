@@ -69,6 +69,7 @@ namespace Clever_Vpn
         public App()
         {            
             GlobalExceptionHandler.Initialize();
+            UnhandledException += OnUnhandledException;
             if (!Utils.IsPackaged())
             {
                 try
@@ -84,6 +85,15 @@ namespace Clever_Vpn
             
             GlobalExceptionHandler.DebugLog("Clever-Vpn started!");
             
+        }
+
+        private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            if (e.Exception is COMException comException && (uint)comException.HResult == 0x800401F0)
+            {
+                GlobalExceptionHandler.DebugLog("Clipboard copy failed with COMException 0x800401F0. Ignored to keep app running.");
+                e.Handled = true;
+            }
         }
 
 

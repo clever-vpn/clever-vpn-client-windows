@@ -94,11 +94,13 @@
                 Fill="Gray"
                 VerticalAlignment="Center" />
         </Grid>
-        <ProgressBar x:Name="ProgressBar"
-            Height="4"
-            IsIndeterminate="True"
-            HorizontalAlignment="Stretch"
-            Margin="0,20,0,0" />
+        <Grid x:Name="ProgressBar" Margin="0,20,0,0" VerticalAlignment="Center">
+            <ProgressBar
+                Height="4"
+                IsIndeterminate="True"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center" />
+        </Grid>
 
     </Grid>
 </UserControl>

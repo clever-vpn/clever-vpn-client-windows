@@ -48,6 +48,11 @@ namespace Clever_Vpn.utils
             }
         }
 
+        public static Visibility ConvertObjectToDisplay(object? value)
+        {
+            return BoolToDisplay(ConvertObjectToBool(value));
+        }
+
         public static Visibility EqualToDisplay(object src, object dst)
         {
             return BoolToDisplay(src.Equals(dst));

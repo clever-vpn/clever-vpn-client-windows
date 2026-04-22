@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Clever_Vpn.Pages.SettingsPage.SplitSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:c="using:Clever_Vpn.components"
+    mc:Ignorable="d">
+
+    <Grid RequestedTheme="Light">
+        <c:Layout>
+            <c:Layout.TopBar>
+                <c:TopBar>
+                    <c:TopBar.LeftContent>
+                        <AppBarButton Icon="Back" Width="48" Height="48" Click="OnBackClick" />
+                    </c:TopBar.LeftContent>
+                    <TextBlock x:Uid="SplitTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" VerticalAlignment="Center" />
+                </c:TopBar>
+            </c:Layout.TopBar>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="8" Padding="8,8,8,16">
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="10,10,4,10">
+                        <StackPanel Spacing="10">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="SplitRegionTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" VerticalAlignment="Center" />
+                                <ToggleSwitch x:Name="RegionEnableSwitch" x:Uid="SplitRegionEnable" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="0" Width="Auto" Padding="0" />
+                            </Grid>
+                            <StackPanel Spacing="4">
+                                <TextBlock x:Uid="SplitRegionCodeLabel" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                <TextBlock x:Name="RegionCodeValueTextBlock" Style="{ThemeResource BodyTextBlockStyle}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="10,10,4,10">
+                        <StackPanel Spacing="10">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="SplitIpTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" VerticalAlignment="Center" />
+                                <ToggleSwitch x:Name="IpEnableSwitch" x:Uid="SplitIpEnable" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="0" Width="Auto" Padding="0" />
+                            </Grid>
+                            <TextBox
+                                x:Name="IpEditor"
+                                AcceptsReturn="True"
+                                TextWrapping="NoWrap"
+                                x:Uid="SplitIpEditor"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="{x:Bind IpEnableSwitch.IsOn, Mode=OneWay}"
+                                MinHeight="140" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border
+                        Background="{ThemeResource LayerFillColorAltBrush}"
+                        BorderBrush="{ThemeResource ControlAltFillColorQuarternaryBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="10,10,4,10">
+                        <StackPanel Spacing="10">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Uid="SplitDomainTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" VerticalAlignment="Center" />
+                                <ToggleSwitch x:Name="DomainEnableSwitch" x:Uid="SplitDomainEnable" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="0" Width="Auto" Padding="0" />
+                            </Grid>
+                            <TextBox
+                                x:Name="BasicDomainEditor"
+                                AcceptsReturn="True"
+                                TextWrapping="NoWrap"
+                                x:Uid="SplitBasicDomainEditor"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="{x:Bind DomainEnableSwitch.IsOn, Mode=OneWay}"
+                                MinHeight="160" />
+
+                            <Expander x:Uid="SplitDomainAdvanced" IsExpanded="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0" Padding="0">
+                                <TextBox
+                                    x:Name="AdvancedDomainEditor"
+                                    AcceptsReturn="True"
+                                    TextWrapping="NoWrap"
+                                    x:Uid="SplitAdvancedDomainEditor"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    Width="{Binding ActualWidth, ElementName=BasicDomainEditor}"
+                                    HorizontalAlignment="Left"
+                                    Margin="0"
+                                    IsEnabled="{x:Bind DomainEnableSwitch.IsOn, Mode=OneWay}"
+                                    MinHeight="140" />
+                            </Expander>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </c:Layout>
+    </Grid>
+</Page>
