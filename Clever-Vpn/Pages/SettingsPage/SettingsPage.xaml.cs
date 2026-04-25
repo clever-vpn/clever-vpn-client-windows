@@ -236,11 +236,11 @@ namespace Clever_Vpn.Pages.SettingsPage
             return type switch
             {
                 ProtocolType.Auto => "auto Select Protocol (default)",
-                ProtocolType.UdpTunnel => "for low packet loss",
-                ProtocolType.UdpFast => "for low latency",
-                ProtocolType.UdpStable => "for unstable network",
-                ProtocolType.TcpFast => "for UDP not available",
-                ProtocolType.TcpStable => "for high reliability",
+                ProtocolType.UdpTunnel => "use UDP for the l3 tunnel",
+                ProtocolType.UdpFast => "use fast UDP",
+                ProtocolType.UdpStable => "use stable UDP",
+                ProtocolType.TcpFast => "use fast TCP",
+                ProtocolType.TcpStable => "use stable TCP",
                 _ => string.Empty,
             };
         }

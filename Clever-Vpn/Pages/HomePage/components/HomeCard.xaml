@@ -14,7 +14,7 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <local:HomeCardIcon HorizontalAlignment="Center"/>
             <local:HomeCardDivider  Margin="0,20,0,10" />
-            <local:HomeCardLocationSelector />
+            <local:HomeCardLineSelector />
             <ToggleSwitch 
                 x:Name="OnOffSwitch"
                 Toggled="OnToggled"

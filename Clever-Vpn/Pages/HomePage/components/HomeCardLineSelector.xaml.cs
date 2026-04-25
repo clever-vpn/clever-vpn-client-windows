@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 using Clever_Vpn.ViewModel;
+using Clever_Vpn_Windows_Kit.Common;
 using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -11,17 +12,68 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Clever_Vpn.Pages.HomePage.components;
 
-public sealed partial class HomeCardLocationSelector : UserControl
+public sealed partial class HomeCardLineSelector : UserControl
 {
     VpnViewModel Vm { get; } = ((App)Application.Current).ViewModel;
+    private bool IsRefreshing => Vm.VpnApiState == ApiState.Running;
 
-    public HomeCardLocationSelector()
+    public HomeCardLineSelector()
     {
         InitializeComponent();
+        Vm.PropertyChanged += OnVmPropertyChanged;
+        UpdateRefreshButtonVisuals();
+    }
+
+    private void OnVmPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(VpnViewModel.VpnApiState))
+        {
+            RunOnMainUiThread(UpdateRefreshButtonVisuals);
+        }
+    }
+
+    private void RunOnMainUiThread(Action action)
+    {
+        var app = Application.Current as App;
+        var dispatcherQueue = app?.MainWindow?.DispatcherQueue;
+
+        if (dispatcherQueue == null)
+        {
+            action();
+            return;
+        }
+
+        if (dispatcherQueue.HasThreadAccess)
+        {
+            action();
+            return;
+        }
+
+        dispatcherQueue.TryEnqueue(() => action());
+    }
+
+    private void UpdateRefreshButtonVisuals()
+    {
+        var spinnerVisibility = IsRefreshing ? Visibility.Visible : Visibility.Collapsed;
+        var textVisibility = IsRefreshing ? Visibility.Collapsed : Visibility.Visible;
+
+        if (RefreshButton != null)
+        {
+            RefreshButton.IsEnabled = !IsRefreshing;
+        }
+
+        if (RefreshButtonText != null)
+        {
+            RefreshButtonText.Visibility = textVisibility;
+        }
+
+        if (RefreshButtonSpinner != null)
+        {
+            RefreshButtonSpinner.Visibility = spinnerVisibility;
+        }
     }
 
     /// <summary>
@@ -45,29 +97,34 @@ public sealed partial class HomeCardLocationSelector : UserControl
     private string GetLineName(UserInfo? userInfo, List<Line> lines)
         => ResolveCurrentLine(userInfo, lines)?.Label ?? string.Empty;
 
-    private async void OnOpenLineSelectorClick(object sender, RoutedEventArgs e)
+    private void OnLineSelectorFlyoutOpening(object sender, object e)
     {
+        if (XamlRoot != null)
+        {
+            const double horizontalPadding = 24;
+            const double preferredWidth = 420;
+            const double minWidth = 280;
+
+            var maxWidth = Math.Max(minWidth, XamlRoot.Size.Width - horizontalPadding);
+            LineSelectorPanel.MaxWidth = maxWidth;
+            LineSelectorPanel.Width = Math.Min(preferredWidth, maxWidth);
+        }
+
+        UpdateRefreshButtonVisuals();
         RefreshLineList();
-        await LineSelectorDlg.ShowAsync();
     }
 
     private async void OnLineItemClick(object sender, ItemClickEventArgs e)
     {
         if (e.ClickedItem is not Line line) return;
         await Vm.UpdateLine(line.Id);
-        LineSelectorDlg.Hide();
+        LineSelectorFlyout.Hide();
     }
 
     private async void OnRefreshLinesClick(object sender, RoutedEventArgs e)
     {
-        RefreshButtonLoading.Visibility = Visibility.Visible;
-        RefreshButtonText.Opacity = 0;
-
         await Vm.RefreshLines();
         RefreshLineList();
-
-        RefreshButtonLoading.Visibility = Visibility.Collapsed;
-        RefreshButtonText.Opacity = 1;
     }
 
     private void RefreshLineList()
@@ -83,11 +140,6 @@ public sealed partial class HomeCardLocationSelector : UserControl
         LineListView.SelectedItem = currentLine != null
             ? lines.Find(x => x.Id == currentLine.Id)
             : null;
-    }
-
-    private void OnCancelClick(object sender, RoutedEventArgs e)
-    {
-        LineSelectorDlg.Hide();
     }
 
     public static ImageSource GetLineIcon(Line? line)

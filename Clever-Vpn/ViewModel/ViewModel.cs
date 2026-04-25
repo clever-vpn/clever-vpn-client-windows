@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,7 @@ public enum ActivationState
 public partial class VpnViewModel : ObservableObject
 {
     private Client _client;
+
     public VpnViewModel()
     {
         _client = new Client();
@@ -309,4 +311,5 @@ public partial class VpnViewModel : ObservableObject
 
         dispatcherQueue.TryEnqueue(() => action());
     }
+
 }

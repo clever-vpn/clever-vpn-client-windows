@@ -52,7 +52,7 @@
 		<None Remove="Pages\ActivatePage\components\ActivateHeader.xaml" />
 		<None Remove="Pages\HomePage\components\HomeCard.xaml" />
 		<None Remove="Pages\HomePage\components\HomeCardDivider.xaml" />
-		<None Remove="Pages\HomePage\components\HomeCardLocationSelector.xaml" />
+		  <None Remove="Pages\HomePage\components\HomeCardLineSelector.xaml" />
 		<None Remove="Pages\HomePage\components\TrafficCard.xaml" />
 		<None Remove="Pages\HomePage\HomePage.xaml" />
 		<None Remove="Pages\LogPage\LogPage.xaml" />
@@ -84,6 +84,7 @@
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Clever-Vpn-Windows-Kit" Version="1.0.6" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.250402" />
 		<PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.2.250402" />
@@ -92,9 +93,6 @@
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
 		<PackageReference Include="WinUIEx" Version="2.6.0" />
-	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Clever-Vpn-Lib\Clever-Vpn-Windows-Kit\Clever-Vpn-Windows-Kit.csproj" />
 	</ItemGroup>
 
 
@@ -124,7 +122,7 @@
 		</Page>
 	</ItemGroup>
 	<ItemGroup>
-		<Page Update="Pages\HomePage\components\HomeCardLocationSelector.xaml">
+		  <Page Update="Pages\HomePage\components\HomeCardLineSelector.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
