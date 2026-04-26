@@ -1,0 +1,23 @@
+<Project Sdk="WixToolset.Sdk/6.0.1">
+  <Import Project="..\InstallerSettings.props" Condition="Exists('..\InstallerSettings.props')" />
+
+  <PropertyGroup>
+	<OutputName>CleverVPN_Setup</OutputName>
+	<CleverVpnInstallerVersion Condition="'$(CleverVpnInstallerVersion)'==''">1.3.0.0</CleverVpnInstallerVersion>
+	<InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://download.example.com/clever-vpn/windows</InstallerDownloadBaseUrl>
+	<DefineConstants>
+	  CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);
+	  InstallerDownloadBaseUrl=$(InstallerDownloadBaseUrl);
+	</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="WixToolset.Bal.wixext" Version="6.0.1" />
+  </ItemGroup>
+
+  <Target Name="BuildMsiAllArch" BeforeTargets="BeforeBuild">
+	<MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x86" />
+	<MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64" />
+	<MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM64" />
+  </Target>
+</Project>

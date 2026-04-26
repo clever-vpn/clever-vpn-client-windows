@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+	<CleverVpnInstallerVersion>1.3.7.0</CleverVpnInstallerVersion>
+	<InstallerDownloadBaseUrl>https://download.example.com/clever-vpn/windows</InstallerDownloadBaseUrl>
+  </PropertyGroup>
+</Project>

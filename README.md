@@ -31,11 +31,18 @@ Before building the project locally, ensure you have the following installed:
 	- right‑click, choose build to generate the MSIX package.
 	- after create msix package, you can run make-bundle.bat to generate the bundle package.
 
-- MSI Package: In Visual Studio 2022’s Solution Explorer, follow these steps to create an MSI package:
-	- select solution platform, for example, x64,x86, or arm64, 
-	- select MsiInstaller project, and right‑click,
-	- choose build to generate the MSI package.
-	- the msi package will be located in the `bin\x64|x86|arm64\Release` folder of the MsiInstaller project.
+- MSI Package: In Visual Studio 2022’s Solution Explorer, follow these steps to create architecture-specific MSI packages:
+	- select solution platform, for example, x64, x86, or arm64,
+	- select MsiInstaller project, and right-click,
+	- choose build to generate the MSI package,
+	- output file names are unified as `CleverVPN_<version>_<platform>.msi` in `MsiInstaller\bin\x64|x86|ARM64\Release`.
+
+- Unified Setup EXE (auto architecture selection):
+	- configure `InstallerSettings.props` at solution root:
+		- `CleverVpnInstallerVersion`
+		- `InstallerDownloadBaseUrl`
+	- select `SetupInstaller` project, and build,
+	- output setup will be generated in `SetupInstaller\bin\<configuration>` and will download/install the matching MSI by architecture.
 
 
 ## License
