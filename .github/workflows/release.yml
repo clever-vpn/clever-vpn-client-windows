@@ -132,11 +132,11 @@ jobs:
         with:
           pattern: release-msix-*
           merge-multiple: true
-          path: Clever-Vpn/bin/Appx/Clever-Vpn_${{ needs.validate_tag.outputs.installer_version }}_Test
+          path: Clever-Vpn/bin/Appx/msix-input
 
       - name: List downloaded MSIX files
         shell: pwsh
-        run: Get-ChildItem -Path 'Clever-Vpn/bin/Appx' -Recurse -Filter '*.msix' | Select-Object FullName | Format-Table -AutoSize
+        run: Get-ChildItem -Path 'Clever-Vpn/bin/Appx/msix-input' -Recurse -Filter '*.msix' | Select-Object FullName | Format-Table -AutoSize
 
       - name: Ensure makeappx is available
         shell: pwsh
@@ -168,7 +168,7 @@ jobs:
         shell: cmd
         run: |
           cd Clever-Vpn
-          make-bundle.bat ${{ needs.validate_tag.outputs.installer_version }}
+          make-bundle.bat ${{ needs.validate_tag.outputs.installer_version }} bin/Appx/msix-input
 
       - name: Validate MSIX bundle output
         shell: pwsh
@@ -185,7 +185,7 @@ jobs:
           name: release-msix-bundle
           path: |
             Clever-Vpn/bin/Appx/bundle/*.msixbundle
-            Clever-Vpn/bin/Appx/Clever-Vpn_*/*.msix
+            Clever-Vpn/bin/Appx/msix-input/*.msix
 
   publish_github_release:
     name: Publish GitHub Release

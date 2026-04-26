@@ -12,7 +12,8 @@ if "%Version%"=="" (
 )
 
 rem === 设置目录路径 ===
-set "MSIX_DIR=bin/Appx/Clever-Vpn_%Version%_Test"
+set "MSIX_DIR=%~2"
+if "%MSIX_DIR%"=="" set "MSIX_DIR=bin/Appx/Clever-Vpn_%Version%_Test"
 set "BUNDLE_NAME=bin/Appx/bundle/clevervpn.msixbundle"
 
 
@@ -55,6 +56,23 @@ for %%F in ("%MSIX_DIR%\*.msix") do (
     set "NAME=%%~nxF"
     echo "!FULL!" "!NAME!" >> "%BUNDLE_LIST%"
     set /a FILE_COUNT+=1
+)
+
+if !FILE_COUNT! LSS 1 (
+    rem Fallback: 递归搜索 bin/Appx 下所有 msix（排除 bundle 目录）
+    set "MSIX_DIR=bin/Appx"
+    del "%BUNDLE_LIST%" >nul 2>&1
+    echo [Files] > "%BUNDLE_LIST%"
+    set /a FILE_COUNT=0
+    for /r "%MSIX_DIR%" %%F in (*.msix) do (
+        set "FULL=%%~fF"
+        echo "!FULL!" | findstr /I /C:"\bundle\" >nul
+        if errorlevel 1 (
+            set "NAME=%%~nxF"
+            echo "!FULL!" "!NAME!" >> "%BUNDLE_LIST%"
+            set /a FILE_COUNT+=1
+        )
+    )
 )
 
 
