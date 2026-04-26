@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://download.example.com/clever-vpn/windows</InstallerDownloadBaseUrl>
+    <InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://github.com/clever-vpn/clever-vpn-client-windows/releases/download</InstallerDownloadBaseUrl>
   </PropertyGroup>
 
   <!--
@@ -29,6 +29,27 @@
     <!-- Patch DefineConstants which was evaluated before this target ran (with empty version) -->
     <PropertyGroup>
       <DefineConstants>$([System.Text.RegularExpressions.Regex]::Replace($(DefineConstants), 'CleverVpnInstallerVersion=[^;\s]*', 'CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)'))</DefineConstants>
+    </PropertyGroup>
+  </Target>
+
+  <!--
+    Auto-derive InstallerTagName from the nearest git tag (e.g. v1.0.0-rc.12).
+    This is used as the GitHub Releases path segment in DownloadUrl inside Bundle.wxs.
+    In CI, passed via -p:InstallerTagName=${{ github.ref_name }} — this target is skipped.
+  -->
+  <Target Name="ResolveTagNameFromGit" BeforeTargets="BeforeBuild" Condition="'$(InstallerTagName)'==''">
+    <Exec Command="git describe --tags --match &quot;v*&quot; --abbrev=0"
+          ConsoleToMSBuild="true"
+          IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_RawTagForName" />
+    </Exec>
+    <PropertyGroup>
+      <InstallerTagName Condition="'$(_RawTagForName.Trim())'!=''">$(_RawTagForName.Trim())</InstallerTagName>
+      <InstallerTagName Condition="'$(InstallerTagName)'==''">local-dev</InstallerTagName>
+    </PropertyGroup>
+    <Message Text="[InstallerSettings] InstallerTagName=$(InstallerTagName)" Importance="high" />
+    <PropertyGroup>
+      <DefineConstants>$([System.Text.RegularExpressions.Regex]::Replace($(DefineConstants), 'InstallerTagName=[^;\s]*', 'InstallerTagName=$(InstallerTagName)'))</DefineConstants>
     </PropertyGroup>
   </Target>
 </Project>

@@ -4,12 +4,15 @@
   <PropertyGroup>
 	<OutputType>Bundle</OutputType>
 	<OutputName>CleverVPN_Setup</OutputName>
-	<InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://download.example.com/clever-vpn/windows</InstallerDownloadBaseUrl>
+	<InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://github.com/clever-vpn/clever-vpn-client-windows/releases/download</InstallerDownloadBaseUrl>
+	<!-- Git tag name e.g. v1.0.0-rc.12; used as GitHub Releases path segment in DownloadUrl -->
+	<InstallerTagName Condition="'$(InstallerTagName)'==''">local-dev</InstallerTagName>
 	<MsiSourceRoot Condition="'$(MsiSourceRoot)'==''">..\MsiInstaller\bin</MsiSourceRoot>
 	<BuildMsiAllArchOnBuild Condition="'$(BuildMsiAllArchOnBuild)'==''">false</BuildMsiAllArchOnBuild>
 	<DefineConstants>
 	  CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);
 	  InstallerDownloadBaseUrl=$(InstallerDownloadBaseUrl);
+	  InstallerTagName=$(InstallerTagName);
 	  MsiSourceRoot=$(MsiSourceRoot);
 	</DefineConstants>
   </PropertyGroup>

@@ -152,7 +152,7 @@ jobs:
           path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
 
       - name: Build setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:BuildMsiAllArchOnBuild=false
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerTagName=${{ github.ref_name }} -p:BuildMsiAllArchOnBuild=false
 
       - name: Upload setup.exe artifact
         uses: actions/upload-artifact@v4
