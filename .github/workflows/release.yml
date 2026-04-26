@@ -1,0 +1,137 @@
+name: Build and Release Clever-Vpn
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  CONFIGURATION: Release
+
+jobs:
+  validate_tag:
+    name: Validate Tag and Resolve Version
+    runs-on: windows-latest
+    outputs:
+      semver: ${{ steps.parse.outputs.semver }}
+      installer_version: ${{ steps.parse.outputs.installer_version }}
+      prerelease: ${{ steps.parse.outputs.prerelease }}
+    steps:
+      - name: Parse and validate tag
+        id: parse
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $pattern = '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?<pre>-[0-9A-Za-z.-]+)?$'
+
+          if ($tag -notmatch $pattern) {
+            Write-Error "Invalid tag: $tag. Expected v<major>.<minor>.<patch> or v<major>.<minor>.<patch>-<prerelease>."
+            exit 1
+          }
+
+          $semver = "$($Matches.major).$($Matches.minor).$($Matches.patch)"
+          $installerVersion = "$semver.0"
+          $isPrerelease = if ($Matches.pre) { "true" } else { "false" }
+
+          "semver=$semver" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "installer_version=$installerVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "prerelease=$isPrerelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+  build:
+    name: Build MSI and MSIX Artifacts
+    needs: validate_tag
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Set MSIX manifest version from tag
+        shell: pwsh
+        run: |
+          $manifest = "Clever-Vpn/Package.appxmanifest"
+          [xml]$xml = Get-Content -Path $manifest
+          $xml.Package.Identity.Version = "${{ needs.validate_tag.outputs.installer_version }}"
+          $xml.Save($manifest)
+          Write-Host "MSIX Identity.Version set to ${{ needs.validate_tag.outputs.installer_version }}"
+
+      - name: Restore solution
+        run: dotnet restore Clever-Vpn.sln
+
+      - name: Build MSI x86
+        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=x86 -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
+
+      - name: Build MSI x64
+        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=x64 -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
+
+      - name: Build MSI arm64
+        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=ARM64 -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
+
+      - name: Build MSIX x86
+        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=x86 -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
+
+      - name: Build MSIX x64
+        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=x64 -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
+
+      - name: Build MSIX arm64
+        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=ARM64 -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
+
+      - name: Create MSIX bundle (x86/x64/arm64)
+        shell: cmd
+        run: |
+          cd Clever-Vpn
+          make-bundle.bat
+
+      - name: Validate MSIX bundle output
+        shell: pwsh
+        run: |
+          $bundle = Get-ChildItem -Path "Clever-Vpn/bin/Appx/bundle" -Filter *.msixbundle -ErrorAction SilentlyContinue
+          if (-not $bundle) {
+            Write-Error "No .msixbundle found under Clever-Vpn/bin/Appx/bundle"
+            exit 1
+          }
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: |
+            MsiInstaller/bin/x86/${{ env.CONFIGURATION }}/*.msi
+            MsiInstaller/bin/x64/${{ env.CONFIGURATION }}/*.msi
+            MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/*.msi
+            Clever-Vpn/bin/Appx/bundle/*.msixbundle
+            Clever-Vpn/bin/Appx/Clever-Vpn_*/*.msix
+
+  publish_github_release:
+    name: Publish GitHub Release
+    needs:
+      - validate_tag
+      - build
+    runs-on: windows-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts
+          path: artifacts
+
+      - name: Create release from tag type
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          prerelease: ${{ needs.validate_tag.outputs.prerelease }}
+          files: |
+            artifacts/**/*.msi
+            artifacts/**/*.msix
+            artifacts/**/*.msixbundle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -7,12 +7,17 @@ rem === 设置目录路径 ===
 set "MSIX_DIR=bin/Appx/Clever-Vpn_%Version%_Test"
 set "BUNDLE_NAME=bin/Appx/bundle/clevervpn.msixbundle"
 
+
 rem === 检查是否存在 makeappx.exe ===
 where makeappx >nul 2>&1
 if errorlevel 1 (
     echo [错误] 未找到 makeappx.exe，请确保 Windows SDK 已安装并在 PATH 中。
     exit /b 1
 )
+
+rem === 自动创建 bundle 目录 ===
+for %%D in ("%BUNDLE_NAME%") do set "BUNDLE_DIR=%%~dpD"
+if not exist "%BUNDLE_DIR%" mkdir "%BUNDLE_DIR%"
 
 rem === 构建列表文件 ===
 set "BUNDLE_LIST=bundlemap.txt"
