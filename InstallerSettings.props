@@ -37,7 +37,7 @@
     This is used as the GitHub Releases path segment in DownloadUrl inside Bundle.wxs.
     In CI, passed via -p:InstallerTagName=${{ github.ref_name }} — this target is skipped.
   -->
-  <Target Name="ResolveTagNameFromGit" BeforeTargets="BeforeBuild" Condition="'$(InstallerTagName)'==''">
+  <Target Name="ResolveTagNameFromGit" BeforeTargets="BeforeBuild" Condition="'$(InstallerTagName)'=='' and '$(MSBuildProjectName)'=='SetupInstaller'">
     <Exec Command="git describe --tags --match &quot;v*&quot; --abbrev=0"
           ConsoleToMSBuild="true"
           IgnoreExitCode="true">
