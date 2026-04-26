@@ -4,7 +4,6 @@
   <PropertyGroup>
 	<OutputType>Bundle</OutputType>
 	<OutputName>CleverVPN_Setup</OutputName>
-	<CleverVpnInstallerVersion Condition="'$(CleverVpnInstallerVersion)'==''">1.3.0.0</CleverVpnInstallerVersion>
 	<InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://download.example.com/clever-vpn/windows</InstallerDownloadBaseUrl>
 	<MsiSourceRoot Condition="'$(MsiSourceRoot)'==''">..\MsiInstaller\bin</MsiSourceRoot>
 	<BuildMsiAllArchOnBuild Condition="'$(BuildMsiAllArchOnBuild)'==''">false</BuildMsiAllArchOnBuild>

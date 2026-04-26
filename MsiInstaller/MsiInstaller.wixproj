@@ -2,7 +2,6 @@
 	<Import Project="..\InstallerSettings.props" Condition="Exists('..\InstallerSettings.props')" />
 	<PropertyGroup>
 		<SuppressIces>ICE03;ICE30;ICE82;</SuppressIces>
-		<CleverVpnInstallerVersion Condition="'$(CleverVpnInstallerVersion)'==''">1.3.0.0</CleverVpnInstallerVersion>
 		<DefineConstants>
 			VpnBrokerService=CleverVpnBrokerService;
 			CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);
