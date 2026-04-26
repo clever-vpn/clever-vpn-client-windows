@@ -11,8 +11,21 @@ set "BUNDLE_NAME=bin/Appx/bundle/clevervpn.msixbundle"
 rem === 检查是否存在 makeappx.exe ===
 where makeappx >nul 2>&1
 if errorlevel 1 (
-    echo [错误] 未找到 makeappx.exe，请确保 Windows SDK 已安装并在 PATH 中。
-    exit /b 1
+    set "SDK_BIN_DIR="
+    for /f "delims=" %%D in ('dir /b /ad "C:\Program Files (x86)\Windows Kits\10\bin" 2^>nul ^| sort /r') do (
+        if exist "C:\Program Files (x86)\Windows Kits\10\bin\%%D\x64\makeappx.exe" (
+            set "SDK_BIN_DIR=C:\Program Files (x86)\Windows Kits\10\bin\%%D\x64"
+            goto :found_makeappx
+        )
+    )
+
+    :found_makeappx
+    if not defined SDK_BIN_DIR (
+        echo [错误] 未找到 makeappx.exe，请确保 Windows SDK 已安装并在 PATH 中。
+        exit /b 1
+    )
+
+    set "PATH=%SDK_BIN_DIR%;%PATH%"
 )
 
 rem === 自动创建 bundle 目录 ===
@@ -52,5 +65,4 @@ if %ERRORLEVEL%==0 (
 )
 
 endlocal
-pause
 

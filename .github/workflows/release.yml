@@ -134,6 +134,31 @@ jobs:
           merge-multiple: true
           path: Clever-Vpn/bin/Appx/Clever-Vpn_${{ needs.validate_tag.outputs.installer_version }}_Test
 
+      - name: Ensure makeappx is available
+        shell: pwsh
+        run: |
+          if (-not (Get-Command makeappx.exe -ErrorAction SilentlyContinue)) {
+            $sdkBinRoot = 'C:\Program Files (x86)\Windows Kits\10\bin'
+            if (-not (Test-Path $sdkBinRoot)) {
+              throw "Windows SDK bin root not found: $sdkBinRoot"
+            }
+
+            $candidate = Get-ChildItem -Path $sdkBinRoot -Directory |
+              Sort-Object Name -Descending |
+              ForEach-Object { Join-Path $_.FullName 'x64\makeappx.exe' } |
+              Where-Object { Test-Path $_ } |
+              Select-Object -First 1
+
+            if (-not $candidate) {
+              throw 'makeappx.exe not found under Windows Kits SDK paths'
+            }
+
+            $binDir = Split-Path $candidate -Parent
+            "$binDir" | Out-File -FilePath $env:GITHUB_PATH -Append
+          }
+
+          makeappx.exe /? | Out-Null
+
       - name: Create MSIX bundle (x86/x64/arm64)
         shell: cmd
         run: |
