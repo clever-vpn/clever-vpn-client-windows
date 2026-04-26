@@ -74,7 +74,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-msi-${{ matrix.platform }}
-          path: MsiInstaller/bin/${{ matrix.output_dir }}/${{ env.CONFIGURATION }}/*.msi
+          path: MsiInstaller/bin/${{ matrix.output_dir }}/${{ env.CONFIGURATION }}/en-US/*.msi
+          if-no-files-found: error
 
   build_msix:
     name: Build MSIX (${{ matrix.platform }})
