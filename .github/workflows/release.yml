@@ -155,9 +155,10 @@ jobs:
 
             $binDir = Split-Path $candidate -Parent
             "$binDir" | Out-File -FilePath $env:GITHUB_PATH -Append
+            $env:PATH = "$binDir;$env:PATH"
           }
 
-          makeappx.exe /? | Out-Null
+          Write-Host "makeappx located: $(Get-Command makeappx.exe | Select-Object -ExpandProperty Source)"
 
       - name: Create MSIX bundle (x86/x64/arm64)
         shell: cmd
