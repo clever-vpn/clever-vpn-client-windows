@@ -41,10 +41,20 @@ jobs:
           "installer_version=$installerVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "prerelease=$isPrerelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
-  build:
-    name: Build MSI and MSIX Artifacts
+  build_msi:
+    name: Build MSI (${{ matrix.platform }})
     needs: validate_tag
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: x86
+            output_dir: x86
+          - platform: x64
+            output_dir: x64
+          - platform: ARM64
+            output_dir: ARM64
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,6 +63,40 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+
+      - name: Restore solution
+        run: dotnet restore Clever-Vpn.sln
+
+      - name: Build MSI
+        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=${{ matrix.platform }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-msi-${{ matrix.platform }}
+          path: MsiInstaller/bin/${{ matrix.output_dir }}/${{ env.CONFIGURATION }}/*.msi
+
+  build_msix:
+    name: Build MSIX (${{ matrix.platform }})
+    needs: validate_tag
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: x86
+          - platform: x64
+          - platform: ARM64
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
 
       - name: Set MSIX manifest version from tag
         shell: pwsh
@@ -66,23 +110,31 @@ jobs:
       - name: Restore solution
         run: dotnet restore Clever-Vpn.sln
 
-      - name: Build MSI x86
-        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=x86 -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
+      - name: Build MSIX
+        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=${{ matrix.platform }} -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
 
-      - name: Build MSI x64
-        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=x64 -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
+      - name: Upload MSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-msix-${{ matrix.platform }}
+          path: Clever-Vpn/bin/Appx/Clever-Vpn_${{ needs.validate_tag.outputs.installer_version }}_Test/*.msix
 
-      - name: Build MSI arm64
-        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=ARM64 -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
+  bundle_msix:
+    name: Create MSIX Bundle
+    needs:
+      - validate_tag
+      - build_msix
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Build MSIX x86
-        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=x86 -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
-
-      - name: Build MSIX x64
-        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=x64 -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
-
-      - name: Build MSIX arm64
-        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=ARM64 -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
+      - name: Download all MSIX artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-msix-*
+          merge-multiple: true
+          path: Clever-Vpn/bin/Appx/Clever-Vpn_${{ needs.validate_tag.outputs.installer_version }}_Test
 
       - name: Create MSIX bundle (x86/x64/arm64)
         shell: cmd
@@ -99,14 +151,11 @@ jobs:
             exit 1
           }
 
-      - name: Upload release artifacts
+      - name: Upload bundle artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-artifacts
+          name: release-msix-bundle
           path: |
-            MsiInstaller/bin/x86/${{ env.CONFIGURATION }}/*.msi
-            MsiInstaller/bin/x64/${{ env.CONFIGURATION }}/*.msi
-            MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/*.msi
             Clever-Vpn/bin/Appx/bundle/*.msixbundle
             Clever-Vpn/bin/Appx/Clever-Vpn_*/*.msix
 
@@ -114,13 +163,15 @@ jobs:
     name: Publish GitHub Release
     needs:
       - validate_tag
-      - build
+      - build_msi
+      - bundle_msix
     runs-on: windows-latest
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: release-artifacts
+          pattern: release-*
+          merge-multiple: true
           path: artifacts
 
       - name: Create release from tag type
