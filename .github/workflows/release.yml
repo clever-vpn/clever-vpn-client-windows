@@ -11,6 +11,7 @@ permissions:
 env:
   DOTNET_VERSION: "8.0.x"
   CONFIGURATION: Release
+  DEFAULT_INSTALLER_DOWNLOAD_BASE_URL: https://github.com/${{ github.repository }}/releases/download
 
 jobs:
   validate_tag:
@@ -133,6 +134,18 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Resolve installer download base URL
+        id: resolve_download_base_url
+        shell: pwsh
+        run: |
+          $downloadBaseUrl = "${{ vars.INSTALLER_DOWNLOAD_BASE_URL }}"
+          if ([string]::IsNullOrWhiteSpace($downloadBaseUrl)) {
+            $downloadBaseUrl = "${{ env.DEFAULT_INSTALLER_DOWNLOAD_BASE_URL }}"
+          }
+
+          "download_base_url=$downloadBaseUrl" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "setup.exe download base URL: $downloadBaseUrl"
+
       - name: Download MSI x86 artifact
         uses: actions/download-artifact@v4
         with:
@@ -152,7 +165,7 @@ jobs:
           path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
 
       - name: Build setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerTagName=${{ github.ref_name }} -p:BuildMsiAllArchOnBuild=false
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerTagName=${{ github.ref_name }} -p:InstallerDownloadBaseUrl=${{ steps.resolve_download_base_url.outputs.download_base_url }} -p:BuildMsiAllArchOnBuild=false
 
       - name: Upload setup.exe artifact
         uses: actions/upload-artifact@v4
