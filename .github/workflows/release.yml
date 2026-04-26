@@ -115,7 +115,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-msix-${{ matrix.platform }}
-          path: Clever-Vpn/bin/Appx/Clever-Vpn_${{ needs.validate_tag.outputs.installer_version }}_Test/*.msix
+          path: Clever-Vpn/bin/Appx/**/*.msix
 
   bundle_msix:
     name: Create MSIX Bundle
@@ -133,6 +133,10 @@ jobs:
           pattern: release-msix-*
           merge-multiple: true
           path: Clever-Vpn/bin/Appx/Clever-Vpn_${{ needs.validate_tag.outputs.installer_version }}_Test
+
+      - name: List downloaded MSIX files
+        shell: pwsh
+        run: Get-ChildItem -Path 'Clever-Vpn/bin/Appx' -Recurse -Filter '*.msix' | Select-Object FullName | Format-Table -AutoSize
 
       - name: Ensure makeappx is available
         shell: pwsh
