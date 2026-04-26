@@ -117,6 +117,48 @@ jobs:
           name: release-msix-${{ matrix.platform }}
           path: Clever-Vpn/bin/Appx/**/*.msix
 
+  build_setup:
+    name: Build Setup Bootstrapper (setup.exe)
+    needs:
+      - validate_tag
+      - build_msi
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Download MSI x86 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-msi-x86
+          path: MsiInstaller/bin/x86/${{ env.CONFIGURATION }}/en-US
+
+      - name: Download MSI x64 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-msi-x64
+          path: MsiInstaller/bin/x64/${{ env.CONFIGURATION }}/en-US
+
+      - name: Download MSI ARM64 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-msi-ARM64
+          path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
+
+      - name: Build setup.exe bundle
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:BuildMsiAllArchOnBuild=false
+
+      - name: Upload setup.exe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-setup-bootstrapper
+          path: SetupInstaller/bin/**/*.exe
+
   bundle_msix:
     name: Create MSIX Bundle
     needs:
@@ -192,6 +234,7 @@ jobs:
     needs:
       - validate_tag
       - build_msi
+      - build_setup
       - bundle_msix
     runs-on: windows-latest
     steps:
@@ -212,5 +255,6 @@ jobs:
             artifacts/**/*.msi
             artifacts/**/*.msix
             artifacts/**/*.msixbundle
+            artifacts/**/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
