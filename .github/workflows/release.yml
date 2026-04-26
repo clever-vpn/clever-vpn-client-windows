@@ -63,7 +63,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          cache: true
 
       - name: Restore solution
         run: dotnet restore Clever-Vpn.sln
@@ -96,7 +95,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          cache: true
 
       - name: Set MSIX manifest version from tag
         shell: pwsh
