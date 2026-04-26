@@ -29,12 +29,14 @@
 		<Content Remove="Assets\bak\logo_with_check.svg" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(WindowsPackageType)' == 'None'">
-		<Content Include="Assets\*.ico">
+	<ItemGroup>
+		<Content Update="Assets\*.ico">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Include="Assets\icon\*.svg">
+		<Content Update="Assets\icon\*.svg">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 	</ItemGroup>
 
@@ -84,7 +86,7 @@
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Clever-Vpn-Windows-Kit" Version="1.0.6" />
+		<PackageReference Include="Clever-Vpn-Windows-Kit" Version="0.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.250402" />
 		<PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.2.250402" />

@@ -1,12 +1,14 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<Fragment>
 		<ComponentGroup Id="CleverVpnComponents" Directory="INSTALLFOLDER">
-			<Files Include="!(bindpath.ToBeHarvested)\**" Directory="INSTALLFOLDER" >
-				<Exclude Files="!(bindpath.ToBeHarvested)\Clever-Vpn.exe"></Exclude>
-			</Files>
-			<File Id="CleverVpnExe"  Source="!(bindpath.ToBeHarvested)\Clever-Vpn.exe" Directory="INSTALLFOLDER"></File>
+				   <Files Include="!(bindpath.ToBeHarvested)\**" Directory="INSTALLFOLDER">
+					<Exclude Files="!(bindpath.ToBeHarvested)\Clever-Vpn.exe"></Exclude>
+				</Files>
+				<Component Id="CleverVpnExeComponent" Directory="INSTALLFOLDER">
+					<File Id="CleverVpnExe" Source="!(bindpath.ToBeHarvested)\Clever-Vpn.exe" KeyPath="yes" />
+				</Component>
 
-			<Component Id="SetupCleverVpn">
+			<Component Id="SetupCleverVpnServiceControl">
 				<ServiceControl
 				  Id="ScRemoveBefore"
 				  Name="$(var.VpnBrokerService)"
@@ -14,12 +16,16 @@
 				  Remove="both"
 				  Wait="yes" />
 
-				<ServiceControl
-				  Id="ScRemoveBefore1"
-				  Name="$(var.VpnTunnelService)"
-				  Stop="both"
-				  Remove="both"
-				  Wait="yes" />
+				<RegistryValue Root="HKLM"
+				   Key="Software\!(bind.Property.Manufacturer)\!(bind.Property.ProductName)"
+				   Name="service-control"
+				   Type="integer"
+				   Value="1"
+				   KeyPath="yes" />
+
+			</Component>
+
+			<Component Id="SetupCleverVpnShortcuts">
 
 				<!-- Start Menu Shortcut -->
 				<Shortcut
@@ -47,7 +53,7 @@
 
 				<RegistryValue Root="HKCU"
 				   Key="Software\!(bind.Property.Manufacturer)\!(bind.Property.ProductName)"
-				   Name="installed"
+				   Name="installed-shortcuts"
 				   Type="integer"
 				   Value="1"
 				   KeyPath="yes" />

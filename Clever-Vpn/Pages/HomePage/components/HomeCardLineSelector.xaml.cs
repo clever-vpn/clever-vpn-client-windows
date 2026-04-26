@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2025 CleverVPN Team
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
+using Clever_Vpn.utils;
 using Clever_Vpn.ViewModel;
 using Clever_Vpn_Windows_Kit.Common;
 using Clever_Vpn_Windows_Kit.Data;
@@ -11,6 +12,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace Clever_Vpn.Pages.HomePage.components;
@@ -152,7 +154,22 @@ public sealed partial class HomeCardLineSelector : UserControl
     public static ImageSource GetLineIconPath(string? icon, string? iconKind)
     {
         var relativePath = LineIconResolver.GetSvgRelativePath(icon, iconKind);
-        return new SvgImageSource(new Uri($"ms-appx:///{relativePath}"));
+        var msAppxUri = new Uri($"ms-appx:///{relativePath}");
+
+        //if (Utils.IsPackaged())
+        //{
+        //    return new SvgImageSource(msAppxUri);
+        //}
+
+        //var baseDirPath = AppContext.BaseDirectory.Replace('/', Path.DirectorySeparatorChar).TrimEnd(Path.DirectorySeparatorChar);
+        //var normalizedRelativePath = relativePath.Replace('/', Path.DirectorySeparatorChar);
+        //var filePath = Path.Combine(baseDirPath, normalizedRelativePath);
+        //if (File.Exists(filePath))
+        //{
+        //    return new SvgImageSource(new Uri(filePath, UriKind.Absolute));
+        //}
+
+        return new SvgImageSource(msAppxUri);
     }
 
     public static ImageSource GetRelayIcon() => GetLineIconPath("relay", "service");

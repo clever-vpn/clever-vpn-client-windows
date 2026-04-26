@@ -3,7 +3,6 @@
 		<SuppressIces>ICE03;ICE30;ICE82;</SuppressIces>
 		<DefineConstants>
 			VpnBrokerService=CleverVpnBrokerService;
-			VpnTunnelService=CleverVpnTunnelService;
 		</DefineConstants>
 		<OutputName>CleverVPN</OutputName>
 	</PropertyGroup>
@@ -11,6 +10,9 @@
 		<BindPath Include="..\Clever-Vpn\bin\msi\$(Platform)">
 			<BindName>ToBeHarvested</BindName>
 		</BindPath>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="WixToolset.Util.wixext" Version="6.0.1" />
 	</ItemGroup>
 	
 	<Target Name="PublishCleverVpnApp" BeforeTargets="BeforeBuild">
