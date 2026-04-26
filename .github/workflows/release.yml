@@ -168,7 +168,7 @@ jobs:
         shell: cmd
         run: |
           cd Clever-Vpn
-          make-bundle.bat
+          make-bundle.bat ${{ needs.validate_tag.outputs.installer_version }}
 
       - name: Validate MSIX bundle output
         shell: pwsh

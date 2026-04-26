@@ -1,7 +1,15 @@
 @echo off
 setlocal enabledelayedexpansion
 
-for /f "usebackq delims=" %%i in (`powershell -Command "$xml = [xml](Get-Content -Path 'Package.appxmanifest'); $xml.Package.Identity.Version"`) do set Version=%%i
+set "Version=%~1"
+if "%Version%"=="" (
+    for /f "usebackq delims=" %%i in (`powershell -Command "$xml = [xml](Get-Content -Path 'Package.appxmanifest'); $xml.Package.Identity.Version"`) do set Version=%%i
+)
+
+if "%Version%"=="" (
+    echo [错误] 无法解析版本号，请传入参数例如 make-bundle.bat 1.0.0.0
+    exit /b 1
+)
 
 rem === 设置目录路径 ===
 set "MSIX_DIR=bin/Appx/Clever-Vpn_%Version%_Test"
@@ -35,6 +43,7 @@ if not exist "%BUNDLE_DIR%" mkdir "%BUNDLE_DIR%"
 rem === 构建列表文件 ===
 set "BUNDLE_LIST=bundlemap.txt"
 del "%BUNDLE_LIST%" >nul 2>&1
+set /a FILE_COUNT=0
 
 
 
@@ -45,11 +54,12 @@ for %%F in ("%MSIX_DIR%\*.msix") do (
     set "FULL=%%~fF"
     set "NAME=%%~nxF"
     echo "!FULL!" "!NAME!" >> "%BUNDLE_LIST%"
+    set /a FILE_COUNT+=1
 )
 
 
 rem === 检查是否有文件 ===
-if not exist "%BUNDLE_LIST%" (
+if !FILE_COUNT! LSS 1 (
     echo [错误] 目录 "%MSIX_DIR%" 中未找到任何 .msix 文件。
     exit /b 1
 )
