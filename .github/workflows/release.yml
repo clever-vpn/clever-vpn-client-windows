@@ -341,9 +341,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-msix-bundle
-          path: |
-            Clever-Vpn/bin/Appx/bundle/*.msixbundle
-            Clever-Vpn/bin/Appx/msix-input/*.msix
+          path: Clever-Vpn/bin/Appx/bundle/*.msixbundle
           retention-days: 7
 
   publish_github_release:
@@ -371,7 +369,6 @@ jobs:
           prerelease: ${{ needs.validate_tag.outputs.prerelease }}
           files: |
             artifacts/**/*.msi
-            artifacts/**/*.msix
             artifacts/**/*.msixbundle
             artifacts/**/*.exe
         env:
