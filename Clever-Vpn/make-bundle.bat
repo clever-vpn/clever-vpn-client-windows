@@ -41,8 +41,8 @@ rem === 自动创建 bundle 目录 ===
 for %%D in ("%BUNDLE_NAME%") do set "BUNDLE_DIR=%%~dpD"
 if not exist "%BUNDLE_DIR%" mkdir "%BUNDLE_DIR%"
 
-rem === 构建列表文件 ===
-set "BUNDLE_LIST=bundlemap.txt"
+rem === 构建列表文件（临时文件，脚本自动创建与清理） ===
+set "BUNDLE_LIST=%TEMP%\clevervpn_bundlemap_%RANDOM%_%RANDOM%.txt"
 del "%BUNDLE_LIST%" >nul 2>&1
 set /a FILE_COUNT=0
 
@@ -79,18 +79,23 @@ if !FILE_COUNT! LSS 1 (
 rem === 检查是否有文件 ===
 if !FILE_COUNT! LSS 1 (
     echo [错误] 目录 "%MSIX_DIR%" 中未找到任何 .msix 文件。
+    del "%BUNDLE_LIST%" >nul 2>&1
     exit /b 1
 )
 
 rem === 创建 Bundle ===
 echo [信息] 开始打包 bundle 到 %BUNDLE_NAME% ...
 makeappx bundle /f "%BUNDLE_LIST%" /p "%BUNDLE_NAME%"
+set "BUNDLE_EXIT_CODE=%ERRORLEVEL%"
 
-if %ERRORLEVEL%==0 (
+if %BUNDLE_EXIT_CODE%==0 (
     echo [成功] 打包完成: %BUNDLE_NAME%
 ) else (
     echo [失败] 打包过程中发生错误。
 )
 
-endlocal
+rem === 清理临时映射文件 ===
+del "%BUNDLE_LIST%" >nul 2>&1
+
+endlocal & exit /b %BUNDLE_EXIT_CODE%
 

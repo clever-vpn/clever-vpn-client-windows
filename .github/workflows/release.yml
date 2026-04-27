@@ -3,7 +3,22 @@ name: Build and Release Clever-Vpn
 on:
   push:
     tags:
-      - "v*"
+      - "v*.*.*-rc.*"
+  workflow_dispatch:
+    inputs:
+      release_mode:
+        description: "Build mode: internal (no release), prerelease, or release"
+        required: true
+        default: internal
+        type: choice
+        options:
+          - internal
+          - prerelease
+          - release
+      tag_name:
+        description: "Required for all modes. internal/prerelease: v1.2.3-rc.N, release: v1.2.3"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -15,32 +30,108 @@ env:
 
 jobs:
   validate_tag:
-    name: Validate Tag and Resolve Version
+    name: Resolve Build Mode and Version
     runs-on: windows-latest
     outputs:
       semver: ${{ steps.parse.outputs.semver }}
       installer_version: ${{ steps.parse.outputs.installer_version }}
       prerelease: ${{ steps.parse.outputs.prerelease }}
+      publish_release: ${{ steps.parse.outputs.publish_release }}
+      tag_name: ${{ steps.parse.outputs.tag_name }}
+      build_ref: ${{ steps.parse.outputs.build_ref }}
+      installer_tag_name: ${{ steps.parse.outputs.installer_tag_name }}
     steps:
-      - name: Parse and validate tag
+      - name: Checkout repository with tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Resolve mode, validate tag, and compute versions
         id: parse
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
-          $pattern = '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?<pre>-[0-9A-Za-z.-]+)?$'
-
-          if ($tag -notmatch $pattern) {
-            Write-Error "Invalid tag: $tag. Expected v<major>.<minor>.<patch> or v<major>.<minor>.<patch>-<prerelease>."
+          $eventName = "${{ github.event_name }}"
+          if ($eventName -eq "workflow_dispatch") {
+            $mode = "${{ inputs.release_mode }}"
+            $tag = "${{ inputs.tag_name }}".Trim()
+          } elseif ($eventName -eq "push") {
+            $mode = "internal"
+            $tag = "${{ github.ref_name }}".Trim()
+          } else {
+            Write-Error "Unsupported event '$eventName'. Expected workflow_dispatch or push(tag)."
             exit 1
           }
 
-          $semver = "$($Matches.major).$($Matches.minor).$($Matches.patch)"
+          if ($mode -notin @("internal", "prerelease", "release")) {
+            Write-Error "Invalid release_mode '$mode'. Expected one of: internal, prerelease, release."
+            exit 1
+          }
+
+          $publishRelease = "false"
+          $isPrerelease = "false"
+          $buildRef = "${{ github.sha }}"
+          $installerTagName = ""
+          $resolvedTagName = ""
+          $semver = ""
+          $installerVersion = ""
+
+          if ([string]::IsNullOrWhiteSpace($tag)) {
+            Write-Error "tag_name is required when release_mode is '$mode'."
+            exit 1
+          }
+
+          $releaseRegex = '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)$'
+          $prereleaseRegex = '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)-rc\.(?<rc>[1-9]\d*)$'
+
+          if ($mode -in @("internal", "prerelease")) {
+            if ($tag -notmatch $prereleaseRegex) {
+              Write-Error "Invalid $mode tag '$tag'. Expected format: v<major>.<minor>.<patch>-rc.<n>"
+              exit 1
+            }
+            $isPrerelease = if ($mode -eq "prerelease") { "true" } else { "false" }
+          }
+
+          if ($mode -eq "release") {
+            if ($tag -notmatch $releaseRegex) {
+              Write-Error "Invalid release tag '$tag'. Expected format: v<major>.<minor>.<patch>"
+              exit 1
+            }
+            $isPrerelease = "false"
+          }
+
+          git rev-parse --verify --quiet "refs/tags/$tag" | Out-Null
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Tag '$tag' does not exist in the repository."
+            exit 1
+          }
+
+          if ($tag -match '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)') {
+            $semver = "$($Matches.major).$($Matches.minor).$($Matches.patch)"
+          } else {
+            Write-Error "Unable to parse semantic version from tag '$tag'."
+            exit 1
+          }
+
           $installerVersion = "$semver.0"
-          $isPrerelease = if ($Matches.pre) { "true" } else { "false" }
+          $publishRelease = if ($mode -eq "internal") { "false" } else { "true" }
+          $resolvedTagName = $tag
+          $installerTagName = $tag
+          $buildRef = "refs/tags/$tag"
 
           "semver=$semver" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "installer_version=$installerVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "prerelease=$isPrerelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "publish_release=$publishRelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "tag_name=$resolvedTagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "build_ref=$buildRef" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "installer_tag_name=$installerTagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+          Write-Host "Mode=$mode"
+          Write-Host "BuildRef=$buildRef"
+          Write-Host "TagName=$resolvedTagName"
+          Write-Host "InstallerVersion=$installerVersion"
+          Write-Host "PublishRelease=$publishRelease"
 
   build_msi:
     name: Build MSI (${{ matrix.platform }})
@@ -59,6 +150,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate_tag.outputs.build_ref }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -77,6 +170,7 @@ jobs:
           name: release-msi-${{ matrix.platform }}
           path: MsiInstaller/bin/${{ matrix.output_dir }}/${{ env.CONFIGURATION }}/en-US/*.msi
           if-no-files-found: error
+          retention-days: 7
 
   build_msix:
     name: Build MSIX (${{ matrix.platform }})
@@ -92,13 +186,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate_tag.outputs.build_ref }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Set MSIX manifest version from tag
+      - name: Set MSIX manifest version from resolved version
         shell: pwsh
         run: |
           $manifest = "Clever-Vpn/Package.appxmanifest"
@@ -118,6 +214,7 @@ jobs:
         with:
           name: release-msix-${{ matrix.platform }}
           path: Clever-Vpn/bin/Appx/**/*.msix
+          retention-days: 7
 
   build_setup:
     name: Build Setup Bootstrapper (setup.exe)
@@ -128,6 +225,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate_tag.outputs.build_ref }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -165,13 +264,14 @@ jobs:
           path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
 
       - name: Build setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerTagName=${{ github.ref_name }} -p:InstallerDownloadBaseUrl=${{ steps.resolve_download_base_url.outputs.download_base_url }} -p:BuildMsiAllArchOnBuild=false
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerTagName=${{ needs.validate_tag.outputs.installer_tag_name }} -p:InstallerDownloadBaseUrl=${{ steps.resolve_download_base_url.outputs.download_base_url }} -p:BuildMsiAllArchOnBuild=false
 
       - name: Upload setup.exe artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-setup-bootstrapper
           path: SetupInstaller/bin/**/*.exe
+          retention-days: 7
 
   bundle_msix:
     name: Create MSIX Bundle
@@ -182,6 +282,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate_tag.outputs.build_ref }}
 
       - name: Download all MSIX artifacts
         uses: actions/download-artifact@v4
@@ -242,9 +344,11 @@ jobs:
           path: |
             Clever-Vpn/bin/Appx/bundle/*.msixbundle
             Clever-Vpn/bin/Appx/msix-input/*.msix
+          retention-days: 7
 
   publish_github_release:
     name: Publish GitHub Release
+    if: ${{ needs.validate_tag.outputs.publish_release == 'true' }}
     needs:
       - validate_tag
       - build_msi
@@ -262,8 +366,8 @@ jobs:
       - name: Create release from tag type
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: ${{ github.ref_name }}
+          tag_name: ${{ needs.validate_tag.outputs.tag_name }}
+          name: ${{ needs.validate_tag.outputs.tag_name }}
           prerelease: ${{ needs.validate_tag.outputs.prerelease }}
           files: |
             artifacts/**/*.msi

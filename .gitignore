@@ -34,6 +34,7 @@ Generated Files/
 *.appxbundle
 *.cer
 *.pfx
+Clever-Vpn/bundlemap.txt
 
 # Other temporary files
 *.dbmdl
