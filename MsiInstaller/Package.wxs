@@ -25,7 +25,7 @@
 			Return="asyncNoWait" />
 
 		<InstallExecuteSequence>
-			<Custom Action="LaunchApp" Before="InstallFinalize" Condition="NOT Installed AND UILevel &gt;= 5 AND NOT WIX_UPGRADE_DETECTED AND NOT REMOVE" />
+			<Custom Action="LaunchApp" Before="InstallFinalize" Condition="NOT Installed AND NOT WIX_UPGRADE_DETECTED AND NOT REMOVE" />
 		</InstallExecuteSequence>
 
 

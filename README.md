@@ -44,6 +44,44 @@ Before building the project locally, ensure you have the following installed:
 	- select `SetupInstaller` project, and build,
 	- output setup will be generated in `SetupInstaller\bin\<configuration>` and will download/install the matching MSI by architecture.
 
+### GitHub Actions Release Modes
+
+The repository workflow `.github/workflows/release.yml` supports three build/release modes:
+
+- `internal`
+	- intended for CI validation only, does not publish a GitHub Release.
+	- requires an RC tag format: `v<major>.<minor>.<patch>-rc.<n>`.
+	- automatically triggered when an RC tag is pushed (for example `v1.0.0-rc.17`).
+	- can also be triggered manually via `workflow_dispatch`.
+
+- `prerelease`
+	- publishes a GitHub prerelease.
+	- requires an RC tag format: `v<major>.<minor>.<patch>-rc.<n>`.
+	- trigger method: `workflow_dispatch`.
+
+- `release`
+	- publishes a normal GitHub Release.
+	- requires a stable tag format: `v<major>.<minor>.<patch>`.
+	- trigger method: `workflow_dispatch`.
+
+#### Manual Trigger Examples
+
+- prerelease:
+	- `gh workflow run release.yml -R clever-vpn/clever-vpn-client-windows --ref main -f release_mode=prerelease -f tag_name=v1.0.0-rc.17`
+
+- release:
+	- `gh workflow run release.yml -R clever-vpn/clever-vpn-client-windows --ref main -f release_mode=release -f tag_name=v1.0.0`
+
+#### Workflow Outputs and Artifacts
+
+- installer version is resolved from tag and mapped to `major.minor.patch.0`.
+- workflow artifacts are set to `retention-days: 7`.
+- GitHub Release assets include:
+	- `*.msi` (x86/x64/arm64)
+	- `*.msixbundle`
+	- `setup.exe`
+- individual `*.msix` files are intermediate build outputs used for bundle creation and are not published as release assets.
+
 
 ## License
 
