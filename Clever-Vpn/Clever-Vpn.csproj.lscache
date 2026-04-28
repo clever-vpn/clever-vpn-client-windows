@@ -369,9 +369,6 @@ ViewModel/ViewModel.cs
 <NUGET>/
  microsoft.extensions.logging.abstractions/9.0.5/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Logging.Generators.dll
  microsoft.extensions.options/9.0.5/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Options.SourceGeneration.dll
- microsoft.net.illink.tasks/8.0.25/analyzers/dotnet/cs/
-  ILLink.CodeFixProvider.dll
-  ILLink.RoslynAnalyzer.dll
  microsoft.windows.sdk.net.ref/10.0.19041.57/analyzers/dotnet/cs/WinRT.SourceGenerator.dll
  system.text.json/9.0.5/analyzers/dotnet/roslyn4.4/cs/System.Text.Json.SourceGeneration.dll
  winuiex/2.6.0/analyzers/dotnet/cs/WinUIEx.Analyzers.dll

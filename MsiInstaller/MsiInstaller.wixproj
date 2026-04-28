@@ -22,7 +22,7 @@
 		<MSBuild
 		  Projects="..\Clever-Vpn\Clever-Vpn.csproj"
 		  Targets="Publish"
-		  Properties="Platform=$(Platform); PublishProfile=msi-win;"
+		  Properties="Platform=$(Platform);PublishProfile=msi-win;Version=$(CleverVpnInstallerVersion);AssemblyVersion=$(CleverVpnInstallerVersion);FileVersion=$(CleverVpnInstallerVersion);PackageVersion=$(CleverVpnInstallerVersion);"
 		  />
 	</Target> 
 

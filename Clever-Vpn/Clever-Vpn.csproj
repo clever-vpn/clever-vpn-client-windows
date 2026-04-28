@@ -15,9 +15,10 @@
 		<LangVersion>preview</LangVersion>
 		<SelfContained>true</SelfContained>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-		<FileVersion>1.3.0</FileVersion>
+		<Version Condition="'$(Version)'==''">0.0.0.0</Version>
+		<AssemblyVersion Condition="'$(AssemblyVersion)'==''">$(Version)</AssemblyVersion>
+		<FileVersion Condition="'$(FileVersion)'==''">$(Version)</FileVersion>
 		<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN;DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
-		<Version>1.3.0.0</Version>
 		<PackageVersion>$(Version)</PackageVersion>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 		<!--<WindowsPackageType>None</WindowsPackageType> -->

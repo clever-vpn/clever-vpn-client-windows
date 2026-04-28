@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <!-- Local defaults for setup bundle builds; CI overrides these via -p: properties. -->
-    <CleverVpnInstallerVersion Condition="'$(CleverVpnInstallerVersion)'==''">1.0.0.0</CleverVpnInstallerVersion>
+    <CleverVpnInstallerVersion Condition="'$(CleverVpnInstallerVersion)'==''">0.0.0.0</CleverVpnInstallerVersion>
     <InstallerTagName Condition="'$(InstallerTagName)'==''">local-dev</InstallerTagName>
     <InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://github.com/clever-vpn/clever-vpn-client-windows/releases/download</InstallerDownloadBaseUrl>
     <MsiSourceRoot Condition="'$(MsiSourceRoot)'==''">..\MsiInstaller\bin</MsiSourceRoot>
