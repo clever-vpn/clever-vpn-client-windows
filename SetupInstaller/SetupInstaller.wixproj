@@ -1,29 +1,21 @@
-<Project Sdk="WixToolset.Sdk/6.0.1">
+﻿<Project Sdk="WixToolset.Sdk/6.0.1">
   <Import Project="..\InstallerSettings.props" Condition="Exists('..\InstallerSettings.props')" />
-
   <PropertyGroup>
-	<OutputType>Bundle</OutputType>
-	<OutputName>CleverVPN_Setup</OutputName>
-	<InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://github.com/clever-vpn/clever-vpn-client-windows/releases/download</InstallerDownloadBaseUrl>
-	<!-- Git tag name e.g. v1.0.0-rc.12; used as GitHub Releases path segment in DownloadUrl -->
-	<InstallerTagName Condition="'$(InstallerTagName)'==''">local-dev</InstallerTagName>
-	<MsiSourceRoot Condition="'$(MsiSourceRoot)'==''">..\MsiInstaller\bin</MsiSourceRoot>
-	<BuildMsiAllArchOnBuild Condition="'$(BuildMsiAllArchOnBuild)'==''">false</BuildMsiAllArchOnBuild>
-	<DefineConstants>
-	  CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);
-	  InstallerDownloadBaseUrl=$(InstallerDownloadBaseUrl);
-	  InstallerTagName=$(InstallerTagName);
-	  MsiSourceRoot=$(MsiSourceRoot);
-	</DefineConstants>
+    <OutputType>Bundle</OutputType>
+    <OutputName>CleverVPN_Setup</OutputName>
+    <BuildMsiAllArchOnBuild Condition="'$(BuildMsiAllArchOnBuild)'==''">false</BuildMsiAllArchOnBuild>
+    <DefineConstants>CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);InstallerDownloadBaseUrl=$(InstallerDownloadBaseUrl);InstallerTagName=$(InstallerTagName);MsiSourceRoot=$(MsiSourceRoot)</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
-	<PackageReference Include="WixToolset.Bal.wixext" Version="6.0.1" />
+    <Content Include="HyperlinkTheme.xml" />
+    <Content Include="SetupLogo.512.png" />
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Bal.wixext" Version="6.0.1" />
+  </ItemGroup>
   <Target Name="BuildMsiAllArch" BeforeTargets="BeforeBuild" Condition="'$(BuildMsiAllArchOnBuild)'=='true'">
-	<MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x86;CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)" />
-	<MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64;CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)" />
-	<MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM64;CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)" />
+    <MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x86;CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)" />
+    <MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=x64;CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)" />
+    <MSBuild Projects="..\MsiInstaller\MsiInstaller.wixproj" Targets="Build" Properties="Configuration=$(Configuration);Platform=ARM64;CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)" />
   </Target>
 </Project>

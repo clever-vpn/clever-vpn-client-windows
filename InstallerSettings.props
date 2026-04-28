@@ -1,55 +1,9 @@
 <Project>
   <PropertyGroup>
+    <!-- Local defaults for setup bundle builds; CI overrides these via -p: properties. -->
+    <CleverVpnInstallerVersion Condition="'$(CleverVpnInstallerVersion)'==''">1.0.0.0</CleverVpnInstallerVersion>
+    <InstallerTagName Condition="'$(InstallerTagName)'==''">local-dev</InstallerTagName>
     <InstallerDownloadBaseUrl Condition="'$(InstallerDownloadBaseUrl)'==''">https://github.com/clever-vpn/clever-vpn-client-windows/releases/download</InstallerDownloadBaseUrl>
+    <MsiSourceRoot Condition="'$(MsiSourceRoot)'==''">..\MsiInstaller\bin</MsiSourceRoot>
   </PropertyGroup>
-
-  <!--
-    Auto-derive CleverVpnInstallerVersion from the nearest git tag (format: v1.2.3 or v1.2.3-rc.N).
-    In CI, the workflow passes -p:CleverVpnInstallerVersion=X.X.X.X from the repo tag — this target is skipped.
-    For local builds, the version is read automatically from 'git describe'.
-    No manual version configuration is needed.
-  -->
-  <Target Name="ResolveVersionFromGitTag" BeforeTargets="BeforeBuild" Condition="'$(CleverVpnInstallerVersion)'==''">
-    <Exec Command="git describe --tags --match &quot;v*&quot; --abbrev=0"
-          ConsoleToMSBuild="true"
-          IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="_RawGitTag" />
-    </Exec>
-    <PropertyGroup>
-      <!-- Trim whitespace/newlines from git output -->
-      <_RawGitTagClean>$(_RawGitTag.Trim())</_RawGitTagClean>
-      <!-- Extract major.minor.patch from tag like v1.0.0 or v1.0.0-rc.10 -->
-      <_TagVersion>$([System.Text.RegularExpressions.Regex]::Match($(_RawGitTagClean), '\d+\.\d+\.\d+').Value)</_TagVersion>
-      <!-- Convert to 4-part Windows version: 1.0.0 -> 1.0.0.0 -->
-      <CleverVpnInstallerVersion Condition="'$(_TagVersion)'!=''">$(_TagVersion).0</CleverVpnInstallerVersion>
-      <!-- Fallback: makes version problems obvious rather than silently using a stale value -->
-      <CleverVpnInstallerVersion Condition="'$(CleverVpnInstallerVersion)'==''">0.0.0.0</CleverVpnInstallerVersion>
-    </PropertyGroup>
-    <Message Text="[InstallerSettings] CleverVpnInstallerVersion=$(CleverVpnInstallerVersion) (git tag: '$(_RawGitTagClean)')" Importance="high" />
-    <!-- Patch DefineConstants which was evaluated before this target ran (with empty version) -->
-    <PropertyGroup>
-      <DefineConstants>$([System.Text.RegularExpressions.Regex]::Replace($(DefineConstants), 'CleverVpnInstallerVersion=[^;\s]*', 'CleverVpnInstallerVersion=$(CleverVpnInstallerVersion)'))</DefineConstants>
-    </PropertyGroup>
-  </Target>
-
-  <!--
-    Auto-derive InstallerTagName from the nearest git tag (e.g. v1.0.0-rc.12).
-    This is used as the GitHub Releases path segment in DownloadUrl inside Bundle.wxs.
-    In CI, passed via -p:InstallerTagName=${{ github.ref_name }} — this target is skipped.
-  -->
-  <Target Name="ResolveTagNameFromGit" BeforeTargets="BeforeBuild" Condition="'$(InstallerTagName)'=='' and '$(MSBuildProjectName)'=='SetupInstaller'">
-    <Exec Command="git describe --tags --match &quot;v*&quot; --abbrev=0"
-          ConsoleToMSBuild="true"
-          IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="_RawTagForName" />
-    </Exec>
-    <PropertyGroup>
-      <InstallerTagName Condition="'$(_RawTagForName.Trim())'!=''">$(_RawTagForName.Trim())</InstallerTagName>
-      <InstallerTagName Condition="'$(InstallerTagName)'==''">local-dev</InstallerTagName>
-    </PropertyGroup>
-    <Message Text="[InstallerSettings] InstallerTagName=$(InstallerTagName)" Importance="high" />
-    <PropertyGroup>
-      <DefineConstants>$([System.Text.RegularExpressions.Regex]::Replace($(DefineConstants), 'InstallerTagName=[^;\s]*', 'InstallerTagName=$(InstallerTagName)'))</DefineConstants>
-    </PropertyGroup>
-  </Target>
 </Project>

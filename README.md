@@ -40,7 +40,15 @@ Before building the project locally, ensure you have the following installed:
 - Unified Setup EXE (auto architecture selection):
 	- configure `InstallerSettings.props` at solution root:
 		- `CleverVpnInstallerVersion`
+		- `InstallerTagName`
 		- `InstallerDownloadBaseUrl`
+	- `InstallerTagName` + `CleverVpnInstallerVersion` are used to compose the real MSI download URL in setup bootstrapper.
+		- URL pattern (x64): `<InstallerDownloadBaseUrl>/<InstallerTagName>/CleverVPN_<CleverVpnInstallerVersion>_x64.msi`
+		- example:
+			- `InstallerDownloadBaseUrl=https://github.com/clever-vpn/clever-vpn-client-windows/releases/download`
+			- `InstallerTagName=v1.3.7-rc.1`
+			- `CleverVpnInstallerVersion=1.3.7.0`
+			- final x64 URL: `https://github.com/clever-vpn/clever-vpn-client-windows/releases/download/v1.3.7-rc.1/CleverVPN_1.3.7.0_x64.msi`
 	- select `SetupInstaller` project, and build,
 	- output setup will be generated in `SetupInstaller\bin\<configuration>` and will download/install the matching MSI by architecture.
 
