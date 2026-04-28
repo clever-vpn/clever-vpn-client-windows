@@ -1,13 +1,20 @@
-﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+﻿	<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
 	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
 	 xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
 	<Package Id="CleverVPNTeam.MsiInstaller"
 			 Name="Clever VPN"
 			 Manufacturer="Clever VPN Team"
 			 Version="$(var.CleverVpnInstallerVersion)">
-		<Property Id="MSIRESTARTMANAGERCONTROL" Value="DisableShutdown" />
-		<Property Id="MSIDISABLERMRESTART" Value="1" />
 		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+		<util:CloseApplication
+			Id="CloseRunningCleverVpn"
+			Target="Clever-Vpn.exe"
+			Description="Clever VPN must exit before setup can continue."
+			CloseMessage="yes"
+			EndSessionMessage="yes"
+			Timeout="5"
+			TerminateProcess="0"
+			RebootPrompt="no" />
 		<Icon Id="MyIcon" SourceFile="..\Clever-Vpn\Assets\appIcon.ico" />
 		<Property Id="ARPPRODUCTICON" Value="MyIcon" />
 		<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Clever VPN" />
@@ -32,6 +39,36 @@
 				ExeCommand=""
 				Impersonate="yes"
 				Return="asyncNoWait" />
+
+		<CustomAction
+				Id="StopRunningCleverVpnService"
+				Directory="SystemFolder"
+				ExeCommand="net.exe stop $(var.VpnBrokerService)"
+				Execute="immediate"
+				Impersonate="no"
+				Return="ignore" />
+
+		<CustomAction
+				Id="ForceKillRunningCleverVpn"
+				Directory="SystemFolder"
+				ExeCommand="taskkill.exe /F /T /IM Clever-Vpn.exe"
+				Execute="immediate"
+				Impersonate="no"
+				Return="ignore" />
+
+		<CustomAction
+				Id="RemoveAutoStartRunEntry"
+				Directory="SystemFolder"
+				ExeCommand="reg.exe delete &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Run&quot; /v CleverVpn /f"
+				Execute="immediate"
+				Impersonate="yes"
+				Return="ignore" />
+
+		<InstallExecuteSequence>
+			<Custom Action="StopRunningCleverVpnService" Before="ForceKillRunningCleverVpn" Condition="Installed OR WIX_UPGRADE_DETECTED OR REMOVE~=&quot;ALL&quot;" />
+			<Custom Action="ForceKillRunningCleverVpn" Before="InstallValidate" Condition="Installed OR WIX_UPGRADE_DETECTED OR REMOVE~=&quot;ALL&quot;" />
+			<Custom Action="RemoveAutoStartRunEntry" Before="RemoveFiles" Condition="REMOVE~=&quot;ALL&quot;" />
+		</InstallExecuteSequence>
 
 
 		<Feature Id="Main">

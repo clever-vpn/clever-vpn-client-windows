@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2025 CleverVPN Team
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
+using Clever_Vpn.config;
 using Microsoft.Win32;
 using Microsoft.Windows.AppLifecycle;
 using System;
@@ -16,7 +17,7 @@ namespace Clever_Vpn.utils
     {
         private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private const string AppName = "CleverVpn";
-        private const string AutoStartUPFlag = "auto-start";
+        private static string AutoStartCommand => $"\"{Environment.ProcessPath!}\" {AppConfig.AutoStartUpFlag}";
 
         /// <summary>
         /// 启用/禁用开机自启
@@ -26,11 +27,9 @@ namespace Clever_Vpn.utils
             using var key = Registry.CurrentUser.OpenSubKey(RunKey, writable: true);
             if (key == null) return;
 
-            string exePath = Environment.ProcessPath!;
-
             if (enable)
             {
-                key.SetValue(AppName, $"\"{exePath}\"");
+                key.SetValue(AppName, AutoStartCommand);
             }
             else
             {
@@ -44,9 +43,8 @@ namespace Clever_Vpn.utils
             if (key == null) return false;
             var val = key.GetValue(AppName) as string;
             if (string.IsNullOrEmpty(val)) return false;
-            // 比较一下路径，避免用户手动改了 exe 名称
-            var exePath = Environment.ProcessPath!;
-            return val.Trim('"').Equals(exePath, StringComparison.OrdinalIgnoreCase);
+
+            return IsCurrentExecutableRunCommand(val);
         }
 
         public static async Task<bool> IsAutoStartEnabledPackaged()
@@ -81,8 +79,28 @@ namespace Clever_Vpn.utils
             else
             {
                 string[] args = Environment.GetCommandLineArgs();
-                return args.Length > 1 ? args[1] == AutoStartUPFlag : false;
+                return args.Length > 1 ? string.Equals(args[1], AppConfig.AutoStartUpFlag, StringComparison.OrdinalIgnoreCase) : false;
             }
+        }
+
+        private static bool IsCurrentExecutableRunCommand(string command)
+        {
+            var exePath = Environment.ProcessPath!;
+            var trimmed = command.Trim();
+
+            if (string.Equals(trimmed.Trim('"'), exePath, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            var expectedPrefix = $"\"{exePath}\"";
+            if (!trimmed.StartsWith(expectedPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            var remainder = trimmed.Substring(expectedPrefix.Length).Trim();
+            return string.Equals(remainder, AppConfig.AutoStartUpFlag, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
