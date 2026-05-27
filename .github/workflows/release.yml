@@ -39,6 +39,8 @@ jobs:
       publish_release: ${{ steps.parse.outputs.publish_release }}
       tag_name: ${{ steps.parse.outputs.tag_name }}
       build_ref: ${{ steps.parse.outputs.build_ref }}
+      target_commit_sha: ${{ steps.parse.outputs.target_commit_sha }}
+      tag_exists: ${{ steps.parse.outputs.tag_exists }}
     steps:
       - name: Checkout repository with tags
         uses: actions/checkout@v4
@@ -49,7 +51,22 @@ jobs:
       - name: Resolve mode, validate tag, and compute versions
         id: parse
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          function Normalize-Tag([string] $value) {
+            if ([string]::IsNullOrWhiteSpace($value)) {
+              return ""
+            }
+
+            $trimmed = $value.Trim()
+            if ($trimmed.StartsWith("v")) {
+              return $trimmed
+            }
+
+            return "v$trimmed"
+          }
+
           $eventName = "${{ github.event_name }}"
           if ($eventName -eq "workflow_dispatch") {
             $mode = "${{ inputs.release_mode }}"
@@ -71,16 +88,50 @@ jobs:
           $isPrerelease = "false"
           $buildRef = "${{ github.sha }}"
           $resolvedTagName = ""
+          $targetCommitSha = ""
+          $tagExists = "false"
           $semver = ""
           $installerVersion = ""
 
-          if ([string]::IsNullOrWhiteSpace($tag)) {
-            Write-Error "tag_name is required when release_mode is '$mode'."
-            exit 1
-          }
-
           $releaseRegex = '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)$'
           $prereleaseRegex = '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)-rc\.(?<rc>[1-9]\d*)$'
+
+          if ([string]::IsNullOrWhiteSpace($tag)) {
+            if ($mode -ne "release") {
+              Write-Error "tag_name is required when release_mode is '$mode'."
+              exit 1
+            }
+
+            $headers = @{
+              Authorization = "Bearer $env:GITHUB_TOKEN"
+              Accept = "application/vnd.github+json"
+              "X-GitHub-Api-Version" = "2022-11-28"
+            }
+            $latestReleaseUri = "https://api.github.com/repos/${{ github.repository }}/releases/latest"
+
+            try {
+              $latestRelease = Invoke-RestMethod -Uri $latestReleaseUri -Headers $headers -Method Get
+              $latestTag = Normalize-Tag $latestRelease.tag_name
+              if ($latestTag -notmatch $releaseRegex) {
+                Write-Error "Latest GitHub Release tag '$latestTag' is not a stable v<major>.<minor>.<patch> tag."
+                exit 1
+              }
+
+              $nextPatch = [int]$Matches.patch + 1
+              $tag = "v$($Matches.major).$($Matches.minor).$nextPatch"
+            } catch {
+              $statusCode = $_.Exception.Response.StatusCode.value__
+              if ($statusCode -eq 404) {
+                $tag = "v0.0.1"
+              } else {
+                throw
+              }
+            }
+
+            Write-Host "No tag_name provided; auto-selected release tag '$tag'."
+          }
+
+          $tag = Normalize-Tag $tag
 
           if ($mode -in @("internal", "prerelease")) {
             if ($tag -notmatch $prereleaseRegex) {
@@ -99,9 +150,22 @@ jobs:
           }
 
           git rev-parse --verify --quiet "refs/tags/$tag" | Out-Null
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "Tag '$tag' does not exist in the repository."
-            exit 1
+          if ($LASTEXITCODE -eq 0) {
+            $tagExists = "true"
+            $targetCommitSha = (git rev-list -n 1 "refs/tags/$tag").Trim()
+          } else {
+            if ($eventName -eq "push") {
+              Write-Error "Tag '$tag' does not exist in the repository."
+              exit 1
+            }
+
+            $targetCommitSha = (git rev-parse "refs/remotes/origin/main").Trim()
+            if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($targetCommitSha)) {
+              Write-Error "Unable to resolve origin/main for missing tag '$tag'."
+              exit 1
+            }
+
+            Write-Host "Tag '$tag' does not exist; building from main HEAD $targetCommitSha."
           }
 
           if ($tag -match '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)') {
@@ -114,7 +178,7 @@ jobs:
           $installerVersion = "$semver.0"
           $publishRelease = if ($mode -eq "internal") { "false" } else { "true" }
           $resolvedTagName = $tag
-          $buildRef = "refs/tags/$tag"
+          $buildRef = $targetCommitSha
 
           "semver=$semver" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "installer_version=$installerVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
@@ -122,10 +186,14 @@ jobs:
           "publish_release=$publishRelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "tag_name=$resolvedTagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "build_ref=$buildRef" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "target_commit_sha=$targetCommitSha" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "tag_exists=$tagExists" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
           Write-Host "Mode=$mode"
           Write-Host "BuildRef=$buildRef"
           Write-Host "TagName=$resolvedTagName"
+          Write-Host "TagExists=$tagExists"
+          Write-Host "TargetCommitSha=$targetCommitSha"
           Write-Host "InstallerVersion=$installerVersion"
           Write-Host "PublishRelease=$publishRelease"
 
@@ -357,7 +425,41 @@ jobs:
           merge-multiple: true
           path: artifacts
 
+      - name: Check whether release already exists
+        id: release_state
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "${{ needs.validate_tag.outputs.tag_name }}" --json tagName 2>$null | Out-Null
+          if ($LASTEXITCODE -eq 0) {
+            "exists=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          } else {
+            "exists=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          }
+
+      - name: Create missing tag at publish time
+        id: ensure_tag
+        if: ${{ needs.validate_tag.outputs.tag_exists != 'true' }}
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+          $body = @{
+            ref = "refs/tags/${{ needs.validate_tag.outputs.tag_name }}"
+            sha = "${{ needs.validate_tag.outputs.target_commit_sha }}"
+          } | ConvertTo-Json
+
+          Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/git/refs" -Headers $headers -Method Post -Body $body -ContentType "application/json" | Out-Null
+          "created=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
       - name: Create release from tag type
+        id: publish_release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.validate_tag.outputs.tag_name }}
@@ -369,3 +471,21 @@ jobs:
             artifacts/**/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up tag after failed publish
+        if: ${{ failure() && steps.ensure_tag.outputs.created == 'true' }}
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ("${{ steps.release_state.outputs.exists }}" -ne "true") {
+            gh release delete "${{ needs.validate_tag.outputs.tag_name }}" --yes 2>$null
+          }
+
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+
+          Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/git/refs/tags/${{ needs.validate_tag.outputs.tag_name }}" -Headers $headers -Method Delete | Out-Null
