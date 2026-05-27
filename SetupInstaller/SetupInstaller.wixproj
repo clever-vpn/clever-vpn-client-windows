@@ -4,7 +4,7 @@
     <OutputType>Bundle</OutputType>
     <OutputName>CleverVPN_Setup</OutputName>
     <BuildMsiAllArchOnBuild Condition="'$(BuildMsiAllArchOnBuild)'==''">false</BuildMsiAllArchOnBuild>
-    <DefineConstants>CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);InstallerDownloadBaseUrl=$(InstallerDownloadBaseUrl);InstallerTagName=$(InstallerTagName);MsiSourceRoot=$(MsiSourceRoot)</DefineConstants>
+    <DefineConstants>CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);InstallerDownloadBaseUrl=$(InstallerDownloadBaseUrl);MsiSourceRoot=$(MsiSourceRoot)</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="HyperlinkTheme.xml" />
