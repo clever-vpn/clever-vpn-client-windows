@@ -16,7 +16,7 @@ on:
           - prerelease
           - release
       tag_name:
-        description: "Required for all modes. internal/prerelease: v1.2.3-rc.N, release: v1.2.3"
+        description: "Optional. Existing tag: build tagged commit; missing tag: use main HEAD; empty: auto-bump latest release patch."
         required: false
         type: string
 
