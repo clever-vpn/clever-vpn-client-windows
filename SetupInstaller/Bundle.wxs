@@ -6,6 +6,11 @@
 		  IconSourceFile="..\Clever-Vpn\Assets\appIcon.ico"
 		  UpgradeCode="6A51A83A-1462-40FB-95BD-F39B6AE9026A">
 
+	<Variable Name="InstallerDownloadBaseUrl"
+			  Type="string"
+			  Value="$(InstallerDownloadBaseUrl)"
+			  bal:Overridable="yes" />
+
 	<BootstrapperApplication>
 	  <bal:WixStandardBootstrapperApplication
 		Theme="hyperlinkLicense"
@@ -19,19 +24,19 @@
 	<Chain>
 	  <MsiPackage Id="MsiX86"
 				  SourceFile="$(MsiSourceRoot)\x86\$(Configuration)\en-US\CleverVPN_$(CleverVpnInstallerVersion)_x86.msi"
-				  DownloadUrl="$(InstallerDownloadBaseUrl)/$(InstallerTagName)/CleverVPN_$(CleverVpnInstallerVersion)_x86.msi"
+				  DownloadUrl="[InstallerDownloadBaseUrl]/$(InstallerTagName)/CleverVPN_$(CleverVpnInstallerVersion)_x86.msi"
 				  Compressed="no"
 				  InstallCondition="NOT VersionNT64" />
 
 	  <MsiPackage Id="MsiX64"
 				  SourceFile="$(MsiSourceRoot)\x64\$(Configuration)\en-US\CleverVPN_$(CleverVpnInstallerVersion)_x64.msi"
-				  DownloadUrl="$(InstallerDownloadBaseUrl)/$(InstallerTagName)/CleverVPN_$(CleverVpnInstallerVersion)_x64.msi"
+				  DownloadUrl="[InstallerDownloadBaseUrl]/$(InstallerTagName)/CleverVPN_$(CleverVpnInstallerVersion)_x64.msi"
 				  Compressed="no"
 				  InstallCondition="VersionNT64 AND NOT VersionNTARM64" />
 
 	  <MsiPackage Id="MsiArm64"
 				  SourceFile="$(MsiSourceRoot)\ARM64\$(Configuration)\en-US\CleverVPN_$(CleverVpnInstallerVersion)_ARM64.msi"
-				  DownloadUrl="$(InstallerDownloadBaseUrl)/$(InstallerTagName)/CleverVPN_$(CleverVpnInstallerVersion)_ARM64.msi"
+				  DownloadUrl="[InstallerDownloadBaseUrl]/$(InstallerTagName)/CleverVPN_$(CleverVpnInstallerVersion)_ARM64.msi"
 				  Compressed="no"
 				  InstallCondition="VersionNTARM64" />
 	</Chain>
