@@ -30,6 +30,7 @@
 
 	  <MsiPackage Id="MsiX86Test"
 				  SourceFile="$(MsiSourceRoot)\x86\$(Configuration)\en-US\CleverVPN_$(CleverVpnInstallerVersion)_x86.msi"
+				  CacheId="MsiX86Test-$(CleverVpnInstallerVersion)"
 				  DownloadUrl="$(TestInstallerDownloadBaseUrl)/CleverVPN_$(CleverVpnInstallerVersion)_x86.msi"
 				  Compressed="no"
 				  InstallCondition="NOT VersionNT64 AND UseTestInstallerDownloadBaseUrl = 1" />
@@ -42,6 +43,7 @@
 
 	  <MsiPackage Id="MsiX64Test"
 				  SourceFile="$(MsiSourceRoot)\x64\$(Configuration)\en-US\CleverVPN_$(CleverVpnInstallerVersion)_x64.msi"
+				  CacheId="MsiX64Test-$(CleverVpnInstallerVersion)"
 				  DownloadUrl="$(TestInstallerDownloadBaseUrl)/CleverVPN_$(CleverVpnInstallerVersion)_x64.msi"
 				  Compressed="no"
 				  InstallCondition="VersionNT64 AND NOT VersionNTARM64 AND UseTestInstallerDownloadBaseUrl = 1" />
@@ -54,6 +56,7 @@
 
 	  <MsiPackage Id="MsiArm64Test"
 				  SourceFile="$(MsiSourceRoot)\ARM64\$(Configuration)\en-US\CleverVPN_$(CleverVpnInstallerVersion)_ARM64.msi"
+				  CacheId="MsiArm64Test-$(CleverVpnInstallerVersion)"
 				  DownloadUrl="$(TestInstallerDownloadBaseUrl)/CleverVPN_$(CleverVpnInstallerVersion)_ARM64.msi"
 				  Compressed="no"
 				  InstallCondition="VersionNTARM64 AND UseTestInstallerDownloadBaseUrl = 1" />
