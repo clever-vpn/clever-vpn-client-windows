@@ -49,10 +49,9 @@ Before building the project locally, ensure you have the following installed:
 			- `TestInstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows`
 			- `CleverVpnInstallerVersion=1.3.7.0`
 			- final x64 URL: `https://download.clever-vpn.net/windows/CleverVPN_1.3.7.0_x64.msi`
-	- use `UseTestInstallerDownloadBaseUrl=1` on the setup command line to switch all architectures to `TestInstallerDownloadBaseUrl`.
-		- example: `CleverVPN_Setup.exe UseTestInstallerDownloadBaseUrl=1`
 	- select `SetupInstaller` project, and build,
 	- output setup will be generated in `SetupInstaller\bin\<configuration>` and will download/install the matching MSI by architecture.
+	- CI release builds produce both `CleverVPN_Setup.exe` and `CleverVPN_Setup_Test.exe`; the test variant is compiled with `TestInstallerDownloadBaseUrl`.
 
 ### GitHub Actions Release Modes
 
