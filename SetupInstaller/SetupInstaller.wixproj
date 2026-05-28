@@ -2,7 +2,7 @@
   <Import Project="..\InstallerSettings.props" Condition="Exists('..\InstallerSettings.props')" />
   <PropertyGroup>
     <OutputType>Bundle</OutputType>
-    <OutputName>CleverVPN_Setup</OutputName>
+    <OutputName Condition="'$(OutputName)'==''">CleverVPN_Setup</OutputName>
     <BuildMsiAllArchOnBuild Condition="'$(BuildMsiAllArchOnBuild)'==''">false</BuildMsiAllArchOnBuild>
     <DefineConstants>CleverVpnInstallerVersion=$(CleverVpnInstallerVersion);InstallerDownloadBaseUrl=$(InstallerDownloadBaseUrl);TestInstallerDownloadBaseUrl=$(TestInstallerDownloadBaseUrl);MsiSourceRoot=$(MsiSourceRoot)</DefineConstants>
   </PropertyGroup>
