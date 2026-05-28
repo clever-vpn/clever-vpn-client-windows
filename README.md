@@ -41,12 +41,16 @@ Before building the project locally, ensure you have the following installed:
 	- configure `InstallerSettings.props` at solution root:
 		- `CleverVpnInstallerVersion`
 		- `InstallerDownloadBaseUrl`
+		- `TestInstallerDownloadBaseUrl`
 	- `InstallerDownloadBaseUrl` + `CleverVpnInstallerVersion` are used to compose the real MSI download URL in setup bootstrapper.
 		- URL pattern (x64): `<InstallerDownloadBaseUrl>/CleverVPN_<CleverVpnInstallerVersion>_x64.msi`
 		- example:
 			- `InstallerDownloadBaseUrl=https://download.clever-vpn.net/windows`
+			- `TestInstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows`
 			- `CleverVpnInstallerVersion=1.3.7.0`
 			- final x64 URL: `https://download.clever-vpn.net/windows/CleverVPN_1.3.7.0_x64.msi`
+	- use `UseTestInstallerDownloadBaseUrl=1` on the setup command line to switch all architectures to `TestInstallerDownloadBaseUrl`.
+		- example: `CleverVPN_Setup.exe UseTestInstallerDownloadBaseUrl=1`
 	- select `SetupInstaller` project, and build,
 	- output setup will be generated in `SetupInstaller\bin\<configuration>` and will download/install the matching MSI by architecture.
 
