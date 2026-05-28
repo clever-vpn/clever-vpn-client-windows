@@ -315,10 +315,10 @@ jobs:
           path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
 
       - name: Build production setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:BuildMsiAllArchOnBuild=false
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/prod/ -p:IntermediateOutputPath=obj/prod/ -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:BuildMsiAllArchOnBuild=false
 
       - name: Build test setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputName=CleverVPN_Setup_Test -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows -p:BuildMsiAllArchOnBuild=false
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/test/ -p:IntermediateOutputPath=obj/test/ -p:OutputName=CleverVPN_Setup_Test -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows -p:BuildMsiAllArchOnBuild=false
 
       - name: Upload setup.exe artifact
         uses: actions/upload-artifact@v4
