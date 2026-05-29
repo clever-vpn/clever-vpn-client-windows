@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -53,8 +54,8 @@ namespace Clever_Vpn
     public sealed partial class MainWindow : WindowEx
     {
         VpnViewModel vm { get; } = ((App)Application.Current).ViewModel;
-        private readonly DispatcherQueueTimer _errorAutoCloseTimer;
         private readonly DispatcherQueueTimer _copyIconResetTimer;
+        private CancellationTokenSource? _errorAutoCloseCancellation;
         private const string CopyGlyph = "\uE8C8";
         private const string CopySuccessGlyph = "\uE73E";
 
@@ -76,11 +77,6 @@ namespace Clever_Vpn
             vm.PropertyChanged += vm_PropertyChanged;
             MainErrorBar.IsOpen = vm.LastError != null;
 
-            _errorAutoCloseTimer = DispatcherQueue.CreateTimer();
-            _errorAutoCloseTimer.Interval = TimeSpan.FromSeconds(5);
-            _errorAutoCloseTimer.IsRepeating = false;
-            _errorAutoCloseTimer.Tick += OnErrorAutoCloseTimerTick;
-
             _copyIconResetTimer = DispatcherQueue.CreateTimer();
             _copyIconResetTimer.Interval = TimeSpan.FromSeconds(1.5);
             _copyIconResetTimer.IsRepeating = false;
@@ -95,15 +91,17 @@ namespace Clever_Vpn
             {
                 var hasError = vm.LastError != null;
                 MainErrorBar.IsOpen = hasError;
+                CancelErrorAutoClose();
+
                 if (!hasError)
                 {
-                    _errorAutoCloseTimer.Stop();
                     CopyErrorIcon.Glyph = CopyGlyph;
                 }
                 else
                 {
-                    _errorAutoCloseTimer.Stop();
-                    _errorAutoCloseTimer.Start();
+                    var cancellation = new CancellationTokenSource();
+                    _errorAutoCloseCancellation = cancellation;
+                    _ = ScheduleErrorAutoCloseAsync(cancellation);
                 }
             }
 
@@ -147,13 +145,43 @@ namespace Clever_Vpn
             }
         }
 
-        private void OnErrorAutoCloseTimerTick(DispatcherQueueTimer sender, object args)
+        private async Task ScheduleErrorAutoCloseAsync(CancellationTokenSource cancellation)
         {
-            sender.Stop();
-            if (vm.LastError != null)
+            try
             {
-                vm.ClearLastErrorCommand.Execute(null);
+                await Task.Delay(TimeSpan.FromSeconds(5), cancellation.Token);
             }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            if (_errorAutoCloseCancellation != cancellation)
+            {
+                return;
+            }
+
+            RunOnMainUiThread(() =>
+            {
+                if (_errorAutoCloseCancellation != cancellation || vm.LastError == null)
+                {
+                    return;
+                }
+
+                vm.ClearLastErrorCommand.Execute(null);
+            });
+        }
+
+        private void CancelErrorAutoClose()
+        {
+            var cancellation = Interlocked.Exchange(ref _errorAutoCloseCancellation, null);
+            if (cancellation == null)
+            {
+                return;
+            }
+
+            cancellation.Cancel();
+            cancellation.Dispose();
         }
 
         private void OnCopyErrorClick(object sender, RoutedEventArgs e)
@@ -190,10 +218,20 @@ namespace Clever_Vpn
         private void OnWindowClosed(object sender, WindowEventArgs args)
         {
             vm.PropertyChanged -= vm_PropertyChanged;
-            _errorAutoCloseTimer.Stop();
-            _errorAutoCloseTimer.Tick -= OnErrorAutoCloseTimerTick;
+            CancelErrorAutoClose();
             _copyIconResetTimer.Stop();
             _copyIconResetTimer.Tick -= OnCopyIconResetTimerTick;
+        }
+
+        private void RunOnMainUiThread(Action action)
+        {
+            if (DispatcherQueue.HasThreadAccess)
+            {
+                action();
+                return;
+            }
+
+            DispatcherQueue.TryEnqueue(() => action());
         }
 
 
