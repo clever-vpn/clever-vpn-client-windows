@@ -242,19 +242,90 @@ jobs:
           Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/git/refs" -Headers $headers -Method Post -Body $body -ContentType "application/json" | Out-Null
           "created=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
-      - name: Create release from tag type
-        id: publish_release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.validate_tag.outputs.tag_name }}
-          name: ${{ needs.validate_tag.outputs.tag_name }}
-          prerelease: ${{ needs.validate_tag.outputs.prerelease }}
-          files: |
-            artifacts/**/*.msi
-            artifacts/**/*.msixbundle
-            artifacts/**/*.exe
+      - name: Create the release and upload the assets
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $repo = "${{ github.repository }}"
+          $tag = "${{ needs.validate_tag.outputs.tag_name }}"
+          $isPrerelease = "${{ needs.validate_tag.outputs.prerelease }}" -eq "true"
+
+          # The asset upload endpoint answers 5xx once in a while; retrying is what keeps a
+          # single bad response from failing the whole release.
+          function Invoke-WithRetry {
+            param(
+              [string] $What,
+              [scriptblock] $Action,
+              [int] $Attempts = 4,
+              [int] $DelaySeconds = 10
+            )
+
+            for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
+              $succeeded = $true
+              try {
+                & $Action
+                $succeeded = ($LASTEXITCODE -eq 0)
+              } catch {
+                $succeeded = $false
+                Write-Warning $_
+              }
+
+              if ($succeeded) {
+                return
+              }
+
+              Write-Warning "$What failed (attempt $attempt/$Attempts)."
+              if ($attempt -eq $Attempts) {
+                throw "$What failed after $Attempts attempts."
+              }
+
+              Start-Sleep -Seconds ($DelaySeconds * $attempt)
+            }
+          }
+
+          gh release view $tag --repo $repo *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Release $tag already exists; uploading into it."
+          } else {
+            $createArgs = @("release", "create", $tag, "--repo", $repo, "--title", $tag, "--verify-tag")
+            if ($isPrerelease) {
+              $createArgs += "--prerelease"
+            }
+            Invoke-WithRetry "gh release create $tag" { gh @createArgs }
+          }
+
+          # Individual *.msix artifacts are intermediate outputs used to build the bundle, so
+          # they are downloaded but never published. Small assets go first.
+          $assets = @(Get-ChildItem -Path artifacts -Recurse -File |
+            Where-Object { $_.Extension -in @(".msi", ".msixbundle", ".exe") } |
+            Sort-Object Length)
+          if ($assets.Count -eq 0) {
+            Write-Error "No publishable assets found under artifacts/."
+            exit 1
+          }
+
+          foreach ($asset in $assets) {
+            Write-Host "Uploading $($asset.Name) ($([math]::Round($asset.Length / 1MB, 1)) MB)"
+            Invoke-WithRetry "gh release upload $($asset.Name)" {
+              gh release upload $tag $asset.FullName --repo $repo --clobber
+            }
+          }
+
+          $published = @(gh release view $tag --repo $repo --json assets --jq ".assets[].name")
+          Write-Host "Assets on release ${tag}:"
+          $published | ForEach-Object { Write-Host "  $_" }
+
+          $missing = @($assets | Where-Object { $published -notcontains $_.Name })
+          if ($missing.Count -gt 0) {
+            Write-Error "Missing from release ${tag}: $($missing.Name -join ', ')"
+            exit 1
+          }
+
+          Write-Host "Release $tag published with $($assets.Count) assets."
 
       - name: Clean up tag after failed publish
         if: ${{ failure() && steps.ensure_tag.outputs.created == 'true' }}
