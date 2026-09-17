@@ -94,6 +94,7 @@ A release is driven by a **tag**, a test build is driven by a **commit**, so the
 
 - the installer version of a release is resolved from the tag and mapped to `major.minor.patch.0`.
 - artifacts of a release run are `retention-days: 1`: they are only the transport between the build jobs and the publishing job of the same run, and the Release assets are the long lived copies.
+- the publish step creates the release with `gh`, uploads the assets one at a time (each with its own retries), and then fails if any asset is missing from the release.
 - GitHub Release assets include:
 	- `*.msi` (x86/x64/arm64)
 	- `*.msixbundle`
