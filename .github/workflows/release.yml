@@ -34,6 +34,8 @@ jobs:
     outputs:
       installer_version: ${{ steps.parse.outputs.installer_version }}
       prerelease: ${{ steps.parse.outputs.prerelease }}
+      setup_download_base_url: ${{ steps.parse.outputs.setup_download_base_url }}
+      setup_test_download_base_url: ${{ steps.parse.outputs.setup_test_download_base_url }}
       tag_name: ${{ steps.parse.outputs.tag_name }}
       build_ref: ${{ steps.parse.outputs.build_ref }}
       target_commit_sha: ${{ steps.parse.outputs.target_commit_sha }}
@@ -161,8 +163,21 @@ jobs:
           $resolvedTagName = $tag
           $buildRef = $targetCommitSha
 
+          # setup.exe downloads its MSIs at install time from a URL that is compiled into the
+          # bootstrapper. A stable release is published to the download host by the release
+          # pipeline; a prerelease is not, so it points at its own release assets instead.
+          if ($mode -eq "prerelease") {
+            $setupDownloadBaseUrl = "https://github.com/${{ github.repository }}/releases/download/$resolvedTagName"
+            $setupTestDownloadBaseUrl = ""
+          } else {
+            $setupDownloadBaseUrl = "https://download.clever-vpn.net/windows"
+            $setupTestDownloadBaseUrl = "https://download-test.clever-vpn.net/windows"
+          }
+
           "installer_version=$installerVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "prerelease=$isPrerelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "setup_download_base_url=$setupDownloadBaseUrl" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "setup_test_download_base_url=$setupTestDownloadBaseUrl" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "tag_name=$resolvedTagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "build_ref=$buildRef" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "target_commit_sha=$targetCommitSha" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
@@ -174,6 +189,8 @@ jobs:
           Write-Host "TagExists=$tagExists"
           Write-Host "TargetCommitSha=$targetCommitSha"
           Write-Host "InstallerVersion=$installerVersion"
+          Write-Host "SetupDownloadBaseUrl=$setupDownloadBaseUrl"
+          Write-Host "SetupTestDownloadBaseUrl=$setupTestDownloadBaseUrl"
 
   build_installers:
     name: Build Installers
@@ -188,6 +205,8 @@ jobs:
       # GitHub Release, so a short retention is enough.
       retention_days: 1
       include_setup: true
+      setup_download_base_url: ${{ needs.validate_tag.outputs.setup_download_base_url }}
+      setup_test_download_base_url: ${{ needs.validate_tag.outputs.setup_test_download_base_url }}
 
   publish_github_release:
     name: Publish GitHub Release
