@@ -53,27 +53,37 @@ Before building the project locally, ensure you have the following installed:
 	- output setup will be generated in `SetupInstaller\bin\<configuration>` and will download/install the matching MSI by architecture.
 	- CI release builds produce both `CleverVPN_Setup.exe` and `CleverVPN_Setup_Test.exe`; the test variant is compiled with `TestInstallerDownloadBaseUrl`.
 
-### GitHub Actions Release Modes
+### GitHub Actions Workflows
 
-The repository workflow `.github/workflows/release.yml` supports three build/release modes:
+A release is driven by a **tag**, a test build is driven by a **commit**, so the two live in separate workflows. Both call `.github/workflows/_build-installers.yml`, which is the single place where the MSI / MSIX / bundle / setup installers are built.
 
-- `internal`
-	- intended for CI validation only, does not publish a GitHub Release.
-	- requires an RC tag format: `v<major>.<minor>.<patch>-rc.<n>`.
-	- automatically triggered when an RC tag is pushed (for example `v1.0.0-rc.17`).
-	- can also be triggered manually via `workflow_dispatch`.
+#### `.github/workflows/release.yml` (tag driven, publishes a GitHub Release)
 
 - `prerelease`
 	- publishes a GitHub prerelease.
 	- requires an RC tag format: `v<major>.<minor>.<patch>-rc.<n>`.
-	- trigger method: `workflow_dispatch`.
 
 - `release`
 	- publishes a normal GitHub Release.
 	- requires a stable tag format: `v<major>.<minor>.<patch>`.
-	- trigger method: `workflow_dispatch`.
+	- pass `tag_name` empty to auto-bump the latest release patch.
+
+- trigger method: `workflow_dispatch`.
+
+#### `.github/workflows/internal.yml` (ref driven, publishes nothing)
+
+- builds any branch, tag or commit of this repository, for real-device testing.
+- inputs:
+	- `ref` (default `main`): the branch, tag or commit to build, for example `test/kit-2.1.3-rc.1`.
+	- `version_base` (optional): the `<major>.<minor>` part of the test installer version; by default it is taken from the latest stable release.
+- no tag and no GitHub Release are created: the installers stay as artifacts of the run (`retention-days: 7`).
+- test installer version is `<major>.<minor>.<run_number>.0`. The build field comes from the run number on purpose: the MSI refuses a downgrade, so the test build must compare as newer than any published release. Uninstall a test build before installing an older or equal version.
+- `setup.exe` is not built here: it downloads its MSIs from the download base URL, which this workflow does not publish to.
 
 #### Manual Trigger Examples
+
+- internal test build of a branch that pins a prerelease kit:
+	- `gh workflow run internal.yml -R clever-vpn/clever-vpn-client-windows --ref main -f ref=test/kit-2.1.3-rc.1`
 
 - prerelease:
 	- `gh workflow run release.yml -R clever-vpn/clever-vpn-client-windows --ref main -f release_mode=prerelease -f tag_name=v1.0.0-rc.17`
@@ -83,8 +93,8 @@ The repository workflow `.github/workflows/release.yml` supports three build/rel
 
 #### Workflow Outputs and Artifacts
 
-- installer version is resolved from tag and mapped to `major.minor.patch.0`.
-- workflow artifacts are set to `retention-days: 7`.
+- the installer version of a release is resolved from the tag and mapped to `major.minor.patch.0`.
+- artifacts of a release run are `retention-days: 1`: they are only the transport between the build jobs and the publishing job of the same run, and the Release assets are the long lived copies.
 - GitHub Release assets include:
 	- `*.msi` (x86/x64/arm64)
 	- `*.msixbundle`

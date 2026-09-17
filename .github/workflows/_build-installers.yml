@@ -1,0 +1,235 @@
+name: Build Installers
+
+# Reusable workflow: the single source of truth for building the installers.
+#
+# Callers decide what a build means; this file only knows how to build:
+#   - release.yml  : tag driven, the installers become GitHub Release assets
+#   - internal.yml : ref driven, the installers stay as artifacts of that run
+#
+# Artifact names are fixed (`installer-*`) because the publishing job of the
+# caller downloads them by name/pattern inside the same run.
+on:
+  workflow_call:
+    inputs:
+      build_ref:
+        description: "Ref or commit SHA to check out in every build job."
+        required: true
+        type: string
+      installer_version:
+        description: "Installer version, 4 parts: <major>.<minor>.<build>.<revision>"
+        required: true
+        type: string
+      retention_days:
+        description: "Artifact retention in days. Artifacts are consumed inside the same run, so release builds use a short value."
+        required: false
+        type: number
+        default: 7
+      include_setup:
+        description: "Build the setup.exe bootstrappers. Only meaningful when the matching MSIs are published to the download base URL."
+        required: false
+        type: boolean
+        default: true
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  CONFIGURATION: Release
+
+jobs:
+  build_msi:
+    name: Build MSI (${{ matrix.platform }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: x86
+            output_dir: x86
+          - platform: x64
+            output_dir: x64
+          - platform: ARM64
+            output_dir: ARM64
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.build_ref }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore solution
+        run: dotnet restore Clever-Vpn.sln
+
+      - name: Build MSI
+        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=${{ matrix.platform }} -p:CleverVpnInstallerVersion=${{ inputs.installer_version }}
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-msi-${{ matrix.platform }}
+          path: MsiInstaller/bin/${{ matrix.output_dir }}/${{ env.CONFIGURATION }}/en-US/*.msi
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}
+
+  build_msix:
+    name: Build MSIX (${{ matrix.platform }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: x86
+          - platform: x64
+          - platform: ARM64
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.build_ref }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Set MSIX manifest version from resolved version
+        shell: pwsh
+        run: |
+          $manifest = "Clever-Vpn/Package.appxmanifest"
+          [xml]$xml = Get-Content -Path $manifest
+          $xml.Package.Identity.Version = "${{ inputs.installer_version }}"
+          $xml.Save($manifest)
+          Write-Host "MSIX Identity.Version set to ${{ inputs.installer_version }}"
+
+      - name: Restore solution
+        run: dotnet restore Clever-Vpn.sln
+
+      - name: Build MSIX
+        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=${{ matrix.platform }} -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ inputs.installer_version }}
+
+      - name: Upload MSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-msix-${{ matrix.platform }}
+          path: Clever-Vpn/bin/Appx/**/*.msix
+          retention-days: ${{ inputs.retention_days }}
+
+  bundle_msix:
+    name: Create MSIX Bundle
+    needs:
+      - build_msix
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.build_ref }}
+
+      - name: Download all MSIX artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: installer-msix-*
+          merge-multiple: true
+          path: Clever-Vpn/bin/Appx/msix-input
+
+      - name: List downloaded MSIX files
+        shell: pwsh
+        run: Get-ChildItem -Path 'Clever-Vpn/bin/Appx/msix-input' -Recurse -Filter '*.msix' | Select-Object FullName | Format-Table -AutoSize
+
+      - name: Ensure makeappx is available
+        shell: pwsh
+        run: |
+          if (-not (Get-Command makeappx.exe -ErrorAction SilentlyContinue)) {
+            $sdkBinRoot = 'C:\Program Files (x86)\Windows Kits\10\bin'
+            if (-not (Test-Path $sdkBinRoot)) {
+              throw "Windows SDK bin root not found: $sdkBinRoot"
+            }
+
+            $candidate = Get-ChildItem -Path $sdkBinRoot -Directory |
+              Sort-Object Name -Descending |
+              ForEach-Object { Join-Path $_.FullName 'x64\makeappx.exe' } |
+              Where-Object { Test-Path $_ } |
+              Select-Object -First 1
+
+            if (-not $candidate) {
+              throw 'makeappx.exe not found under Windows Kits SDK paths'
+            }
+
+            $binDir = Split-Path $candidate -Parent
+            "$binDir" | Out-File -FilePath $env:GITHUB_PATH -Append
+            $env:PATH = "$binDir;$env:PATH"
+          }
+
+          Write-Host "makeappx located: $(Get-Command makeappx.exe | Select-Object -ExpandProperty Source)"
+
+      - name: Create MSIX bundle (x86/x64/arm64)
+        shell: cmd
+        run: |
+          cd Clever-Vpn
+          make-bundle.bat ${{ inputs.installer_version }} bin/Appx/msix-input
+
+      - name: Validate MSIX bundle output
+        shell: pwsh
+        run: |
+          $bundle = Get-ChildItem -Path "Clever-Vpn/bin/Appx/bundle" -Filter *.msixbundle -ErrorAction SilentlyContinue
+          if (-not $bundle) {
+            Write-Error "No .msixbundle found under Clever-Vpn/bin/Appx/bundle"
+            exit 1
+          }
+
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-msix-bundle
+          path: Clever-Vpn/bin/Appx/bundle/*.msixbundle
+          retention-days: ${{ inputs.retention_days }}
+
+  build_setup:
+    name: Build Setup Bootstrapper (setup.exe)
+    if: ${{ inputs.include_setup }}
+    needs:
+      - build_msi
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.build_ref }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Download MSI x86 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: installer-msi-x86
+          path: MsiInstaller/bin/x86/${{ env.CONFIGURATION }}/en-US
+
+      - name: Download MSI x64 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: installer-msi-x64
+          path: MsiInstaller/bin/x64/${{ env.CONFIGURATION }}/en-US
+
+      - name: Download MSI ARM64 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: installer-msi-ARM64
+          path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
+
+      - name: Build production setup.exe bundle
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/prod/ -p:IntermediateOutputPath=obj/prod/ -p:CleverVpnInstallerVersion=${{ inputs.installer_version }} -p:BuildMsiAllArchOnBuild=false
+
+      - name: Build test setup.exe bundle
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/test/ -p:IntermediateOutputPath=obj/test/ -p:OutputName=CleverVPN_Setup_Test -p:CleverVpnInstallerVersion=${{ inputs.installer_version }} -p:InstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows -p:BuildMsiAllArchOnBuild=false
+
+      - name: Upload setup.exe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-setup
+          path: SetupInstaller/bin/**/*.exe
+          retention-days: ${{ inputs.retention_days }}
