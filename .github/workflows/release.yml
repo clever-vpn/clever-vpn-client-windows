@@ -253,9 +253,11 @@ jobs:
           $repo = "${{ github.repository }}"
           $tag = "${{ needs.validate_tag.outputs.tag_name }}"
           $isPrerelease = "${{ needs.validate_tag.outputs.prerelease }}" -eq "true"
+          $uploadAttempts = 4
+          $uploadParallel = 3
 
-          # The asset upload endpoint answers 5xx once in a while; retrying is what keeps a
-          # single bad response from failing the whole release.
+          # The release API answers 5xx once in a while; retrying is what keeps a single bad
+          # response from failing the whole release.
           function Invoke-WithRetry {
             param(
               [string] $What,
@@ -298,21 +300,51 @@ jobs:
             Invoke-WithRetry "gh release create $tag" { gh @createArgs }
           }
 
-          # Individual *.msix artifacts are intermediate outputs used to build the bundle, so
-          # they are downloaded but never published. Small assets go first.
+          # Intermediate artifacts (the single architecture MSIX files) are named
+          # intermediate-* and are not downloaded by this job, so everything downloaded here
+          # is publishable. Biggest first, so the large bundle is not the last one to start.
           $assets = @(Get-ChildItem -Path artifacts -Recurse -File |
             Where-Object { $_.Extension -in @(".msi", ".msixbundle", ".exe") } |
-            Sort-Object Length)
+            Sort-Object Length -Descending)
           if ($assets.Count -eq 0) {
             Write-Error "No publishable assets found under artifacts/."
             exit 1
           }
 
-          foreach ($asset in $assets) {
-            Write-Host "Uploading $($asset.Name) ($([math]::Round($asset.Length / 1MB, 1)) MB)"
-            Invoke-WithRetry "gh release upload $($asset.Name)" {
-              gh release upload $tag $asset.FullName --repo $repo --clobber
+          # Uploads run a few at a time: the upload endpoint can be slow, and a single
+          # sequential stream would make the release take minutes longer than it has to.
+          # Each file keeps its own retries.
+          Write-Host "Uploading $($assets.Count) assets, up to $uploadParallel in parallel, $uploadAttempts attempts each."
+          $results = $assets | ForEach-Object -Parallel {
+            $file = $_
+            $tag = $using:tag
+            $repo = $using:repo
+            $attempts = $using:uploadAttempts
+            $sizeMb = [math]::Round($file.Length / 1MB, 1)
+            $succeeded = $false
+
+            for ($attempt = 1; $attempt -le $attempts; $attempt++) {
+              [Console]::WriteLine("[$($file.Name)] uploading $sizeMb MB (attempt $attempt/$attempts)")
+              gh release upload $tag $file.FullName --repo $repo --clobber
+              if ($LASTEXITCODE -eq 0) {
+                $succeeded = $true
+                [Console]::WriteLine("[$($file.Name)] uploaded")
+                break
+              }
+
+              [Console]::WriteLine("[$($file.Name)] attempt $attempt/$attempts failed (exit code $LASTEXITCODE)")
+              if ($attempt -lt $attempts) {
+                Start-Sleep -Seconds (10 * $attempt)
+              }
             }
+
+            [pscustomobject]@{ Name = $file.Name; Succeeded = $succeeded }
+          } -ThrottleLimit $uploadParallel
+
+          $failed = @($results | Where-Object { -not $_.Succeeded })
+          if ($failed.Count -gt 0) {
+            Write-Error "Upload failed for: $($failed.Name -join ', ')"
+            exit 1
           }
 
           $published = @(gh release view $tag --repo $repo --json assets --jq ".assets[].name")
