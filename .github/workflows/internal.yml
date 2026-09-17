@@ -1,0 +1,154 @@
+name: Build Internal Test Installers
+
+# Test builds driven by a commit/ref instead of a tag. Nothing here touches git:
+# no tag, no GitHub Release, no version recorded in the repository. The installers
+# stay as artifacts of this run, for real-device testing.
+#
+# The workflow file itself must exist on the default branch to be dispatchable;
+# the built ref is chosen with the `ref` input.
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag or commit SHA of this repository to build (for example test/kit-2.1.3-rc.1)."
+        required: false
+        default: main
+        type: string
+      version_base:
+        description: "Optional override of the <major>.<minor> part of the test installer version, for example 2.1. Default: the latest stable release."
+        required: false
+        type: string
+
+# A newer test build of the same ref replaces the previous one.
+concurrency:
+  group: app-internal-${{ inputs.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  resolve:
+    name: Resolve Ref and Version
+    runs-on: windows-latest
+    outputs:
+      build_ref: ${{ steps.resolve.outputs.build_ref }}
+      installer_version: ${{ steps.resolve.outputs.installer_version }}
+    steps:
+      - name: Checkout the requested ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+
+      - name: Resolve commit and compute the test installer version
+        id: resolve
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $requestedRef = "${{ inputs.ref }}".Trim()
+          if ([string]::IsNullOrWhiteSpace($requestedRef)) {
+            Write-Error "Input 'ref' must not be empty. Use a branch, tag or commit SHA of this repository."
+            exit 1
+          }
+
+          $buildRef = (git rev-parse HEAD).Trim()
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($buildRef)) {
+            Write-Error "Unable to resolve a commit for ref '$requestedRef'."
+            exit 1
+          }
+
+          # The MSI compares <major>.<minor>.<build> for upgrades, so a test build must
+          # compare as *newer* than every published release; otherwise the install is
+          # refused as a downgrade. Take the release line from the latest stable release
+          # and the build number from the run number (which only grows).
+          $major = 0
+          $minor = 0
+          $latestPatch = -1
+          $baseSource = "fallback (latest stable release not readable)"
+
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+
+          try {
+            $latest = Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/latest" -Headers $headers -Method Get
+            if ("$($latest.tag_name)" -match '^v(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)$') {
+              $major = [int]$Matches.major
+              $minor = [int]$Matches.minor
+              $latestPatch = [int]$Matches.patch
+              $baseSource = "latest stable release $($latest.tag_name)"
+            } else {
+              Write-Warning "Latest release tag '$($latest.tag_name)' is not a stable v<major>.<minor>.<patch> tag."
+            }
+          } catch {
+            Write-Warning "Unable to read the latest release: $($_.Exception.Message)"
+          }
+
+          $overrideBase = "${{ inputs.version_base }}".Trim()
+          if (-not [string]::IsNullOrWhiteSpace($overrideBase)) {
+            if ($overrideBase -notmatch '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)$') {
+              Write-Error "Invalid version_base '$overrideBase'. Expected <major>.<minor>, for example 2.1."
+              exit 1
+            }
+            $major = [int]$Matches.major
+            $minor = [int]$Matches.minor
+            $baseSource = "version_base input"
+          }
+
+          $build = [Math]::Max([int]"${{ github.run_number }}", $latestPatch + 1)
+          if ($build -gt 65535) {
+            Write-Error "Computed build number $build exceeds the MSI limit of 65535."
+            exit 1
+          }
+
+          $installerVersion = "$major.$minor.$build.0"
+
+          [xml]$csproj = Get-Content -Path "Clever-Vpn/Clever-Vpn.csproj"
+          $kitVersion = @($csproj.Project.ItemGroup.PackageReference) |
+            Where-Object { $_.Include -eq "Clever-Vpn-Windows-Kit" } |
+            Select-Object -First 1 -ExpandProperty Version
+          if ([string]::IsNullOrWhiteSpace($kitVersion)) {
+            $kitVersion = "<not found in Clever-Vpn/Clever-Vpn.csproj>"
+          }
+
+          "build_ref=$buildRef" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "installer_version=$installerVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+          Write-Host "RequestedRef=$requestedRef"
+          Write-Host "BuildRef=$buildRef"
+          Write-Host "VersionBase=$baseSource"
+          Write-Host "InstallerVersion=$installerVersion"
+          Write-Host "KitVersion=$kitVersion"
+
+          $summary = @(
+            "## Internal test build (no GitHub Release)",
+            "",
+            "- requested ref: $requestedRef",
+            "- built commit: $buildRef",
+            "- Clever-Vpn-Windows-Kit (pinned in the built commit): $kitVersion",
+            "- installer version: $installerVersion",
+            "- version base: $baseSource",
+            "",
+            "Installers are kept as artifacts of this run and expire after 7 days. No tag and no GitHub Release are created."
+          )
+          $summary | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
+
+  build_installers:
+    name: Build Installers
+    needs: resolve
+    permissions:
+      contents: read
+    uses: ./.github/workflows/_build-installers.yml
+    with:
+      build_ref: ${{ needs.resolve.outputs.build_ref }}
+      installer_version: ${{ needs.resolve.outputs.installer_version }}
+      retention_days: 7
+      # setup.exe downloads the MSIs from the download base URL, which this run does
+      # not publish to; building it here would only produce a misleading artifact.
+      include_setup: false

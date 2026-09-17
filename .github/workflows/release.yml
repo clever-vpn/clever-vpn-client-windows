@@ -1,41 +1,39 @@
-name: Build and Release Clever-Vpn
+name: Release Clever VPN
 
+# Tag driven releases only: a run either publishes a GitHub prerelease or a normal
+# GitHub Release. Test builds are driven by a commit instead of a tag, so they live in
+# internal.yml.
 on:
-  push:
-    tags:
-      - "v*.*.*-rc.*"
   workflow_dispatch:
     inputs:
       release_mode:
-        description: "Build mode: internal (no release), prerelease, or release"
+        description: "prerelease: publish a GitHub prerelease. release: publish a normal GitHub Release."
         required: true
-        default: internal
+        default: release
         type: choice
         options:
-          - internal
           - prerelease
           - release
       tag_name:
-        description: "Optional. Existing tag: build tagged commit; missing tag: use main HEAD; empty: auto-bump latest release patch."
+        description: "Optional. Existing tag: build tagged commit; missing tag: use main HEAD; empty (release only): auto-bump latest release patch."
         required: false
         type: string
 
+# A release must not be cancelled halfway through publishing.
+concurrency:
+  group: app-release
+  cancel-in-progress: false
+
 permissions:
   contents: write
-
-env:
-  DOTNET_VERSION: "8.0.x"
-  CONFIGURATION: Release
 
 jobs:
   validate_tag:
     name: Resolve Build Mode and Version
     runs-on: windows-latest
     outputs:
-      semver: ${{ steps.parse.outputs.semver }}
       installer_version: ${{ steps.parse.outputs.installer_version }}
       prerelease: ${{ steps.parse.outputs.prerelease }}
-      publish_release: ${{ steps.parse.outputs.publish_release }}
       tag_name: ${{ steps.parse.outputs.tag_name }}
       build_ref: ${{ steps.parse.outputs.build_ref }}
       target_commit_sha: ${{ steps.parse.outputs.target_commit_sha }}
@@ -66,24 +64,14 @@ jobs:
             return "v$trimmed"
           }
 
-          $eventName = "${{ github.event_name }}"
-          if ($eventName -eq "workflow_dispatch") {
-            $mode = "${{ inputs.release_mode }}"
-            $tag = "${{ inputs.tag_name }}".Trim()
-          } elseif ($eventName -eq "push") {
-            $mode = "internal"
-            $tag = "${{ github.ref_name }}".Trim()
-          } else {
-            Write-Error "Unsupported event '$eventName'. Expected workflow_dispatch or push(tag)."
+          $mode = "${{ inputs.release_mode }}"
+          $tag = "${{ inputs.tag_name }}".Trim()
+
+          if ($mode -notin @("prerelease", "release")) {
+            Write-Error "Invalid release_mode '$mode'. Expected one of: prerelease, release."
             exit 1
           }
 
-          if ($mode -notin @("internal", "prerelease", "release")) {
-            Write-Error "Invalid release_mode '$mode'. Expected one of: internal, prerelease, release."
-            exit 1
-          }
-
-          $publishRelease = "false"
           $isPrerelease = "false"
           $buildRef = "${{ github.sha }}"
           $resolvedTagName = ""
@@ -132,12 +120,12 @@ jobs:
 
           $tag = Normalize-Tag $tag
 
-          if ($mode -in @("internal", "prerelease")) {
+          if ($mode -eq "prerelease") {
             if ($tag -notmatch $prereleaseRegex) {
-              Write-Error "Invalid $mode tag '$tag'. Expected format: v<major>.<minor>.<patch>-rc.<n>"
+              Write-Error "Invalid prerelease tag '$tag'. Expected format: v<major>.<minor>.<patch>-rc.<n>"
               exit 1
             }
-            $isPrerelease = if ($mode -eq "prerelease") { "true" } else { "false" }
+            $isPrerelease = "true"
           }
 
           if ($mode -eq "release") {
@@ -153,11 +141,6 @@ jobs:
             $tagExists = "true"
             $targetCommitSha = (git rev-list -n 1 "refs/tags/$tag").Trim()
           } else {
-            if ($eventName -eq "push") {
-              Write-Error "Tag '$tag' does not exist in the repository."
-              exit 1
-            }
-
             $targetCommitSha = (git rev-parse "refs/remotes/origin/main").Trim()
             if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($targetCommitSha)) {
               Write-Error "Unable to resolve origin/main for missing tag '$tag'."
@@ -175,14 +158,11 @@ jobs:
           }
 
           $installerVersion = "$semver.0"
-          $publishRelease = if ($mode -eq "internal") { "false" } else { "true" }
           $resolvedTagName = $tag
           $buildRef = $targetCommitSha
 
-          "semver=$semver" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "installer_version=$installerVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "prerelease=$isPrerelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          "publish_release=$publishRelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "tag_name=$resolvedTagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "build_ref=$buildRef" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "target_commit_sha=$targetCommitSha" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
@@ -194,224 +174,32 @@ jobs:
           Write-Host "TagExists=$tagExists"
           Write-Host "TargetCommitSha=$targetCommitSha"
           Write-Host "InstallerVersion=$installerVersion"
-          Write-Host "PublishRelease=$publishRelease"
 
-  build_msi:
-    name: Build MSI (${{ matrix.platform }})
+  build_installers:
+    name: Build Installers
     needs: validate_tag
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: x86
-            output_dir: x86
-          - platform: x64
-            output_dir: x64
-          - platform: ARM64
-            output_dir: ARM64
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.validate_tag.outputs.build_ref }}
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Restore solution
-        run: dotnet restore Clever-Vpn.sln
-
-      - name: Build MSI
-        run: dotnet build MsiInstaller/MsiInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:Platform=${{ matrix.platform }} -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }}
-
-      - name: Upload MSI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-msi-${{ matrix.platform }}
-          path: MsiInstaller/bin/${{ matrix.output_dir }}/${{ env.CONFIGURATION }}/en-US/*.msi
-          if-no-files-found: error
-          retention-days: 7
-
-  build_msix:
-    name: Build MSIX (${{ matrix.platform }})
-    needs: validate_tag
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: x86
-          - platform: x64
-          - platform: ARM64
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.validate_tag.outputs.build_ref }}
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Set MSIX manifest version from resolved version
-        shell: pwsh
-        run: |
-          $manifest = "Clever-Vpn/Package.appxmanifest"
-          [xml]$xml = Get-Content -Path $manifest
-          $xml.Package.Identity.Version = "${{ needs.validate_tag.outputs.installer_version }}"
-          $xml.Save($manifest)
-          Write-Host "MSIX Identity.Version set to ${{ needs.validate_tag.outputs.installer_version }}"
-
-      - name: Restore solution
-        run: dotnet restore Clever-Vpn.sln
-
-      - name: Build MSIX
-        run: dotnet build Clever-Vpn/Clever-Vpn.csproj -c ${{ env.CONFIGURATION }} -p:Platform=${{ matrix.platform }} -p:GenerateAppxPackageOnBuild=true -p:AppxBundle=Never -p:AppxPackageSigningEnabled=false -p:AppxPackageVersion=${{ needs.validate_tag.outputs.installer_version }}
-
-      - name: Upload MSIX artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-msix-${{ matrix.platform }}
-          path: Clever-Vpn/bin/Appx/**/*.msix
-          retention-days: 7
-
-  build_setup:
-    name: Build Setup Bootstrapper (setup.exe)
-    needs:
-      - validate_tag
-      - build_msi
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.validate_tag.outputs.build_ref }}
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Download MSI x86 artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: release-msi-x86
-          path: MsiInstaller/bin/x86/${{ env.CONFIGURATION }}/en-US
-
-      - name: Download MSI x64 artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: release-msi-x64
-          path: MsiInstaller/bin/x64/${{ env.CONFIGURATION }}/en-US
-
-      - name: Download MSI ARM64 artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: release-msi-ARM64
-          path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
-
-      - name: Build production setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/prod/ -p:IntermediateOutputPath=obj/prod/ -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:BuildMsiAllArchOnBuild=false
-
-      - name: Build test setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/test/ -p:IntermediateOutputPath=obj/test/ -p:OutputName=CleverVPN_Setup_Test -p:CleverVpnInstallerVersion=${{ needs.validate_tag.outputs.installer_version }} -p:InstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows -p:BuildMsiAllArchOnBuild=false
-
-      - name: Upload setup.exe artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-setup-bootstrapper
-          path: SetupInstaller/bin/**/*.exe
-          retention-days: 7
-
-  bundle_msix:
-    name: Create MSIX Bundle
-    needs:
-      - validate_tag
-      - build_msix
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.validate_tag.outputs.build_ref }}
-
-      - name: Download all MSIX artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: release-msix-*
-          merge-multiple: true
-          path: Clever-Vpn/bin/Appx/msix-input
-
-      - name: List downloaded MSIX files
-        shell: pwsh
-        run: Get-ChildItem -Path 'Clever-Vpn/bin/Appx/msix-input' -Recurse -Filter '*.msix' | Select-Object FullName | Format-Table -AutoSize
-
-      - name: Ensure makeappx is available
-        shell: pwsh
-        run: |
-          if (-not (Get-Command makeappx.exe -ErrorAction SilentlyContinue)) {
-            $sdkBinRoot = 'C:\Program Files (x86)\Windows Kits\10\bin'
-            if (-not (Test-Path $sdkBinRoot)) {
-              throw "Windows SDK bin root not found: $sdkBinRoot"
-            }
-
-            $candidate = Get-ChildItem -Path $sdkBinRoot -Directory |
-              Sort-Object Name -Descending |
-              ForEach-Object { Join-Path $_.FullName 'x64\makeappx.exe' } |
-              Where-Object { Test-Path $_ } |
-              Select-Object -First 1
-
-            if (-not $candidate) {
-              throw 'makeappx.exe not found under Windows Kits SDK paths'
-            }
-
-            $binDir = Split-Path $candidate -Parent
-            "$binDir" | Out-File -FilePath $env:GITHUB_PATH -Append
-            $env:PATH = "$binDir;$env:PATH"
-          }
-
-          Write-Host "makeappx located: $(Get-Command makeappx.exe | Select-Object -ExpandProperty Source)"
-
-      - name: Create MSIX bundle (x86/x64/arm64)
-        shell: cmd
-        run: |
-          cd Clever-Vpn
-          make-bundle.bat ${{ needs.validate_tag.outputs.installer_version }} bin/Appx/msix-input
-
-      - name: Validate MSIX bundle output
-        shell: pwsh
-        run: |
-          $bundle = Get-ChildItem -Path "Clever-Vpn/bin/Appx/bundle" -Filter *.msixbundle -ErrorAction SilentlyContinue
-          if (-not $bundle) {
-            Write-Error "No .msixbundle found under Clever-Vpn/bin/Appx/bundle"
-            exit 1
-          }
-
-      - name: Upload bundle artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-msix-bundle
-          path: Clever-Vpn/bin/Appx/bundle/*.msixbundle
-          retention-days: 7
+    permissions:
+      contents: read
+    uses: ./.github/workflows/_build-installers.yml
+    with:
+      build_ref: ${{ needs.validate_tag.outputs.build_ref }}
+      installer_version: ${{ needs.validate_tag.outputs.installer_version }}
+      # These artifacts are consumed inside this run; the published copies live in the
+      # GitHub Release, so a short retention is enough.
+      retention_days: 1
+      include_setup: true
 
   publish_github_release:
     name: Publish GitHub Release
-    if: ${{ needs.validate_tag.outputs.publish_release == 'true' }}
     needs:
       - validate_tag
-      - build_msi
-      - build_setup
-      - bundle_msix
+      - build_installers
     runs-on: windows-latest
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: release-*
+          pattern: installer-*
           merge-multiple: true
           path: artifacts
 
