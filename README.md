@@ -41,17 +41,15 @@ Before building the project locally, ensure you have the following installed:
 	- configure `InstallerSettings.props` at solution root:
 		- `CleverVpnInstallerVersion`
 		- `InstallerDownloadBaseUrl`
-		- `TestInstallerDownloadBaseUrl`
-	- `InstallerDownloadBaseUrl` + `CleverVpnInstallerVersion` are used to compose the real MSI download URL in setup bootstrapper.
+	- `InstallerDownloadBaseUrl` + `CleverVpnInstallerVersion` compose the real MSI download URL in the setup bootstrapper.
 		- URL pattern (x64): `<InstallerDownloadBaseUrl>/CleverVPN_<CleverVpnInstallerVersion>_x64.msi`
-		- example:
-			- `InstallerDownloadBaseUrl=https://download.clever-vpn.net/windows`
-			- `TestInstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows`
-			- `CleverVpnInstallerVersion=1.3.7.0`
-			- final x64 URL: `https://download.clever-vpn.net/windows/CleverVPN_1.3.7.0_x64.msi`
+		- example: `InstallerDownloadBaseUrl=https://download.clever-vpn.net/windows` and `CleverVpnInstallerVersion=1.3.7.0` give `https://download.clever-vpn.net/windows/CleverVPN_1.3.7.0_x64.msi`
+	- the URL is baked into the bootstrapper at build time: `setup.exe` carries no application payload and does no mode detection at run time, so editing `InstallerSettings.props` only affects local builds.
+	- each release mode therefore passes its own `-p:InstallerDownloadBaseUrl`:
+		- `release` → `https://download.clever-vpn.net/windows` (the release pipeline publishes the MSIs there), plus an extra `CleverVPN_Setup_Test.exe` built with `https://download-test.clever-vpn.net/windows`
+		- `prerelease` → `https://github.com/<owner>/<repo>/releases/download/<tag>`, so the `setup.exe` shipped in a prerelease installs the MSIs of that very release
 	- select `SetupInstaller` project, and build,
 	- output setup will be generated in `SetupInstaller\bin\<configuration>` and will download/install the matching MSI by architecture.
-	- CI release builds produce both `CleverVPN_Setup.exe` and `CleverVPN_Setup_Test.exe`; the test variant is compiled with `TestInstallerDownloadBaseUrl`.
 
 ### GitHub Actions Workflows
 
@@ -62,6 +60,7 @@ A release is driven by a **tag**, a test build is driven by a **commit**, so the
 - `prerelease`
 	- publishes a GitHub prerelease.
 	- requires an RC tag format: `v<major>.<minor>.<patch>-rc.<n>`.
+	- its `setup.exe` downloads the MSIs from the assets of that same release, because a prerelease is not published to the download host. No `CleverVPN_Setup_Test.exe` is produced.
 
 - `release`
 	- publishes a normal GitHub Release.

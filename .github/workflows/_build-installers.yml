@@ -25,10 +25,18 @@ on:
         type: number
         default: 7
       include_setup:
-        description: "Build the setup.exe bootstrappers. Only meaningful when the matching MSIs are published to the download base URL."
+        description: "Build the setup.exe bootstrappers. Only meaningful when the matching MSIs are reachable at the given download base URL."
         required: false
         type: boolean
         default: true
+      setup_download_base_url:
+        description: "Required when include_setup is true. Base URL the setup.exe bootstrapper downloads its MSIs from at install time; it is compiled into the bundle."
+        required: false
+        type: string
+      setup_test_download_base_url:
+        description: "Optional. When set, an additional CleverVPN_Setup_Test.exe is built with this base URL."
+        required: false
+        type: string
 
 env:
   DOTNET_VERSION: "8.0.x"
@@ -203,6 +211,16 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Validate the setup download base URL
+        shell: pwsh
+        run: |
+          $base = "${{ inputs.setup_download_base_url }}".Trim()
+          if ([string]::IsNullOrWhiteSpace($base) -or $base -notmatch '^https://') {
+            Write-Error "setup_download_base_url must be an https URL when include_setup is true, got '$base'."
+            exit 1
+          }
+          Write-Host "setup.exe will download its MSIs from $base"
+
       - name: Download MSI x86 artifact
         uses: actions/download-artifact@v4
         with:
@@ -221,11 +239,12 @@ jobs:
           name: installer-msi-ARM64
           path: MsiInstaller/bin/ARM64/${{ env.CONFIGURATION }}/en-US
 
-      - name: Build production setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/prod/ -p:IntermediateOutputPath=obj/prod/ -p:CleverVpnInstallerVersion=${{ inputs.installer_version }} -p:BuildMsiAllArchOnBuild=false
+      - name: Build setup.exe bootstrapper
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/prod/ -p:IntermediateOutputPath=obj/prod/ -p:CleverVpnInstallerVersion=${{ inputs.installer_version }} -p:InstallerDownloadBaseUrl=${{ inputs.setup_download_base_url }} -p:BuildMsiAllArchOnBuild=false
 
-      - name: Build test setup.exe bundle
-        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/test/ -p:IntermediateOutputPath=obj/test/ -p:OutputName=CleverVPN_Setup_Test -p:CleverVpnInstallerVersion=${{ inputs.installer_version }} -p:InstallerDownloadBaseUrl=https://download-test.clever-vpn.net/windows -p:BuildMsiAllArchOnBuild=false
+      - name: Build test setup.exe bootstrapper
+        if: ${{ inputs.setup_test_download_base_url != '' }}
+        run: dotnet build SetupInstaller/SetupInstaller.wixproj -c ${{ env.CONFIGURATION }} -p:OutputPath=bin/test/ -p:IntermediateOutputPath=obj/test/ -p:OutputName=CleverVPN_Setup_Test -p:CleverVpnInstallerVersion=${{ inputs.installer_version }} -p:InstallerDownloadBaseUrl=${{ inputs.setup_test_download_base_url }} -p:BuildMsiAllArchOnBuild=false
 
       - name: Upload setup.exe artifact
         uses: actions/upload-artifact@v4
