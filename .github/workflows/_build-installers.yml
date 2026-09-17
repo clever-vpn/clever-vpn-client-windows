@@ -6,8 +6,9 @@ name: Build Installers
 #   - release.yml  : tag driven, the installers become GitHub Release assets
 #   - internal.yml : ref driven, the installers stay as artifacts of that run
 #
-# Artifact names are fixed (`installer-*`) because the publishing job of the
-# caller downloads them by name/pattern inside the same run.
+# Artifact names are fixed: `installer-*` for what a release publishes, `intermediate-*`
+# for build outputs that only feed another step of the same run. The publishing job of the
+# caller downloads the `installer-*` ones by pattern inside the same run.
 on:
   workflow_call:
     inputs:
@@ -120,7 +121,9 @@ jobs:
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@v4
         with:
-          name: installer-msix-${{ matrix.platform }}
+          # These single architecture packages only feed the bundle and are never published,
+          # so the publish job must not download them; the name marks that.
+          name: intermediate-msix-${{ matrix.platform }}
           path: Clever-Vpn/bin/Appx/**/*.msix
           retention-days: ${{ inputs.retention_days }}
 
@@ -138,7 +141,7 @@ jobs:
       - name: Download all MSIX artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: installer-msix-*
+          pattern: intermediate-msix-*
           merge-multiple: true
           path: Clever-Vpn/bin/Appx/msix-input
 
