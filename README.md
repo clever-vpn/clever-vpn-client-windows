@@ -60,7 +60,8 @@ A release is driven by a **tag**, a test build is driven by a **commit**, so the
 - `prerelease`
 	- publishes a GitHub prerelease.
 	- requires an RC tag format: `v<major>.<minor>.<patch>-rc.<n>`.
-	- its `setup.exe` downloads the MSIs from the assets of that same release, because a prerelease is not published to the download host. No `CleverVPN_Setup_Test.exe` is produced.
+	- its `setup.exe` downloads the MSIs from the assets of that same release, because a prerelease is not published to the download host.
+	- it ships the MSIs and `setup.exe` only: no `clevervpn.msixbundle` and no `CleverVPN_Setup_Test.exe`.
 
 - `release`
 	- publishes a normal GitHub Release.

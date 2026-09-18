@@ -30,6 +30,11 @@ on:
         required: false
         type: boolean
         default: true
+      include_msix:
+        description: "Build the MSIX packages and the bundle. Only needed by releases that ship an MSIX bundle."
+        required: false
+        type: boolean
+        default: true
       setup_download_base_url:
         description: "Required when include_setup is true. Base URL the setup.exe bootstrapper downloads its MSIs from at install time; it is compiled into the bundle."
         required: false
@@ -84,6 +89,7 @@ jobs:
 
   build_msix:
     name: Build MSIX (${{ matrix.platform }})
+    if: ${{ inputs.include_msix }}
     runs-on: windows-latest
     strategy:
       fail-fast: false
@@ -129,6 +135,7 @@ jobs:
 
   bundle_msix:
     name: Create MSIX Bundle
+    if: ${{ inputs.include_msix }}
     needs:
       - build_msix
     runs-on: windows-latest

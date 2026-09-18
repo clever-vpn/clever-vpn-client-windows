@@ -205,6 +205,8 @@ jobs:
       # GitHub Release, so a short retention is enough.
       retention_days: 1
       include_setup: true
+      # Only a stable release ships the MSIX bundle.
+      include_msix: ${{ needs.validate_tag.outputs.prerelease != 'true' }}
       setup_download_base_url: ${{ needs.validate_tag.outputs.setup_download_base_url }}
       setup_test_download_base_url: ${{ needs.validate_tag.outputs.setup_test_download_base_url }}
 
