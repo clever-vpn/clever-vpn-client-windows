@@ -304,12 +304,6 @@
   <data name="SettingsCopyButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Copy activation code</value>
   </data>
-  <data name="SplitRegionCustomLabel.Text" xml:space="preserve">
-    <value>Custom code (e.g. us)</value>
-  </data>
-  <data name="SplitRegionCustomApply.Content" xml:space="preserve">
-    <value>Use</value>
-  </data>
   <data name="SplitRegionSearch.PlaceholderText" xml:space="preserve">
     <value>Search region</value>
   </data>

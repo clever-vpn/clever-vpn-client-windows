@@ -2,6 +2,7 @@ using Clever_Vpn.ViewModel;
 using Clever_Vpn_Windows_Kit.Data;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,10 @@ public sealed partial class SplitSettingsPage : Page
 
     private void UpdateRegionCodeDisplay()
     {
-        RegionCodeTextBlock.Text = SplitRegionOptions.Label(_regionCode);
+        // Windows 不渲染国旗 emoji（Segoe UI Emoji 没有国旗字形，会退化成「US」两个
+        // 字母），所以这里用「英文名 (代码)」，避免出现「US us」这种重复。
+        var option = SplitRegionOptions.Option(_regionCode);
+        RegionCodeTextBlock.Text = $"{option.Name} ({option.Code})";
     }
 
     private void UpdateRegionDetailVisibility()
@@ -116,7 +120,10 @@ public sealed partial class SplitSettingsPage : Page
                 new List<RegionItem> { new(current, true) }));
         }
 
-        RegionGroupedSource.Source = groups;
+        // 分组数据必须交给 CollectionViewSource 的 View 才能用 GroupStyle 表头；
+        // 之前只设了 CVS.Source，而 ListView 的 ItemsSource 从未赋值，所以列表是空的。
+        var view = new CollectionViewSource { IsSourceGrouped = true, Source = groups };
+        RegionListView.ItemsSource = view.View;
     }
 
     /// <summary>搜索按「地区代码 + 英文名」匹配（列表里只显示「🇯🇵  jp」，不塞英文名）。</summary>
@@ -181,18 +188,6 @@ public sealed partial class SplitSettingsPage : Page
         }
 
         UpdateRegionDetailVisibility();
-    }
-
-    private void OnRegionCustomApplyClick(object sender, RoutedEventArgs e)
-    {
-        if (SplitRegionOptions.Normalize(RegionCustomCodeBox.Text) is not { } code)
-        {
-            return;
-        }
-
-        _regionCode = code;
-        UpdateRegionCodeDisplay();
-        RegionCustomCodeBox.Text = string.Empty;
     }
 
     private async Task SaveSplitAsync()
@@ -314,7 +309,8 @@ public sealed class RegionItem
     public RegionItem(SplitRegionOption option, bool selected)
     {
         Code = option.Code;
-        Label = option.Label;
+        // option.Label 是「🇨🇳 cn」：Windows 没有国旗字形，会退化成「CN cn」。
+        Label = $"{option.Name} ({option.Code})";
         CheckVisibility = selected ? Visibility.Visible : Visibility.Collapsed;
     }
 }
