@@ -304,12 +304,6 @@
   <data name="SettingsCopyButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>复制激活码</value>
   </data>
-  <data name="SplitRegionCustomLabel.Text" xml:space="preserve">
-    <value>自定义代码（如 us）</value>
-  </data>
-  <data name="SplitRegionCustomApply.Content" xml:space="preserve">
-    <value>使用</value>
-  </data>
   <data name="SplitRegionSearch.PlaceholderText" xml:space="preserve">
     <value>搜索地区</value>
   </data>
