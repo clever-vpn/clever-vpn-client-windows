@@ -6,7 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:c="using:Clever_Vpn.components"
+    xmlns:local="using:Clever_Vpn.Pages.SettingsPage"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <!-- 地区子列表按大洲分组（IsSourceGrouped） -->
+        <CollectionViewSource x:Name="RegionGroupedSource" IsSourceGrouped="True" />
+    </Page.Resources>
 
     <Grid RequestedTheme="Light">
         <c:Layout>
@@ -19,7 +25,8 @@
                 </c:TopBar>
             </c:Layout.TopBar>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid>
+            <ScrollViewer x:Name="SplitFormPanel" VerticalScrollBarVisibility="Auto">
                 <StackPanel Spacing="8" Padding="8,8,8,16">
                     <Border
                         Background="{ThemeResource LayerFillColorAltBrush}"
@@ -34,11 +41,31 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock x:Uid="SplitRegionTitle" Style="{ThemeResource BodyStrongTextBlockStyle}" VerticalAlignment="Center" />
-                                <ToggleSwitch x:Name="RegionEnableSwitch" x:Uid="SplitRegionEnable" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="0" Width="Auto" Padding="0" />
+                                <ToggleSwitch x:Name="RegionEnableSwitch" x:Uid="SplitRegionEnable" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="0" Width="Auto" Padding="0" Toggled="OnRegionEnableToggled" />
                             </Grid>
-                            <StackPanel Spacing="4">
-                                <TextBlock x:Uid="SplitRegionCodeLabel" Style="{ThemeResource CaptionTextBlockStyle}" />
-                                <TextBlock x:Name="RegionCodeValueTextBlock" Style="{ThemeResource BodyTextBlockStyle}" />
+                            <!-- 选择控件只在开启时才显示：关闭时"选地区"没有意义（值仍保留在 userInfo 里）。 -->
+                            <StackPanel x:Name="RegionDetailPanel" Spacing="8" Visibility="Collapsed">
+                                <StackPanel Spacing="4">
+                                    <TextBlock x:Uid="SplitRegionCodeLabel" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <!-- 点开是子列表页（分组 + 搜索 + 点选），和 iOS/Android 同一个形态 -->
+                                    <Button x:Name="RegionCodeButton" Click="OnRegionCodeButtonClick" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock x:Name="RegionCodeTextBlock" />
+                                            <FontIcon Grid.Column="1" Glyph="&#xE76C;" FontSize="12" />
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel Spacing="4">
+                                    <TextBlock x:Uid="SplitRegionCustomLabel" Style="{ThemeResource CaptionTextBlockStyle}" />
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBox x:Name="RegionCustomCodeBox" MinWidth="160" />
+                                        <Button x:Uid="SplitRegionCustomApply" Click="OnRegionCustomApplyClick" />
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -115,6 +142,47 @@
                     </Border>
                 </StackPanel>
             </ScrollViewer>
+
+                <!-- 地区子列表页（分组 + 搜索 + 点选即返回），与 iOS/Android 同形态 -->
+                <Grid x:Name="RegionListPanel" Visibility="Collapsed" Padding="8,8,8,16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="RegionSearchBox" x:Uid="SplitRegionSearch" TextChanged="OnRegionSearchChanged" Margin="0,0,0,8" />
+
+                    <ListView x:Name="RegionListView" Grid.Row="1"
+                              IsItemClickEnabled="True" SelectionMode="None"
+                              ItemClick="OnRegionItemClick">
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate x:DataType="local:RegionGroup">
+                                        <TextBlock Text="{x:Bind Title}"
+                                                   Style="{ThemeResource CaptionTextBlockStyle}"
+                                                   Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                                   Margin="0,12,0,4" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:RegionItem">
+                                <Grid HorizontalAlignment="Stretch" Padding="0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{x:Bind Label}" />
+                                    <FontIcon Grid.Column="1" Glyph="&#xE73E;" FontSize="14"
+                                              Visibility="{x:Bind CheckVisibility, Mode=OneWay}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
         </c:Layout>
     </Grid>
 </Page>

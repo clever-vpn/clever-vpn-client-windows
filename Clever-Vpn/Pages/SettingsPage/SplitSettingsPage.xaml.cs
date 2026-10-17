@@ -7,13 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 
 namespace Clever_Vpn.Pages.SettingsPage;
 
 public sealed partial class SplitSettingsPage : Page
 {
     private readonly VpnViewModel _vm = ((App)Application.Current).ViewModel;
+    private static readonly ResourceLoader ResourceLoader = ResourceLoader.GetForViewIndependentUse();
     private bool _isSaving;
+    private bool _regionListVisible;
     private string _regionCode = string.Empty;
 
     public SplitSettingsPage()
@@ -31,16 +34,19 @@ public sealed partial class SplitSettingsPage : Page
     private void LoadFromUserInfo()
     {
         var split = _vm.UserInfo?.SplitInfo ?? new SplitInfo();
-        var useDefaultToggles = IsSplitConfigurationEmpty(split);
 
-        RegionEnableSwitch.IsOn = useDefaultToggles ? true : split.Region?.Enable == true;
-        _regionCode = split.Region?.Code ?? string.Empty;
-        RegionCodeValueTextBlock.Text = string.IsNullOrWhiteSpace(_regionCode) ? "-" : _regionCode;
+        // region 分流**只能由用户显式开启**（空配置 ⇒ 三个开关都是关）。
+        // 地区代码**永远不为空**：空/非法一律落到缺省（cn）。
+        RegionEnableSwitch.IsOn = split.Region?.Enable == true;
+        _regionCode = SplitRegionOptions.Normalize(split.Region?.Code) ?? SplitRegionOptions.DefaultCode;
+        UpdateRegionCodeDisplay();
+        HideRegionList();
+        UpdateRegionDetailVisibility();
 
-        IpEnableSwitch.IsOn = useDefaultToggles ? false : split.Ip?.Enable == true;
+        IpEnableSwitch.IsOn = split.Ip?.Enable == true;
         IpEditor.Text = string.Join(Environment.NewLine, split.Ip?.IpCidr ?? []);
 
-        DomainEnableSwitch.IsOn = useDefaultToggles ? false : split.Domain?.Enable == true;
+        DomainEnableSwitch.IsOn = split.Domain?.Enable == true;
         var basicDomainLines = new List<string>();
         basicDomainLines.AddRange(split.Domain?.Domain ?? []);
         basicDomainLines.AddRange((split.Domain?.DomainSuffix ?? []).Select(s => s.StartsWith('.') ? s : $".{s}"));
@@ -49,24 +55,144 @@ public sealed partial class SplitSettingsPage : Page
         AdvancedDomainEditor.Text = string.Join(Environment.NewLine, split.Domain?.DomainRegex ?? []);
     }
 
-    private static bool IsSplitConfigurationEmpty(SplitInfo? split)
+    private void UpdateRegionCodeDisplay()
     {
-        if (split == null)
+        RegionCodeTextBlock.Text = SplitRegionOptions.Label(_regionCode);
+    }
+
+    private void UpdateRegionDetailVisibility()
+    {
+        // 选择控件只在开启时才显示（关闭时"选地区"没有意义；值仍保留在 userInfo 里）。
+        RegionDetailPanel.Visibility = RegionEnableSwitch.IsOn ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    // ---- 地区子列表页（分组 + 搜索 + 点选即返回），与 iOS/Android 同形态 ----
+
+    private void OnRegionCodeButtonClick(object sender, RoutedEventArgs e)
+    {
+        ShowRegionList();
+    }
+
+    private void ShowRegionList()
+    {
+        _regionListVisible = true;
+        RegionSearchBox.Text = string.Empty;
+        RebuildRegionList();
+        RegionListPanel.Visibility = Visibility.Visible;
+        SplitFormPanel.Visibility = Visibility.Collapsed;
+    }
+
+    private void HideRegionList()
+    {
+        _regionListVisible = false;
+        RegionListPanel.Visibility = Visibility.Collapsed;
+        SplitFormPanel.Visibility = Visibility.Visible;
+    }
+
+    private void RebuildRegionList()
+    {
+        var keyword = (RegionSearchBox.Text ?? string.Empty).Trim();
+        var groups = new List<RegionGroup>();
+
+        foreach (var section in SplitRegionOptions.Sections)
+        {
+            var items = section.Options
+                .Where(option => RegionMatches(option, keyword))
+                .Select(option => new RegionItem(option, option.Code == _regionCode))
+                .ToList();
+
+            if (items.Count > 0)
+            {
+                groups.Add(new RegionGroup(GroupTitle(section.Group), items));
+            }
+        }
+
+        // 当前值不在内置列表里（自定义代码）时额外补一段，保证列表里总能勾出当前值。
+        var current = SplitRegionOptions.Option(_regionCode);
+        if (!SplitRegionOptions.All.Any(option => option.Code == current.Code)
+            && RegionMatches(current, keyword))
+        {
+            groups.Insert(0, new RegionGroup(GroupTitle(SplitRegionGroup.Custom),
+                new List<RegionItem> { new(current, true) }));
+        }
+
+        RegionGroupedSource.Source = groups;
+    }
+
+    /// <summary>搜索按「地区代码 + 英文名」匹配（列表里只显示「🇯🇵  jp」，不塞英文名）。</summary>
+    private static bool RegionMatches(SplitRegionOption option, string keyword)
+    {
+        if (keyword.Length == 0)
         {
             return true;
         }
 
-        var hasRegionCode = !string.IsNullOrWhiteSpace(split.Region?.Code);
-        var hasIpRules = split.Ip?.IpCidr?.Count > 0;
-        var hasDomainRules = (split.Domain?.Domain?.Count > 0)
-            || (split.Domain?.DomainSuffix?.Count > 0)
-            || (split.Domain?.DomainRegex?.Count > 0);
+        return option.Code.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+            || option.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase);
+    }
 
-        var hasAnyEnabled = (split.Region?.Enable == true)
-            || (split.Ip?.Enable == true)
-            || (split.Domain?.Enable == true);
+    private void OnRegionSearchChanged(object sender, TextChangedEventArgs e)
+    {
+        RebuildRegionList();
+    }
 
-        return !hasRegionCode && !hasIpRules && !hasDomainRules && !hasAnyEnabled;
+    private void OnRegionItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is not RegionItem item)
+        {
+            return;
+        }
+
+        _regionCode = item.Code;
+        UpdateRegionCodeDisplay();
+        HideRegionList();
+    }
+
+    /// <summary>分组标题（大洲）走文案表；缺失则回退英文。</summary>
+    private static string GroupTitle(SplitRegionGroup group)
+    {
+        var (key, fallback) = group switch
+        {
+            SplitRegionGroup.Asia => ("SplitRegionGroupAsia", "Asia"),
+            SplitRegionGroup.Americas => ("SplitRegionGroupAmericas", "Americas"),
+            SplitRegionGroup.Europe => ("SplitRegionGroupEurope", "Europe"),
+            SplitRegionGroup.Oceania => ("SplitRegionGroupOceania", "Oceania"),
+            _ => ("SplitRegionGroupCustom", "Custom"),
+        };
+
+        try
+        {
+            var value = ResourceLoader.GetString(key + ".Text");
+            return string.IsNullOrWhiteSpace(value) ? fallback : value;
+        }
+        catch
+        {
+            return fallback;
+        }
+    }
+
+    private void OnRegionEnableToggled(object sender, RoutedEventArgs e)
+    {
+        // 开启时地区必须有一个值：没有就落缺省（cn）；已有值保留用户的。
+        if (RegionEnableSwitch.IsOn && SplitRegionOptions.Normalize(_regionCode) is null)
+        {
+            _regionCode = SplitRegionOptions.DefaultCode;
+            UpdateRegionCodeDisplay();
+        }
+
+        UpdateRegionDetailVisibility();
+    }
+
+    private void OnRegionCustomApplyClick(object sender, RoutedEventArgs e)
+    {
+        if (SplitRegionOptions.Normalize(RegionCustomCodeBox.Text) is not { } code)
+        {
+            return;
+        }
+
+        _regionCode = code;
+        UpdateRegionCodeDisplay();
+        RegionCustomCodeBox.Text = string.Empty;
     }
 
     private async Task SaveSplitAsync()
@@ -119,7 +245,9 @@ public sealed partial class SplitSettingsPage : Page
             Region = new RegionInfo
             {
                 Enable = RegionEnableSwitch.IsOn,
-                Code = _regionCode,
+                // 落盘时永远写一个合法值（空/非法 ⇒ 缺省 cn）；`enable=true` + 空 code
+                // 会让引擎去装配名为 `geoip-` 的垃圾规则集（URL 404）。
+                Code = SplitRegionOptions.Normalize(_regionCode) ?? SplitRegionOptions.DefaultCode,
             },
             Ip = new IpRule
             {
@@ -147,6 +275,13 @@ public sealed partial class SplitSettingsPage : Page
 
     private async void OnBackClick(object sender, RoutedEventArgs e)
     {
+        // 子列表页看的时候，返回 = 关列表（不离开本页）。
+        if (_regionListVisible)
+        {
+            HideRegionList();
+            return;
+        }
+
         await SaveSplitAsync();
         ((App)Application.Current).MainWindow.GoBack();
     }
@@ -155,5 +290,31 @@ public sealed partial class SplitSettingsPage : Page
     {
         _ = SaveSplitAsync();
         base.OnNavigatedFrom(e);
+    }
+}
+
+/// <summary>地区子列表分组（大洲）。必须是集合类型，才能用 ListView 的 IsSourceGrouped。</summary>
+public sealed class RegionGroup : List<RegionItem>
+{
+    public string Title { get; }
+
+    public RegionGroup(string title, IEnumerable<RegionItem> items) : base(items)
+    {
+        Title = title;
+    }
+}
+
+/// <summary>地区子列表的一行。</summary>
+public sealed class RegionItem
+{
+    public string Code { get; }
+    public string Label { get; }
+    public Visibility CheckVisibility { get; }
+
+    public RegionItem(SplitRegionOption option, bool selected)
+    {
+        Code = option.Code;
+        Label = option.Label;
+        CheckVisibility = selected ? Visibility.Visible : Visibility.Collapsed;
     }
 }

@@ -304,4 +304,28 @@
   <data name="SettingsCopyButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Copy activation code</value>
   </data>
+  <data name="SplitRegionCustomLabel.Text" xml:space="preserve">
+    <value>Custom code (e.g. us)</value>
+  </data>
+  <data name="SplitRegionCustomApply.Content" xml:space="preserve">
+    <value>Use</value>
+  </data>
+  <data name="SplitRegionSearch.PlaceholderText" xml:space="preserve">
+    <value>Search region</value>
+  </data>
+  <data name="SplitRegionGroupAsia.Text" xml:space="preserve">
+    <value>Asia</value>
+  </data>
+  <data name="SplitRegionGroupAmericas.Text" xml:space="preserve">
+    <value>Americas</value>
+  </data>
+  <data name="SplitRegionGroupEurope.Text" xml:space="preserve">
+    <value>Europe</value>
+  </data>
+  <data name="SplitRegionGroupOceania.Text" xml:space="preserve">
+    <value>Oceania</value>
+  </data>
+  <data name="SplitRegionGroupCustom.Text" xml:space="preserve">
+    <value>Custom</value>
+  </data>
 </root>
